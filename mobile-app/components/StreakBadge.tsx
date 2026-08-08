@@ -32,7 +32,7 @@ export default function StreakBadge({ streak, size = 'md', animated = true }: St
           ? 'bg-gradient-to-r from-[#F59E0B] to-[#EF4444] text-white'
           : isOnFire
           ? 'bg-[#F59E0B]/15 text-[#F59E0B] border border-[#F59E0B]/25'
-          : 'bg-white/8 text-zinc-400 border border-[#27272A]'
+          : 'bg-white/8 text-[#C7C7D1] border border-[#27272F]'
       } ${sizeClasses[size]}`}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}

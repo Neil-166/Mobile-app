@@ -10,8 +10,8 @@ const buttonVariants = cva(
       variant: {
         default: 'bg-[#8B5CF6] text-white shadow-lg shadow-purple-500/25 hover:bg-[#7C3AED] hover:shadow-purple-500/40 focus-visible:ring-purple-500',
         secondary: 'bg-[#22D3EE]/10 text-[#22D3EE] border border-[#22D3EE]/20 hover:bg-[#22D3EE]/20 focus-visible:ring-cyan-500',
-        ghost: 'text-zinc-400 hover:text-white hover:bg-white/5 focus-visible:ring-zinc-500',
-        outline: 'border border-[#27272A] bg-transparent text-white hover:bg-white/5 focus-visible:ring-zinc-500',
+        ghost: 'text-[#C7C7D1] hover:text-white hover:bg-white/5 focus-visible:ring-zinc-500',
+        outline: 'border border-[#27272F] bg-transparent text-white hover:bg-white/5 focus-visible:ring-zinc-500',
         destructive: 'bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500/20',
         success: 'bg-[#22C55E]/10 text-[#22C55E] border border-[#22C55E]/20 hover:bg-[#22C55E]/20',
         gradient: 'bg-gradient-to-r from-[#8B5CF6] to-[#22D3EE] text-white shadow-lg hover:opacity-90',

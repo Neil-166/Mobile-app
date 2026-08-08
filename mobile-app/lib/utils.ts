@@ -51,6 +51,47 @@ export function getProgressPercent(current: number, total: number): number {
   return Math.round((current / total) * 100);
 }
 
+/** Minutes remaining until 10 PM tonight (0 if already past). */
+export function getMinutesUntilTenPM(date: Date): number {
+  const tenPM = new Date(date);
+  tenPM.setHours(22, 0, 0, 0);
+  return Math.max(0, Math.round((tenPM.getTime() - date.getTime()) / 60000));
+}
+
+/** Progress (0–1) through the "rescue window" — the day leading up to 10 PM. */
+export function getTenPMProgress(date: Date): number {
+  const minutesIntoDay = date.getHours() * 60 + date.getMinutes();
+  const windowMinutes = 22 * 60; // midnight → 10 PM
+  return Math.min(1, Math.max(0, minutesIntoDay / windowMinutes));
+}
+
+/** Seconds remaining until midnight tonight (end of day). */
+export function getSecondsUntilMidnight(date: Date): number {
+  const midnight = new Date(date);
+  midnight.setHours(23, 59, 59, 999);
+  return Math.max(0, Math.round((midnight.getTime() - date.getTime()) / 1000));
+}
+
+/** Human "Xm ago" style relative time from an ISO/date input. */
+export function getRelativeTime(input: string | Date): string {
+  const then = typeof input === 'string' ? new Date(input) : input;
+  const diffSeconds = Math.max(0, Math.floor((Date.now() - then.getTime()) / 1000));
+  if (diffSeconds < 60) return 'just now';
+  const minutes = Math.floor(diffSeconds / 60);
+  if (minutes < 60) return `${minutes}m ago`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours}h ago`;
+  const days = Math.floor(hours / 24);
+  return `${days}d ago`;
+}
+
+export type RescuePhase = 'daytime' | 'late-night';
+
+/** Whether we are in the post-10 PM "Midnight Rescue" window. */
+export function getRescuePhase(date: Date): RescuePhase {
+  return date.getHours() >= 22 ? 'late-night' : 'daytime';
+}
+
 export function getAvatarColor(initials: string): string {
   const colors = [
     '#8B5CF6', '#22D3EE', '#22C55E', '#F59E0B', '#EC4899',

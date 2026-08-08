@@ -28,7 +28,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
-  themeColor: '#09090B',
+  themeColor: '#07070A',
   viewportFit: 'cover',
 };
 
@@ -42,8 +42,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           position="top-center"
           toastOptions={{
             style: {
-              background: '#16161A',
-              border: '1px solid #27272A',
+              background: '#16161D',
+              border: '1px solid #27272F',
               color: '#fff',
               fontFamily: 'Inter, sans-serif',
             },

@@ -8,8 +8,8 @@ interface ProgressRingProps {
   max: number;
   size?: number;
   strokeWidth?: number;
-  label?: string;
-  sublabel?: string;
+  label?: React.ReactNode;
+  sublabel?: React.ReactNode;
   color?: string;
 }
 
@@ -83,7 +83,7 @@ export default function ProgressRing({
       {/* Center content */}
       <div className="absolute inset-0 flex flex-col items-center justify-center">
         {label && <span className="text-xl font-bold text-white">{label}</span>}
-        {sublabel && <span className="text-xs text-zinc-500 mt-0.5">{sublabel}</span>}
+        {sublabel && <span className="text-xs text-[#8B8B99] mt-0.5">{sublabel}</span>}
       </div>
     </div>
   );

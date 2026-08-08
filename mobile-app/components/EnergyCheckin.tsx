@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Zap } from 'lucide-react';
 
-type EnergyLevel = 'tired' | 'okay' | 'energized' | null;
+type EnergyLevel = 'tired' | 'okay' | 'energized';
 
 const energyOptions = [
   { id: 'tired', emoji: '😴', label: 'Tired', color: '#6366F1' },
@@ -12,77 +12,135 @@ const energyOptions = [
   { id: 'energized', emoji: '⚡', label: 'Energized', color: '#22C55E' },
 ] as const;
 
-const encouragementMessages: Record<NonNullable<EnergyLevel>, string> = {
-  tired:
-    "That's okay. Do the minimum today — one commit, one line of progress. Showing up matters more than how you feel.",
-  okay:
-    "Good enough to build something small. Today's task is manageable. Take it one step at a time.",
-  energized:
-    "Let’s go! Use this energy well — tackle today’s task fully and push something you’re proud of.",
+const encouragementMessages: Record<EnergyLevel, { headline: string; body: string }> = {
+  tired: {
+    headline: 'Minimum today is fine.',
+    body: "One commit, one line, one small step. Showing up matters far more than how you feel. The laptop can close right after.",
+  },
+  okay: {
+    headline: 'Good enough to build something small.',
+    body: "Today's task is genuinely manageable. Take it one step at a time — and if you finish early, that's a bonus, not a requirement.",
+  },
+  energized: {
+    headline: 'Use this energy well.',
+    body: "You're in the zone — go ahead and finish today's build properly. Momentum like this is precious, ride it.",
+  },
 };
+
+const STORAGE_KEY = 'abtalks-energy-checkin';
 
 interface EnergyCheckinProps {
   onSelect?: (level: EnergyLevel) => void;
 }
 
+interface SavedCheckin {
+  level: EnergyLevel;
+  date: string; // YYYY-MM-DD
+}
+
+function todayKey(): string {
+  const now = new Date();
+  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+}
+
+function loadSaved(): SavedCheckin | null {
+  if (typeof window === 'undefined') return null;
+  try {
+    const raw = window.localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as SavedCheckin;
+    if (parsed.date !== todayKey()) return null;
+    return parsed;
+  } catch {
+    return null;
+  }
+}
+
 export default function EnergyCheckin({ onSelect }: EnergyCheckinProps) {
-  const [selected, setSelected] = useState<EnergyLevel>(null);
+  const saved = loadSaved();
+  const [selected, setSelected] = useState<EnergyLevel | null>(saved?.level ?? null);
   const [dismissed, setDismissed] = useState(false);
 
   if (dismissed) return null;
 
-  const handleSelect = (level: NonNullable<EnergyLevel>) => {
+  const handleSelect = (level: EnergyLevel) => {
     setSelected(level);
     onSelect?.(level);
+    try {
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ level, date: todayKey() }));
+    } catch {
+      /* storage unavailable — the check-in still works for this session */
+    }
   };
 
+  const selectedColor = selected ? energyOptions.find((option) => option.id === selected)?.color : undefined;
+  const selectedMessage = selected ? encouragementMessages[selected] : null;
+
   return (
-    <div className="rounded-2xl border border-[#27272A] bg-[#16161A] p-4">
-      <div className="flex items-center gap-2 mb-3">
-        <Zap className="w-4 h-4 text-[#F59E0B]" />
+    <div className="rounded-2xl border border-[#27272F] bg-[#16161D] p-4">
+      <div className="mb-1 flex items-center gap-2">
+        <Zap className="h-4 w-4 text-[#F59E0B]" />
         <h3 className="text-sm font-semibold text-white">Energy Check-in</h3>
+        {selected && (
+          <span className="ml-auto rounded-full bg-[#22C55E]/10 px-2 py-0.5 text-[10px] font-semibold text-[#22C55E]">
+            Checked in today
+          </span>
+        )}
       </div>
 
-      <p className="text-xs text-zinc-500 mb-4">How are you feeling right now?</p>
+      <p className="mb-4 text-xs text-[#8B8B99]">How are you feeling right now? No wrong answers.</p>
 
-      <div className="grid grid-cols-3 gap-2 mb-3">
-        {energyOptions.map((option) => (
-          <button
-            key={option.id}
-            id={`energy-${option.id}`}
-            onClick={() => handleSelect(option.id)}
-            className={`flex flex-col items-center gap-1.5 py-3 px-2 rounded-xl border transition-all duration-200 ${
-              selected === option.id
-                ? 'border-current bg-current/10 scale-105'
-                : 'border-[#27272A] bg-white/5 hover:bg-white/10'
-            }`}
-            style={selected === option.id ? { borderColor: option.color, color: option.color } : {}}
-            aria-pressed={selected === option.id}
-          >
-            <span className="text-2xl" role="img" aria-label={option.label}>
-              {option.emoji}
-            </span>
-            <span className="text-xs font-medium text-zinc-400">{option.label}</span>
-          </button>
-        ))}
+      <div className="grid grid-cols-3 gap-2">
+        {energyOptions.map((option) => {
+          const isActive = selected === option.id;
+          return (
+            <button
+              key={option.id}
+              id={`energy-${option.id}`}
+              type="button"
+              onClick={() => handleSelect(option.id)}
+              className={`flex min-h-[72px] flex-col items-center justify-center gap-1.5 rounded-xl border transition-all duration-200 ${
+                isActive ? '' : 'border-[#27272F] bg-white/[0.04] hover:bg-white/[0.08]'
+              }`}
+              style={isActive ? { borderColor: option.color, background: `${option.color}14` } : undefined}
+              aria-pressed={isActive}
+            >
+              <motion.span
+                className="text-2xl"
+                role="img"
+                aria-label={option.label}
+                animate={isActive ? { scale: 1.15 } : { scale: 1 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 16 }}
+              >
+                {option.emoji}
+              </motion.span>
+              <span className={`text-xs font-medium ${isActive ? 'text-white' : 'text-[#C7C7D1]'}`}>{option.label}</span>
+            </button>
+          );
+        })}
       </div>
 
       <AnimatePresence>
-        {selected && (
+        {selectedMessage && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <div className="mt-2 p-3 rounded-xl bg-white/5 border border-[#27272A]">
-              <p className="text-xs text-zinc-300 leading-relaxed">
-                {encouragementMessages[selected]}
-              </p>
+            <div
+              className="mt-3 rounded-xl border p-3.5"
+              style={{ borderColor: `${selectedColor}30`, background: `${selectedColor}0d` }}
+              role="status"
+              aria-live="polite"
+            >
+              <p className="text-sm font-semibold text-white">{selectedMessage.headline}</p>
+              <p className="mt-1 text-xs leading-relaxed text-[#C7C7D1]">{selectedMessage.body}</p>
             </div>
             <button
+              type="button"
               onClick={() => setDismissed(true)}
-              className="mt-3 w-full text-xs text-zinc-600 hover:text-zinc-400 transition-colors py-1"
+              className="mt-3 w-full py-1 text-xs text-[#8B8B99] transition-colors hover:text-[#C7C7D1]"
             >
               Got it, let&apos;s go →
             </button>

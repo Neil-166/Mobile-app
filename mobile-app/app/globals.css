@@ -1,20 +1,30 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #09090B;
-  --surface: #111113;
-  --card: #16161A;
-  --border: #27272A;
+  /* Midnight base */
+  --bg: #07070A;
+  --bg-elevated: #0B0B10;
+  --surface: #111115;
+  --card: #16161D;
+  --card-hover: #1B1B24;
+  --border: #27272F;
+  --border-muted: #1F1F26;
+
+  /* Accent system */
   --primary: #8B5CF6;
-  --primary-glow: rgba(139, 92, 246, 0.3);
+  --primary-glow: rgba(139, 92, 246, 0.28);
+  --primary-soft: rgba(139, 92, 246, 0.14);
   --secondary: #22D3EE;
-  --secondary-glow: rgba(34, 211, 238, 0.3);
+  --secondary-glow: rgba(34, 211, 238, 0.25);
+  --secondary-soft: rgba(34, 211, 238, 0.1);
   --success: #22C55E;
   --warning: #F59E0B;
   --danger: #EF4444;
+
+  /* Text */
   --text: #FFFFFF;
-  --text-muted: #A1A1AA;
-  --text-subtle: #52525B;
+  --text-secondary: #C7C7D1;
+  --text-muted: #8B8B99;
 }
 
 @theme inline {
@@ -40,53 +50,69 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: 'Inter', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
   min-height: 100dvh;
 }
 
-button, a, input, textarea {
+button, a, input, textarea, label, select {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Safe area support */
+/* ===== Safe area support ===== */
 .safe-top { padding-top: env(safe-area-inset-top); }
 .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
-.pb-safe { padding-bottom: calc(env(safe-area-inset-bottom) + 80px); }
+.pb-safe { padding-bottom: calc(env(safe-area-inset-bottom) + 96px); }
 
-/* Custom scrollbar */
+/* ===== Custom scrollbar ===== */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: var(--surface); }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-::-webkit-scrollbar-thumb:hover { background: var(--text-subtle); }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
 
-/* Selection */
+/* ===== Selection ===== */
 ::selection { background: var(--primary-glow); color: var(--text); }
 
-/* Focus ring */
+/* ===== Focus ring ===== */
 :focus-visible {
   outline: 2px solid var(--primary);
   outline-offset: 2px;
   border-radius: 6px;
 }
 
-/* Glass effect */
+/* ===== Glass effect (reduced blur for perf) ===== */
 .glass {
-  background: rgba(22, 22, 26, 0.8);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(39, 39, 42, 0.6);
+  background: rgba(17, 17, 21, 0.72);
+  backdrop-filter: blur(14px) saturate(1.4);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  border-bottom: 1px solid rgba(39, 39, 47, 0.8);
 }
 
 .glass-light {
   background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-/* Gradient text */
+/* ===== Layered depth ===== */
+.card-depth {
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.03), 0 8px 24px -12px rgba(0, 0, 0, 0.5);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, transparent 55%);
+}
+
+.glow-purple-soft {
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.03), 0 0 32px -8px rgba(139, 92, 246, 0.35), 0 12px 32px -16px rgba(0, 0, 0, 0.6);
+}
+
+.hairline {
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* ===== Gradient text ===== */
 .gradient-text {
   background: linear-gradient(135deg, #8B5CF6 0%, #22D3EE 100%);
   -webkit-background-clip: text;
@@ -101,7 +127,7 @@ button, a, input, textarea {
   background-clip: text;
 }
 
-/* Glow effects */
+/* ===== Glow effects ===== */
 .glow-primary {
   box-shadow: 0 0 20px var(--primary-glow), 0 0 40px rgba(139, 92, 246, 0.1);
 }
@@ -114,7 +140,7 @@ button, a, input, textarea {
   box-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
 }
 
-/* Animated gradient backgrounds */
+/* ===== Animated gradient backgrounds ===== */
 @keyframes gradient-shift {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
@@ -122,32 +148,33 @@ button, a, input, textarea {
 }
 
 .animated-gradient {
-  background: linear-gradient(-45deg, #09090B, #0F0A1E, #0A1628, #09090B);
+  background: linear-gradient(-45deg, #07070A, #120A26, #08131F, #07070A);
   background-size: 400% 400%;
   animation: gradient-shift 15s ease infinite;
 }
 
-/* Flame pulse animation */
+/* ===== Flame pulse ===== */
 @keyframes flame-pulse {
-  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 8px #F59E0B); }
-  50% { transform: scale(1.15); filter: drop-shadow(0 0 16px #EF4444); }
+  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 6px #F59E0B); }
+  50% { transform: scale(1.14); filter: drop-shadow(0 0 14px #EF4444); }
 }
 
 .flame-pulse {
   animation: flame-pulse 2s ease-in-out infinite;
+  transform-origin: center;
 }
 
-/* Breathing animation */
+/* ===== Breathing ===== */
 @keyframes breathe {
   0%, 100% { transform: scale(1); box-shadow: 0 0 20px var(--primary-glow); }
-  50% { transform: scale(1.03); box-shadow: 0 0 40px var(--primary-glow), 0 0 80px rgba(139, 92, 246, 0.1); }
+  50% { transform: scale(1.02); box-shadow: 0 0 36px var(--primary-glow), 0 0 72px rgba(139, 92, 246, 0.1); }
 }
 
 .breathe {
   animation: breathe 3s ease-in-out infinite;
 }
 
-/* Float animation */
+/* ===== Float ===== */
 @keyframes float {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-8px); }
@@ -155,7 +182,7 @@ button, a, input, textarea {
 
 .float { animation: float 4s ease-in-out infinite; }
 
-/* Shimmer */
+/* ===== Shimmer ===== */
 @keyframes shimmer {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
@@ -167,44 +194,45 @@ button, a, input, textarea {
   animation: shimmer 2s infinite;
 }
 
-/* Progress bar */
+/* ===== Progress bar ===== */
 .progress-bar {
   background: linear-gradient(90deg, var(--primary), var(--secondary));
   border-radius: 999px;
   transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Card hover */
+/* ===== Card hover ===== */
 .card-hover {
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
 }
 
 .card-hover:hover {
   transform: translateY(-2px);
-  border-color: rgba(139, 92, 246, 0.3);
+  border-color: rgba(139, 92, 246, 0.35);
+  background-color: var(--card-hover);
 }
 
-/* Touch target */
+/* ===== Touch target ===== */
 .touch-target {
   min-height: 48px;
   min-width: 48px;
 }
 
-/* Streak heat colors */
-.heat-0 { background: #1C1C1F; }
+/* ===== Streak heat colors ===== */
+.heat-0 { background: #1F1F26; }
 .heat-1 { background: rgba(139, 92, 246, 0.2); }
 .heat-2 { background: rgba(139, 92, 246, 0.4); }
 .heat-3 { background: rgba(139, 92, 246, 0.6); }
 .heat-4 { background: rgba(139, 92, 246, 0.8); }
 .heat-5 { background: #8B5CF6; }
 
-/* Number counter animation */
+/* ===== Count-up entrance ===== */
 @keyframes count-up {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Success checkmark */
+/* ===== Success checkmark draw ===== */
 @keyframes check-draw {
   0% { stroke-dashoffset: 100; }
   100% { stroke-dashoffset: 0; }
@@ -216,13 +244,13 @@ button, a, input, textarea {
   animation: check-draw 0.5s ease forwards;
 }
 
-/* Confetti */
+/* ===== Confetti ===== */
 @keyframes confetti-fall {
   0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
   100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
 }
 
-/* Fade in up */
+/* ===== Fade up ===== */
 @keyframes fade-up {
   from { opacity: 0; transform: translateY(24px); }
   to { opacity: 1; transform: translateY(0); }
@@ -236,7 +264,33 @@ button, a, input, textarea {
 .delay-300 { animation-delay: 0.3s; opacity: 0; }
 .delay-400 { animation-delay: 0.4s; opacity: 0; }
 
-/* Reduced motion */
+/* ===== Segmented control active pill ===== */
+@keyframes pill-pop {
+  0% { transform: scale(0.92); }
+  60% { transform: scale(1.04); }
+  100% { transform: scale(1); }
+}
+
+.pill-pop { animation: pill-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+
+/* ===== Success pop ===== */
+@keyframes success-pop {
+  0% { transform: scale(0.6); opacity: 0; }
+  70% { transform: scale(1.08); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.success-pop { animation: success-pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+
+/* ===== Soft pulse glow ===== */
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+
+.glow-pulse { animation: glow-pulse 4s ease-in-out infinite; }
+
+/* ===== Reduced motion ===== */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -246,21 +300,21 @@ button, a, input, textarea {
   html { scroll-behavior: auto; }
 }
 
-/* Mobile-specific */
+/* ===== Mobile base ===== */
 @media (max-width: 430px) {
   body { font-size: 15px; }
 }
 
-/* Utility classes */
+/* ===== Utility classes ===== */
 .text-balance { text-wrap: balance; }
 .text-pretty { text-wrap: pretty; }
 
-.ring-primary { 
+.ring-primary {
   --tw-ring-color: var(--primary);
   box-shadow: 0 0 0 2px var(--primary);
 }
 
-/* Noise texture overlay */
+/* ===== Noise texture overlay ===== */
 .noise::after {
   content: '';
   position: absolute;
@@ -270,7 +324,7 @@ button, a, input, textarea {
   z-index: 1;
 }
 
-/* Input styles */
+/* ===== Input styles ===== */
 .input-field {
   background: rgba(255,255,255,0.05);
   border: 1px solid var(--border);
@@ -286,10 +340,15 @@ button, a, input, textarea {
   outline: none;
 }
 
-.input-field::placeholder { color: var(--text-subtle); }
+.input-field::placeholder { color: var(--text-muted); }
 
+/* ===== Late-night dimmed palette (after 10 PM) ===== */
 .night-mode {
   --primary: #7C6AE6;
   --primary-glow: rgba(124, 106, 230, 0.22);
   --secondary: #67C7D7;
 }
+
+/* ===== Hide scrollbars on horizontal strips ===== */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }

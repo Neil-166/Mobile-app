@@ -293,6 +293,33 @@ export const weeklyHeatmap = [
   { day: 'Sun', completed: false, submittedAt: null },
 ];
 
+export interface CommunityPost {
+  id: string;
+  name: string;
+  college: string;
+  avatar: string;
+  day: number;
+  action: string;
+  time: string; // ISO timestamp → rendered as relative time
+  track: Track;
+}
+
+// Live-feeling community feed (fresh timestamps relative to now)
+function minutesAgo(minutes: number): string {
+  return new Date(Date.now() - minutes * 60_000).toISOString();
+}
+
+export const communityFeed: CommunityPost[] = [
+  { id: 'c1', name: 'Priya Nair', college: 'NITK Surathkal', avatar: 'PN', day: 14, action: 'Built a responsive navbar', time: minutesAgo(8), track: 'AI/ML' },
+  { id: 'c2', name: 'Sneha Iyer', college: 'NIT Trichy', avatar: 'SI', day: 28, action: 'Shipped a REST API with auth', time: minutesAgo(26), track: 'Full Stack' },
+  { id: 'c3', name: 'Dhruv Patel', college: 'BITS Pilani', avatar: 'DP', day: 25, action: 'Completed a CTF challenge', time: minutesAgo(52), track: 'Cybersecurity' },
+  { id: 'c4', name: 'Meera Krishnan', college: 'IIIT Bangalore', avatar: 'MK', day: 20, action: 'Posted their Day 20 reflection', time: minutesAgo(74), track: 'UI/UX' },
+  { id: 'c5', name: 'Riya Joshi', college: 'Jadavpur University', avatar: 'RJ', day: 18, action: 'Solved 3 DSA problems', time: minutesAgo(110), track: 'DSA' },
+  { id: 'c6', name: 'Aryan Singh', college: 'SRM Chennai', avatar: 'AS2', day: 15, action: 'Deployed a portfolio to Vercel', time: minutesAgo(160), track: 'Full Stack' },
+  { id: 'c7', name: 'Tanvi Mehta', college: 'Pune University', avatar: 'TM', day: 11, action: 'Cleaned up old GitHub repos', time: minutesAgo(210), track: 'AI/ML' },
+  { id: 'c8', name: 'Anjali Rao', college: 'BMS College', avatar: 'AR', day: 8, action: 'Built a CSS art piece', time: minutesAgo(300), track: 'UI/UX' },
+];
+
 // Mocked AI reflections
 export const aiReflections = [
   "Today I learned how responsive spacing affects mobile readability more than I expected. Small changes in padding made the whole layout feel different on a phone screen.",

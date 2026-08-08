@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
-import { Download, Share2, CheckCircle } from 'lucide-react';
-import { toast } from 'sonner';
+import { forwardRef, useRef, useState } from 'react';
+import { toPng } from 'html-to-image';
+import { CheckCircle, Download, Flame, Share2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { microWin } from '@/components/MicroWin';
 import { currentStudent } from '@/lib/mock-data';
 import { copyToClipboard } from '@/lib/utils';
 
@@ -14,21 +15,118 @@ interface MomentumCardProps {
   githubUrl?: string;
 }
 
-export default function MomentumCard({ day, streak, projectName, githubUrl }: MomentumCardProps) {
-  const [downloaded, setDownloaded] = useState(false);
+const CARD_W = 1080;
+const CARD_H = 1920;
 
-  const handleDownload = () => {
-    const escapeXml = (value: string) => value.replace(/[<>&'\"]/g, (character) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', "'": '&apos;', '"': '&quot;' })[character] ?? character);
-    const card = `<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1080" viewBox="0 0 1080 1080"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0F0A1E"/><stop offset=".55" stop-color="#23103F"/><stop offset="1" stop-color="#0A1628"/></linearGradient><radialGradient id="glow"><stop stop-color="#8B5CF6" stop-opacity=".65"/><stop offset="1" stop-color="#8B5CF6" stop-opacity="0"/></radialGradient></defs><rect width="1080" height="1080" rx="72" fill="url(#g)"/><circle cx="940" cy="100" r="300" fill="url(#glow)"/><rect x="76" y="76" width="96" height="96" rx="28" fill="#8B5CF6"/><text x="124" y="137" fill="white" font-family="Arial, sans-serif" font-weight="700" font-size="37" text-anchor="middle">AB</text><text x="196" y="135" fill="#C4B5FD" font-family="Arial, sans-serif" font-weight="700" font-size="32">ABTalks 60-Day Challenge</text><text x="76" y="360" fill="white" font-family="Arial, sans-serif" font-weight="800" font-size="132">Day ${day}</text><text x="80" y="414" fill="#A1A1AA" font-family="Arial, sans-serif" font-size="34">of 60</text><text x="1004" y="354" fill="#FBBF24" font-family="Arial, sans-serif" font-weight="700" font-size="74" text-anchor="end">🔥 ${streak}</text><text x="1004" y="406" fill="#A1A1AA" font-family="Arial, sans-serif" font-size="30" text-anchor="end">day streak</text><rect x="76" y="518" width="928" height="218" rx="36" fill="rgba(255,255,255,.07)" stroke="rgba(255,255,255,.13)"/><text x="120" y="586" fill="#A1A1AA" font-family="Arial, sans-serif" font-size="28">TODAY’S BUILD</text><text x="120" y="660" fill="white" font-family="Arial, sans-serif" font-weight="700" font-size="43">${escapeXml(projectName)}</text><text x="76" y="928" fill="#A1A1AA" font-family="Arial, sans-serif" font-size="32">${escapeXml(currentStudent.name)} · ${escapeXml(currentStudent.college)}</text><text x="76" y="984" fill="#67E8F9" font-family="Arial, sans-serif" font-weight="700" font-size="29">${githubUrl ? '✓ GitHub verified' : 'Building in public'}</text></svg>`;
-    const blob = new Blob([card], { type: 'image/svg+xml' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `abtalks-day-${day}-momentum.svg`;
-    link.click();
-    URL.revokeObjectURL(url);
-    setDownloaded(true);
-    setTimeout(() => setDownloaded(false), 3000);
+/** Off-screen, fixed-pixel 9:16 render that html-to-image captures into a PNG. */
+const ExportCard = forwardRef<HTMLDivElement, MomentumCardProps>(function ExportCard(
+  { day, streak, projectName, githubUrl },
+  ref
+) {
+  return (
+    <div
+      ref={ref}
+      id="momentum-export-node"
+      aria-hidden="true"
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: -9999,
+        width: CARD_W,
+        height: CARD_H,
+        borderRadius: 72,
+        overflow: 'hidden',
+        background: 'linear-gradient(165deg, #120A26 0%, #1B1038 48%, #08131F 100%)',
+        color: '#fff',
+        fontFamily: 'Inter, -apple-system, "Segoe UI", sans-serif',
+        display: 'flex',
+        flexDirection: 'column',
+        padding: 88,
+        boxSizing: 'border-box',
+      }}
+    >
+      {/* Ambient glows */}
+      <div style={{ position: 'absolute', top: -180, right: -180, width: 620, height: 620, borderRadius: 999, background: 'radial-gradient(circle, rgba(139,92,246,0.55) 0%, transparent 70%)' }} />
+      <div style={{ position: 'absolute', bottom: -220, left: -160, width: 560, height: 560, borderRadius: 999, background: 'radial-gradient(circle, rgba(34,211,238,0.28) 0%, transparent 70%)' }} />
+      {/* Grid dots */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          backgroundImage: 'radial-gradient(rgba(255,255,255,0.07) 1px, transparent 1px)',
+          backgroundSize: '52px 52px',
+        }}
+      />
+
+      {/* Branding */}
+      <div style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: 24 }}>
+        <div style={{ width: 88, height: 88, borderRadius: 26, background: 'linear-gradient(135deg,#8B5CF6,#7C3AED)', display: 'grid', placeItems: 'center', fontSize: 34, fontWeight: 900 }}>AB</div>
+        <div>
+          <div style={{ fontSize: 40, fontWeight: 800, letterSpacing: '-0.01em' }}>ABTalks</div>
+          <div style={{ fontSize: 26, color: '#A78BFA', fontWeight: 600 }}>60-Day Challenge</div>
+        </div>
+      </div>
+
+      {/* Day number */}
+      <div style={{ position: 'relative', marginTop: 96 }}>
+        <div style={{ fontSize: 26, fontWeight: 700, letterSpacing: '0.18em', color: '#A78BFA', textTransform: 'uppercase' }}>Day</div>
+        <div style={{ fontSize: 330, fontWeight: 900, lineHeight: 0.95, letterSpacing: '-0.03em', marginTop: 8 }}>{day}</div>
+        <div style={{ fontSize: 34, color: '#8B8B99', fontWeight: 500, marginTop: 12 }}>of 60</div>
+      </div>
+
+      {/* Streak flame */}
+      <div style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: 16, marginTop: 56, alignSelf: 'flex-start', padding: '18px 30px', borderRadius: 999, background: 'rgba(245,158,11,0.12)', border: '1px solid rgba(245,158,11,0.3)' }}>
+        <Flame style={{ color: '#F59E0B' }} size={44} fill="#F59E0B" />
+        <div style={{ fontSize: 44, fontWeight: 800, color: '#FBBF24' }}>{streak}</div>
+        <div style={{ fontSize: 24, color: '#C7C7D1', fontWeight: 500 }}>day streak</div>
+      </div>
+
+      {/* Project card */}
+      <div style={{ position: 'relative', marginTop: 48, padding: '36px 40px', borderRadius: 40, background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)' }}>
+        <div style={{ fontSize: 22, color: '#8B8B99', fontWeight: 600, letterSpacing: '0.14em', textTransform: 'uppercase' }}>Today&apos;s build</div>
+        <div style={{ fontSize: 46, fontWeight: 700, marginTop: 10, lineHeight: 1.15, letterSpacing: '-0.01em' }}>{projectName}</div>
+      </div>
+
+      {/* GitHub proof badge */}
+      <div style={{ position: 'relative', display: 'inline-flex', alignItems: 'center', gap: 14, alignSelf: 'flex-start', marginTop: 28, padding: '16px 28px', borderRadius: 999, background: 'rgba(34,197,94,0.14)', border: '1px solid rgba(34,197,94,0.35)' }}>
+        <CheckCircle style={{ color: '#4ADE80' }} size={34} />
+        <div style={{ fontSize: 26, color: '#86EFAC', fontWeight: 700 }}>{githubUrl ? 'GitHub verified' : 'Building in public'}</div>
+      </div>
+
+      {/* Footer */}
+      <div style={{ position: 'relative', marginTop: 'auto' }}>
+        <div style={{ fontSize: 30, fontWeight: 600 }}>{currentStudent.name} · {currentStudent.college}</div>
+        <div style={{ fontSize: 24, color: '#67E8F9', fontWeight: 600, marginTop: 8 }}>#ABTalks60 · Built in public</div>
+      </div>
+    </div>
+  );
+});
+
+export default function MomentumCard(props: MomentumCardProps) {
+  const { day, projectName, githubUrl } = props;
+  const [downloaded, setDownloaded] = useState(false);
+  const exportNodeRef = useRef<HTMLDivElement>(null);
+
+  const handleDownload = async () => {
+    const node = exportNodeRef.current;
+    if (!node) return;
+    try {
+      const dataUrl = await toPng(node, {
+        width: CARD_W,
+        height: CARD_H,
+        pixelRatio: 2,
+        cacheBust: true,
+      });
+      const link = document.createElement('a');
+      link.href = dataUrl;
+      link.download = `abtalks-day-${day}-momentum.png`;
+      link.click();
+      setDownloaded(true);
+      microWin(`Momentum card saved as PNG. Share it wide.`, '🖼️');
+      window.setTimeout(() => setDownloaded(false), 3000);
+    } catch {
+      microWin('Card is ready in your browser — try sharing instead.', '📎');
+    }
   };
 
   const handleShare = async () => {
@@ -38,62 +136,64 @@ export default function MomentumCard({ day, streak, projectName, githubUrl }: Mo
       return;
     }
     await copyToClipboard(message);
-    toast.success('Momentum message copied to your clipboard.');
+    microWin('Momentum message copied.', '📋');
   };
 
   return (
     <div className="space-y-4">
-      {/* Card Preview */}
+      {/* Visible 9:16 preview */}
       <div
         id="momentum-card-preview"
-        className="relative overflow-hidden rounded-2xl p-5"
-        style={{
-          background: 'linear-gradient(135deg, #0F0A1E 0%, #1a0a2e 50%, #0a1628 100%)',
-          border: '1px solid rgba(139, 92, 246, 0.3)',
-        }}
+        className="relative mx-auto aspect-[9/16] w-full max-w-[300px] overflow-hidden rounded-[2rem] border border-[#8B5CF6]/30 p-5"
+        style={{ background: 'linear-gradient(165deg, #120A26 0%, #1B1038 48%, #08131F 100%)' }}
       >
-        {/* Background decoration */}
-        <div className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-20" style={{ background: 'radial-gradient(circle, #8B5CF6, transparent)', transform: 'translate(30%, -30%)' }} />
-        <div className="absolute bottom-0 left-0 w-24 h-24 rounded-full opacity-10" style={{ background: 'radial-gradient(circle, #22D3EE, transparent)', transform: 'translate(-30%, 30%)' }} />
+        <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full" style={{ background: 'radial-gradient(circle, rgba(139,92,246,0.5) 0%, transparent 70%)' }} aria-hidden="true" />
+        <div className="pointer-events-none absolute -bottom-20 -left-14 h-44 w-44 rounded-full" style={{ background: 'radial-gradient(circle, rgba(34,211,238,0.25) 0%, transparent 70%)' }} aria-hidden="true" />
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{ backgroundImage: 'radial-gradient(rgba(255,255,255,0.07) 1px, transparent 1px)', backgroundSize: '26px 26px' }}
+          aria-hidden="true"
+        />
 
-        {/* ABTalks branding */}
-        <div className="flex items-center gap-2 mb-4">
-          <div className="w-6 h-6 rounded-lg bg-[#8B5CF6] flex items-center justify-center">
-            <span className="text-[10px] font-bold text-white">AB</span>
+        {/* Branding */}
+        <div className="relative flex items-center gap-3">
+          <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-[#8B5CF6] to-[#7C3AED] text-xs font-black text-white">AB</div>
+          <div>
+            <p className="text-sm font-extrabold tracking-tight text-white">ABTalks</p>
+            <p className="text-[10px] font-semibold text-[#A78BFA]">60-Day Challenge</p>
           </div>
-          <span className="text-xs font-semibold text-[#8B5CF6]">ABTalks 60-Day Challenge</span>
         </div>
 
-        {/* Day + streak */}
-        <div className="flex items-end gap-4 mb-3">
-          <div>
-            <p className="text-4xl font-black text-white">Day {day}</p>
-            <p className="text-sm text-zinc-500 mt-0.5">of 60</p>
-          </div>
-          <div className="ml-auto text-right">
-            <p className="text-2xl font-bold" style={{ color: '#F59E0B' }}>🔥 {streak}</p>
-            <p className="text-xs text-zinc-500">day streak</p>
-          </div>
+        {/* Day number */}
+        <div className="relative mt-8">
+          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#A78BFA]">Day</p>
+          <p className="mt-1 text-[64px] font-black leading-none tracking-tight text-white">{day}</p>
+          <p className="mt-1 text-xs text-[#8B8B99]">of 60</p>
+        </div>
+
+        {/* Streak flame */}
+        <div className="relative mt-5 inline-flex items-center gap-2 rounded-full border border-[#F59E0B]/30 bg-[#F59E0B]/10 px-3.5 py-1.5">
+          <Flame className="h-5 w-5 text-[#F59E0B] flame-pulse" />
+          <span className="text-base font-extrabold text-[#FBBF24]">{props.streak}</span>
+          <span className="text-[10px] font-medium text-[#C7C7D1]">day streak</span>
         </div>
 
         {/* Project */}
-        <div className="mb-3 p-2.5 rounded-xl bg-white/5 border border-white/10">
-          <p className="text-[10px] text-zinc-500 mb-0.5 uppercase tracking-wider">Today&apos;s Build</p>
-          <p className="text-sm font-semibold text-white">{projectName}</p>
+        <div className="relative mt-5 rounded-2xl border border-white/10 bg-white/[0.06] p-3.5">
+          <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-[#8B8B99]">Today&apos;s build</p>
+          <p className="mt-1 text-sm font-bold leading-snug text-white">{projectName}</p>
         </div>
 
-        {/* Bottom */}
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-[10px] text-zinc-600">{currentStudent.name}</p>
-            <p className="text-[10px] text-zinc-600">{currentStudent.college}</p>
-          </div>
-          {githubUrl && (
-            <div className="flex items-center gap-1">
-              <CheckCircle className="w-3 h-3 text-green-400" />
-              <span className="text-[10px] text-green-400">GitHub verified</span>
-            </div>
-          )}
+        {/* GitHub proof */}
+        <div className="relative mt-3 inline-flex items-center gap-1.5 rounded-full border border-[#22C55E]/35 bg-[#22C55E]/10 px-3 py-1">
+          <CheckCircle className="h-3.5 w-3.5 text-[#4ADE80]" />
+          <span className="text-[10px] font-bold text-[#86EFAC]">{githubUrl ? 'GitHub verified' : 'Building in public'}</span>
+        </div>
+
+        {/* Footer */}
+        <div className="relative mt-auto pt-6">
+          <p className="text-[11px] font-semibold text-white">{currentStudent.name} · {currentStudent.college}</p>
+          <p className="mt-1 text-[10px] font-semibold text-[#67E8F9]">#ABTalks60 · Built in public</p>
         </div>
       </div>
 
@@ -101,16 +201,12 @@ export default function MomentumCard({ day, streak, projectName, githubUrl }: Mo
       <div className="flex gap-2">
         <Button
           id="download-momentum-card"
-          onClick={handleDownload}
+          onClick={() => { void handleDownload(); }}
           variant={downloaded ? 'success' : 'default'}
           className="flex-1"
           size="sm"
         >
-          {downloaded ? (
-            <><CheckCircle className="w-4 h-4 mr-1" /> Saved!</>
-          ) : (
-            <><Download className="w-4 h-4 mr-1" /> Download Card</>
-          )}
+          {downloaded ? <><CheckCircle className="h-4 w-4" /> Saved!</> : <><Download className="h-4 w-4" /> Download Card (PNG)</>}
         </Button>
         <Button
           id="share-momentum-card"
@@ -119,9 +215,12 @@ export default function MomentumCard({ day, streak, projectName, githubUrl }: Mo
           onClick={() => { void handleShare(); }}
           aria-label="Share your momentum card"
         >
-          <Share2 className="w-4 h-4" />
+          <Share2 className="h-4 w-4" />
         </Button>
       </div>
+
+      {/* Off-screen export source (position: fixed, left: -9999 — renders for capture) */}
+      <ExportCard ref={exportNodeRef} {...props} />
     </div>
   );
 }

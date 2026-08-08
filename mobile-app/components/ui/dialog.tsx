@@ -29,11 +29,11 @@ const DialogContent = React.forwardRef<
     <DialogOverlay />
     <DialogPrimitive.Content
       ref={ref}
-      className={cn('fixed left-[50%] top-[50%] z-50 w-full max-w-sm translate-x-[-50%] translate-y-[-50%] rounded-2xl bg-[#16161A] border border-[#27272A] p-6 shadow-xl shadow-black/50 duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 mx-4', className)}
+      className={cn('fixed left-[50%] top-[50%] z-50 w-full max-w-sm translate-x-[-50%] translate-y-[-50%] rounded-2xl bg-[#16161D] border border-[#27272F] p-6 shadow-xl shadow-black/50 duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 mx-4', className)}
       {...props}
     >
       {children}
-      <DialogClose className="absolute right-4 top-4 rounded-xl p-1.5 text-zinc-500 hover:text-white hover:bg-white/5 transition-colors">
+      <DialogClose className="absolute right-4 top-4 rounded-xl p-1.5 text-[#8B8B99] hover:text-white hover:bg-white/5 transition-colors">
         <X className="h-4 w-4" />
         <span className="sr-only">Close</span>
       </DialogClose>
@@ -59,7 +59,7 @@ const DialogDescription = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Description>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Description>
 >(({ className, ...props }, ref) => (
-  <DialogPrimitive.Description ref={ref} className={cn('text-sm text-zinc-400', className)} {...props} />
+  <DialogPrimitive.Description ref={ref} className={cn('text-sm text-[#C7C7D1]', className)} {...props} />
 ));
 DialogDescription.displayName = DialogPrimitive.Description.displayName;
 

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Home, LayoutDashboard, Flame, User } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { cn } from '@/lib/utils';
 
 const navItems = [
   { href: '/', label: 'Home', icon: Home },
@@ -17,42 +18,42 @@ export default function BottomNav() {
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-50 glass border-t border-[#27272A] pb-safe"
+      className="fixed bottom-0 left-0 right-0 z-50 border-t border-[#27272F] bg-[#0B0B10]/80 pb-[max(env(safe-area-inset-bottom),0.5rem)] shadow-[0_-1px_0_0_rgba(255,255,255,0.04),0_-16px_40px_-20px_rgba(139,92,246,0.25)] backdrop-blur-xl"
       role="navigation"
       aria-label="Main navigation"
     >
-      <div className="max-w-lg mx-auto flex items-center justify-around px-2 pt-2 pb-3">
+      <div className="mx-auto flex max-w-lg items-stretch justify-around px-2">
         {navItems.map(({ href, label, icon: Icon }) => {
           const isActive = pathname === href || (href === '/day/12' && pathname.startsWith('/day'));
           return (
             <Link
               key={href}
               href={href}
-              className="relative flex flex-col items-center gap-1 min-w-[60px] py-1 touch-target justify-center"
+              className="relative flex min-h-12 flex-1 touch-target flex-col items-center justify-center gap-1 pt-2"
               aria-label={label}
               aria-current={isActive ? 'page' : undefined}
             >
               <motion.div
-                whileTap={{ scale: 0.85 }}
-                className={`relative flex items-center justify-center w-10 h-10 rounded-xl transition-all duration-200 ${
-                  isActive
-                    ? 'bg-[#8B5CF6]/20 text-[#8B5CF6]'
-                    : 'text-zinc-600 hover:text-zinc-400'
-                }`}
+                whileTap={{ scale: 0.88 }}
+                className={cn(
+                  'relative flex h-7 w-12 items-center justify-center rounded-full transition-colors duration-200',
+                  isActive ? 'text-[#A78BFA]' : 'text-[#8B8B99] hover:text-[#C7C7D1]'
+                )}
               >
-                <Icon className="w-5 h-5" />
                 {isActive && (
-                  <motion.div
-                    layoutId="nav-indicator"
-                    className="absolute inset-0 rounded-xl bg-[#8B5CF6]/15 border border-[#8B5CF6]/25"
-                    transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                  <motion.span
+                    layoutId="bottom-nav-indicator"
+                    className="absolute inset-0 rounded-full bg-gradient-to-r from-[#8B5CF6]/25 to-[#22D3EE]/10 shadow-[0_0_12px_rgba(139,92,246,0.35),0_0_0_1px_rgba(139,92,246,0.3)]"
+                    transition={{ type: 'spring', stiffness: 420, damping: 30 }}
                   />
                 )}
+                <Icon className="relative h-[22px] w-[22px]" strokeWidth={isActive ? 2.4 : 2} />
               </motion.div>
               <span
-                className={`text-[10px] font-medium transition-colors ${
-                  isActive ? 'text-[#8B5CF6]' : 'text-zinc-600'
-                }`}
+                className={cn(
+                  'text-[11px] font-medium transition-colors',
+                  isActive ? 'text-white' : 'text-[#8B8B99]'
+                )}
               >
                 {label}
               </span>

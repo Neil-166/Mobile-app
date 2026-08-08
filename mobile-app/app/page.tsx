@@ -9,6 +9,7 @@ import {
   BookOpen, Trophy, Users,
 } from 'lucide-react';
 import { Github, Linkedin } from '@/components/Icons';
+import HeroPhone from '@/components/HeroPhone';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -38,7 +39,7 @@ function ContributionGraph({ seed = 0 }: { seed?: number }) {
     const rng = Math.sin(seed * 9301 + i * 49297 + 233) * 0.5 + 0.5;
     return rng > 0.35 ? Math.min(4, Math.floor(rng * 5)) : 0;
   });
-  const heatColors = ['#1C1C1F', 'rgba(139,92,246,0.2)', 'rgba(139,92,246,0.4)', 'rgba(139,92,246,0.65)', '#8B5CF6'];
+  const heatColors = ['#1F1F26', 'rgba(139,92,246,0.2)', 'rgba(139,92,246,0.4)', 'rgba(139,92,246,0.65)', '#8B5CF6'];
 
   return (
     <div className="flex gap-0.5 flex-wrap" aria-hidden="true">
@@ -64,12 +65,12 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#09090B] overflow-x-hidden">
+    <div className="min-h-screen bg-[#07070A] overflow-x-hidden">
       {/* ===== HERO ===== */}
       <section
         ref={heroRef}
         id="hero"
-        className="relative min-h-[100svh] flex flex-col items-center justify-center px-5 text-center overflow-hidden"
+        className="relative flex min-h-[100svh] flex-col items-center justify-center px-5 pb-16 pt-24 text-center"
       >
         {/* Animated background blobs */}
         <motion.div
@@ -107,28 +108,30 @@ export default function LandingPage() {
             <span className="text-xs font-medium text-zinc-300">1,200+ students. 60 days. Real builds.</span>
           </motion.div>
 
-          {/* Headline */}
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.7 }}
-            className="text-4xl font-black leading-[1.1] tracking-tight text-balance mb-4"
-          >
-            Build one thing{' '}
-            <span className="gradient-text">every day</span>
-            {' '}for 60 days.
-          </motion.h1>
+          <div className="max-w-[300px]">
+            {/* Headline */}
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.7 }}
+              className="text-[1.65rem] sm:text-4xl font-black leading-[1.12] tracking-tight text-balance mb-4"
+            >
+              Build one thing{' '}
+              <span className="gradient-text">every day</span>
+              {' '}for 60 days.
+            </motion.h1>
 
-          {/* Subheadline */}
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className="text-base text-zinc-400 leading-relaxed mb-8 text-pretty"
-          >
-            ABTalks is a free 60-day coding challenge for Indian college students.
-            Daily tasks. Public GitHub commits. A visible record of your consistency.
-          </motion.p>
+            {/* Subheadline */}
+            <motion.p
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.6 }}
+              className="text-[13px] text-[#C7C7D1] leading-relaxed mb-8 text-pretty"
+            >
+              A free 60-day coding challenge for Indian college students.
+              Daily builds. Public GitHub commits. Your visible record of consistency.
+            </motion.p>
+          </div>
 
           {/* CTA buttons */}
           <motion.div
@@ -151,7 +154,7 @@ export default function LandingPage() {
             <button
               id="hero-see-how"
               onClick={() => scrollToSection('how-it-works')}
-              className="flex items-center justify-center gap-2 text-sm text-zinc-500 hover:text-zinc-300 transition-colors py-2 touch-target"
+              className="flex items-center justify-center gap-2 text-sm text-[#8B8B99] hover:text-zinc-300 transition-colors py-2 touch-target"
             >
               See how it works
               <ChevronDown className="w-4 h-4" />
@@ -163,7 +166,7 @@ export default function LandingPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.7 }}
-            className="flex items-center justify-center gap-4 text-xs text-zinc-600"
+            className="flex items-center justify-center gap-4 text-xs text-[#8B8B99]/70"
           >
             <div className="flex items-center gap-1">
               <CheckCircle2 className="w-3.5 h-3.5 text-[#22C55E]" />
@@ -178,6 +181,16 @@ export default function LandingPage() {
               <span>Mobile-first</span>
             </div>
           </motion.div>
+
+          {/* Phone mockup — the product, alive */}
+          <motion.div
+            initial={{ opacity: 0, y: 40, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ delay: 0.85, duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
+            className="mt-12"
+          >
+            <HeroPhone />
+          </motion.div>
         </motion.div>
 
         {/* Scroll hint */}
@@ -190,7 +203,7 @@ export default function LandingPage() {
           }}
           className="absolute bottom-8 left-1/2 -translate-x-1/2"
         >
-          <ChevronDown className="w-5 h-5 text-zinc-700" />
+          <ChevronDown className="w-5 h-5 text-[#8B8B99]/50" />
         </motion.div>
       </section>
 
@@ -200,14 +213,14 @@ export default function LandingPage() {
           <div className="text-center mb-8">
             <Badge variant="secondary" className="mb-3">Community</Badge>
             <h2 className="text-2xl font-bold text-white">People who showed up</h2>
-            <p className="text-sm text-zinc-500 mt-2">Real students. Real streaks. No fake screenshots.</p>
+            <p className="text-sm text-[#8B8B99] mt-2">Real students. Real streaks. No fake screenshots.</p>
           </div>
         </FadeUp>
 
         <div className="space-y-3">
           {socialProofStudents.map((student, i) => (
             <FadeUp key={student.name} delay={i * 0.1}>
-              <div className="rounded-2xl border border-[#27272A] bg-[#16161A] p-4 card-hover">
+              <div className="rounded-2xl border border-[#27272F] bg-[#16161D] p-4 card-hover">
                 <div className="flex items-start gap-3 mb-3">
                   <div
                     className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 text-sm font-bold text-white"
@@ -223,11 +236,11 @@ export default function LandingPage() {
                         <span className="text-xs font-bold text-[#F59E0B]">{student.streak}</span>
                       </div>
                     </div>
-                    <p className="text-xs text-zinc-500">{student.college} · {student.track}</p>
+                    <p className="text-xs text-[#8B8B99]">{student.college} · {student.track}</p>
                   </div>
                 </div>
                 <ContributionGraph seed={i + 1} />
-                <p className="text-xs text-zinc-400 mt-3 leading-relaxed italic">&ldquo;{student.quote}&rdquo;</p>
+                <p className="text-xs text-[#C7C7D1] mt-3 leading-relaxed italic">&ldquo;{student.quote}&rdquo;</p>
               </div>
             </FadeUp>
           ))}
@@ -241,10 +254,10 @@ export default function LandingPage() {
               { value: '18,000+', label: 'GitHub commits', icon: Github },
               { value: '60 days', label: 'The commitment', icon: Clock },
             ].map(({ value, label, icon: Icon }) => (
-              <div key={label} className="rounded-xl border border-[#27272A] bg-[#16161A] p-3 text-center">
+              <div key={label} className="rounded-xl border border-[#27272F] bg-[#16161D] p-3 text-center">
                 <Icon className="w-4 h-4 text-[#8B5CF6] mx-auto mb-1.5" />
                 <p className="text-lg font-bold text-white">{value}</p>
-                <p className="text-[10px] text-zinc-600">{label}</p>
+                <p className="text-[10px] text-[#8B8B99]/70">{label}</p>
               </div>
             ))}
           </div>
@@ -252,12 +265,12 @@ export default function LandingPage() {
       </section>
 
       {/* ===== HOW IT WORKS ===== */}
-      <section id="how-it-works" className="px-5 py-16 bg-[#111113]">
+      <section id="how-it-works" className="px-5 py-16 bg-[#0B0B10]">
         <FadeUp>
           <div className="text-center mb-10">
             <Badge variant="default" className="mb-3">Process</Badge>
             <h2 className="text-2xl font-bold text-white">How the 60 days work</h2>
-            <p className="text-sm text-zinc-500 mt-2">Simple, repeatable, measurable.</p>
+            <p className="text-sm text-[#8B8B99] mt-2">Simple, repeatable, measurable.</p>
           </div>
         </FadeUp>
 
@@ -295,14 +308,14 @@ export default function LandingPage() {
                   <div className="relative">
                     {/* Step dot */}
                     <div
-                      className="absolute -left-[2.65rem] w-5 h-5 rounded-full border-2 border-[#09090B] flex items-center justify-center"
+                      className="absolute -left-[2.65rem] w-5 h-5 rounded-full border-2 border-[#07070A] flex items-center justify-center"
                       style={{ background: item.color }}
                       aria-hidden="true"
                     >
                       <span className="w-1.5 h-1.5 rounded-full bg-white" />
                     </div>
 
-                    <div className="rounded-2xl border border-[#27272A] bg-[#16161A] p-4">
+                    <div className="rounded-2xl border border-[#27272F] bg-[#16161D] p-4">
                       <div className="flex items-center gap-3 mb-2">
                         <div
                           className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
@@ -311,11 +324,11 @@ export default function LandingPage() {
                           <Icon className="w-4 h-4" style={{ color: item.color }} />
                         </div>
                         <div>
-                          <span className="text-[10px] font-mono text-zinc-600">Step {item.step}</span>
+                          <span className="text-[10px] font-mono text-[#8B8B99]/70">Step {item.step}</span>
                           <h3 className="text-sm font-semibold text-white leading-tight">{item.title}</h3>
                         </div>
                       </div>
-                      <p className="text-xs text-zinc-400 leading-relaxed">{item.description}</p>
+                      <p className="text-xs text-[#C7C7D1] leading-relaxed">{item.description}</p>
                     </div>
                   </div>
                 </FadeUp>
@@ -331,7 +344,7 @@ export default function LandingPage() {
           <div className="text-center mb-8">
             <Badge variant="outline" className="mb-3">Tracks</Badge>
             <h2 className="text-2xl font-bold text-white">Choose your path</h2>
-            <p className="text-sm text-zinc-500 mt-2">Five focused paths, each with 60 structured days.</p>
+            <p className="text-sm text-[#8B8B99] mt-2">Five focused paths, each with 60 structured days.</p>
           </div>
         </FadeUp>
 
@@ -340,7 +353,7 @@ export default function LandingPage() {
             return (
               <FadeUp key={track.id} delay={i * 0.08}>
                 <div
-                  className="rounded-2xl border bg-[#16161A] p-4 card-hover"
+                  className="rounded-2xl border bg-[#16161D] p-4 card-hover"
                   style={{ borderColor: `${track.color}25` }}
                 >
                   <div className="flex items-center gap-3 mb-2">
@@ -362,10 +375,10 @@ export default function LandingPage() {
                       </div>
                     </div>
                   </div>
-                  <p className="text-xs text-zinc-400 mb-3 leading-relaxed">{track.description}</p>
+                  <p className="text-xs text-[#C7C7D1] mb-3 leading-relaxed">{track.description}</p>
                   <div className="flex flex-wrap gap-1.5">
                     {track.projects.map((p) => (
-                      <span key={p} className="text-[10px] px-2 py-0.5 rounded-md bg-white/5 text-zinc-500 border border-[#27272A]">
+                      <span key={p} className="text-[10px] px-2 py-0.5 rounded-md bg-white/5 text-[#8B8B99] border border-[#27272F]">
                         {p}
                       </span>
                     ))}
@@ -378,12 +391,12 @@ export default function LandingPage() {
       </section>
 
       {/* ===== AFTER 60 DAYS ===== */}
-      <section id="after-60" className="px-5 py-16 bg-[#111113]">
+      <section id="after-60" className="px-5 py-16 bg-[#0B0B10]">
         <FadeUp>
           <div className="text-center mb-8">
             <Badge variant="success" className="mb-3">Outcomes</Badge>
             <h2 className="text-2xl font-bold text-white">After 60 days, you&apos;ll have</h2>
-            <p className="text-sm text-zinc-500 mt-2">Concrete. Verifiable. Yours.</p>
+            <p className="text-sm text-[#8B8B99] mt-2">Concrete. Verifiable. Yours.</p>
           </div>
         </FadeUp>
 
@@ -398,7 +411,7 @@ export default function LandingPage() {
             const Icon = item.icon;
             return (
               <FadeUp key={item.title} delay={i * 0.08}>
-                <div className="flex items-center gap-4 p-4 rounded-2xl border border-[#27272A] bg-[#16161A] card-hover">
+                <div className="flex items-center gap-4 p-4 rounded-2xl border border-[#27272F] bg-[#16161D] card-hover">
                   <div
                     className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
                     style={{ background: `${item.color}15` }}
@@ -407,7 +420,7 @@ export default function LandingPage() {
                   </div>
                   <div>
                     <p className="text-sm font-semibold text-white">{item.title}</p>
-                    <p className="text-xs text-zinc-500 mt-0.5">{item.description}</p>
+                    <p className="text-xs text-[#8B8B99] mt-0.5">{item.description}</p>
                   </div>
                 </div>
               </FadeUp>
@@ -435,7 +448,7 @@ export default function LandingPage() {
               </div>
               <div>
                 <p className="text-sm font-semibold text-white">Aditya Kumar</p>
-                <p className="text-xs text-zinc-500">IIT Bombay · Day 30 · AI/ML Track</p>
+                <p className="text-xs text-[#8B8B99]">IIT Bombay · Day 30 · AI/ML Track</p>
               </div>
             </div>
           </div>
@@ -445,9 +458,9 @@ export default function LandingPage() {
       {/* ===== COMMITMENT CARD ===== */}
       <section id="commitment" className="px-5 pb-16">
         <FadeUp>
-          <div className="rounded-2xl border border-[#27272A] bg-[#16161A] p-5">
+          <div className="rounded-2xl border border-[#27272F] bg-[#16161D] p-5">
             <h2 className="text-lg font-bold text-white mb-1">What you&apos;re signing up for</h2>
-            <p className="text-xs text-zinc-500 mb-5">Be honest with yourself before starting.</p>
+            <p className="text-xs text-[#8B8B99] mb-5">Be honest with yourself before starting.</p>
 
             <div className="space-y-3">
               {[
@@ -457,10 +470,10 @@ export default function LandingPage() {
                 { label: 'Streak shield (per 14 days)', value: '1 protected miss', icon: Shield },
                 { label: 'Price', value: 'Free', icon: CheckCircle2 },
               ].map(({ label, value, icon: Icon }) => (
-                <div key={label} className="flex items-center justify-between py-2 border-b border-[#27272A] last:border-0">
+                <div key={label} className="flex items-center justify-between py-2 border-b border-[#27272F] last:border-0">
                   <div className="flex items-center gap-2">
-                    <Icon className="w-3.5 h-3.5 text-zinc-500" />
-                    <span className="text-xs text-zinc-400">{label}</span>
+                    <Icon className="w-3.5 h-3.5 text-[#8B8B99]" />
+                    <span className="text-xs text-[#C7C7D1]">{label}</span>
                   </div>
                   <span className="text-xs font-semibold text-white">{value}</span>
                 </div>
@@ -471,7 +484,7 @@ export default function LandingPage() {
       </section>
 
       {/* ===== FAQ ===== */}
-      <section id="faq" className="px-5 pb-16 bg-[#111113] pt-16">
+      <section id="faq" className="px-5 pb-16 bg-[#0B0B10] pt-16">
         <FadeUp>
           <div className="text-center mb-8">
             <Badge variant="ghost" className="mb-3">FAQ</Badge>
@@ -485,7 +498,7 @@ export default function LandingPage() {
               <AccordionItem key={i} value={`faq-${i}`}>
                 <AccordionTrigger className="text-left text-sm">{faq.question}</AccordionTrigger>
                 <AccordionContent>
-                  <p className="text-sm text-zinc-400 leading-relaxed">{faq.answer}</p>
+                  <p className="text-sm text-[#C7C7D1] leading-relaxed">{faq.answer}</p>
                 </AccordionContent>
               </AccordionItem>
             ))}
@@ -508,7 +521,7 @@ export default function LandingPage() {
             <h2 className="text-3xl font-black text-white mb-3 text-balance">
               Ready to start?
             </h2>
-            <p className="text-zinc-400 mb-8 text-pretty text-sm">
+            <p className="text-[#C7C7D1] mb-8 text-pretty text-sm">
               Day 1 is waiting. Your future self will be grateful you started today.
             </p>
             <Link href="/dashboard">
@@ -522,13 +535,13 @@ export default function LandingPage() {
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
             </Link>
-            <p className="text-xs text-zinc-700 mt-4">Free. No credit card. No sign-up wall.</p>
+            <p className="text-xs text-[#8B8B99]/50 mt-4">Free. No credit card. No sign-up wall.</p>
           </div>
         </FadeUp>
       </section>
 
       {/* Sticky bottom CTA (mobile) */}
-      <div className="sticky bottom-0 z-40 px-5 pb-5 pt-3 bg-gradient-to-t from-[#09090B] to-transparent pointer-events-none">
+      <div className="sticky bottom-0 z-40 px-5 pb-5 pt-3 bg-gradient-to-t from-[#07070A] to-transparent pointer-events-none">
         <div className="pointer-events-auto">
           <Link href="/dashboard">
             <Button
@@ -545,19 +558,19 @@ export default function LandingPage() {
       </div>
 
       {/* Footer */}
-      <footer className="px-5 py-8 border-t border-[#1C1C1F] text-center">
+      <footer className="px-5 py-8 border-t border-[#1F1F26] text-center">
         <div className="flex items-center justify-center gap-2 mb-3">
           <div className="w-6 h-6 rounded-lg bg-[#8B5CF6] flex items-center justify-center">
             <span className="text-xs font-black text-white">AB</span>
           </div>
           <span className="font-bold text-white">ABTalks</span>
         </div>
-        <p className="text-xs text-zinc-700">
+        <p className="text-xs text-[#8B8B99]/50">
           Built for Indian college students. Free forever.
         </p>
         <div className="flex items-center justify-center gap-4 mt-4">
           {['/', '/dashboard', '/day/12'].map((route) => (
-            <Link key={route} href={route} className="text-xs text-zinc-600 hover:text-zinc-400 transition-colors">
+            <Link key={route} href={route} className="text-xs text-[#8B8B99]/70 hover:text-[#C7C7D1] transition-colors">
               {route === '/' ? 'Home' : route.replace('/', '').replace('/12', ' 12')}
             </Link>
           ))}

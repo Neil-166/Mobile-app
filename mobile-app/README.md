@@ -1,84 +1,68 @@
-# ABTalks — 60-Day Challenge Redesign
+# ABTalks — 60-Day Coding Challenge
 
-A mobile-first redesign of ABTalks, built for Indian college students who are trying to turn late-night coding sessions into a consistent public learning habit. It is a front-end prototype with realistic mock data; no account or backend is required.
+A mobile-first app for Indian college students building a 60-day coding streak. The experience pairs a calm, cinematic habit dashboard with an end-to-end daily challenge flow — build, commit, reflect, and share.
 
-## Project Overview
+No backend. No account wall. Realistic mock data only.
 
-The experience pairs a calm, cinematic habit dashboard with an end-to-end daily challenge flow. A student can open a task, focus, work through a checklist, add their GitHub proof and reflection, then see their success persist across a reload.
-
-## Problem Statement
-
-Students often begin tutorials and projects with energy but struggle to build a visible, sustainable practice. ABTalks gives that practice a small daily shape: build something meaningful, commit it, reflect on it, and make the progress visible.
-
-## Design Philosophy
-
-- Mobile first at a 390px viewport, with thumb-friendly layouts and safe-area spacing.
-- A dark, low-distraction night-time palette grounded in violet, cyan, and warm streak feedback.
-- Honest copy focused on consistency rather than exaggerated career promises.
-- Motion that explains state change: progress fills, checklist updates, celebrations, and gentle contextual reveals.
-
-## Tech Stack
-
-- Next.js 16 (App Router) with TypeScript
-- Tailwind CSS v4 and shadcn-style Radix primitives
-- Framer Motion for interaction and scroll motion
-- Lucide React for interface icons
-- Sonner for lightweight feedback
-
-## Features
-
-- Premium landing experience with social proof, tracks, timeline, outcomes, FAQ, and a sticky mobile CTA.
-- Habit dashboard with state previews for active, first-day, missed-day, and empty-profile students.
-- Current time, progress ring, weekly heatmap, achievement shelf, momentum board, activity feed, streak shield, and energy check-in.
-- Complete Day 12 experience: responsive build preview, learning goals, requirements, resources, workflow, focus timer, screenshot mock, reflection, and community inspiration.
-- Local submission persistence: a successful Day 12 submission survives reloads and updates the dashboard state.
-
-## Innovative Ideas Implemented
-
-1. **Midnight Rescue** — appears after 10 PM with a countdown, GitHub quick action, LinkedIn draft copy, and a supportive progress action.
-2. **Focus Sprint** — a 25-minute timer with start, pause, reset, and a completion celebration.
-3. **AI Reflection Helper** — locally generates an editable, realistic reflection starter.
-4. **Streak Shield** — shows one protected miss available every 14 days.
-5. **Public Momentum Card** — gives the student a shareable recap and a real downloadable SVG card.
-6. **Energy Check-in** — changes the encouragement based on whether the student feels tired, okay, or energized.
-
-## Mobile-First Strategy
-
-The layout stays single-column up to the desktop enhancement breakpoint, avoids horizontal overflow, uses sticky controls for key actions, and reserves space for mobile navigation or submit controls. It includes smooth scrolling, reduced-motion fallbacks, focus states, semantic controls, and high-contrast copy.
-
-## Performance Considerations
-
-- No large images or 3D payloads.
-- Route UI is mostly local, mocked data with small interactive client components.
-- Animation uses transform/opacity-first patterns and honors `prefers-reduced-motion`.
-- Next.js font loading and package import optimization keep the initial experience focused.
-
-## Setup
+## Quick Start
 
 ```bash
 npm install
 npm run dev
 ```
 
-For a production check:
+## Routes
+
+| Path | Description |
+|------|-------------|
+| `/` | Landing page with social proof, tracks, outcomes, FAQ |
+| `/dashboard` | Habit dashboard with streak, community, midnight rescue |
+| `/day/12` | Day challenge: build checklist, focus timer, submission flow |
+
+## Tech Stack
+
+- **Next.js 16** (App Router, Turbopack) + TypeScript
+- **Tailwind CSS v4** + shadcn-style Radix primitives
+- **Framer Motion** — scroll-linked parallax, staggered reveals, celebration micro-interactions
+- **Lucide React** icons · **Sonner** toasts
+- **html-to-image** — client-side PNG export for the Momentum Card
+
+## Design System
+
+Midnight palette (`#07070A` base → `#16161D` cards → `#27272F` borders) with purple (`#8B5CF6`) and cyan (`#22D3EE`) accents. Typography: Inter (body) + JetBrains Mono (monospace). All motion respects `prefers-reduced-motion`.
+
+## Key Features
+
+| Feature | Details |
+|---------|---------|
+| **Two-row header** | Greeting + live clock, user name, animated streak pill, avatar |
+| **Segmented control** | 4-column icon tabs (Dashboard / Start / Missed / Profile) |
+| **Streak hero** | Animated count-up, progress ring, streak flame pulse, purple glow |
+| **Midnight Rescue** | Time-based: pre-10 PM countdown + progress bar → after 10 PM live midnight countdown + quick actions (GitHub, LinkedIn draft, mark progress) |
+| **Focus Sprint** | 25-min Pomodoro with localStorage persistence, session counter, checkmark celebration |
+| **Community feed** | Live relative timestamps ("8m ago"), avatar, day number, action |
+| **Momentum Card** | 9:16 story card with PNG export via `html-to-image` |
+| **Energy Check-in** | localStorage persistence, dynamic encouragement per energy level |
+| **Empty states** | Tailwind-drawn illustrations for first-day, missed-day, empty-profile, no-submissions |
+| **Micro-wins** | Spring-animated toasts for challenge opened, focus started, draft copied, reflection added, submission |
+| **Scroll experience** | Parallax gradient blobs, staggered reveals, smooth scrolling |
+| **Bottom nav** | 76px, safe-area, glass blur, top border glow, animated active indicator |
+
+## Persistence
+
+All state is client-side localStorage. A Day 12 submission survives page refresh and updates the dashboard state. Focus sprint sessions and energy check-ins persist per day.
+
+## Accessibility
+
+Semantic HTML, `aria-label` on icon buttons, `aria-live` status regions, visible focus rings, keyboard-navigable, AA contrast on all text.
+
+## Build
 
 ```bash
-npm run lint
-npm run build
+npm run build   # zero TypeScript errors
+npm run lint    # zero ESLint warnings
 ```
 
 ## Deployment
 
-Deployment placeholder: Vercel or any Node-compatible Next.js host.
-
-## Repository
-
-Repository placeholder: add the public repository URL here before submission.
-
-## Route Map
-
-```text
-/
-/dashboard
-/day/12
-```
+Vercel or any Node-compatible Next.js host.
