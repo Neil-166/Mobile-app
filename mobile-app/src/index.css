@@ -1,0 +1,415 @@
+@import 'tailwindcss';
+
+/* ============================================================
+   ABTalks — Perplexity-Style Editorial Dark Theme
+   Calm, sophisticated, low-contrast. Cards blend softly.
+   ============================================================ */
+
+@theme {
+  /* --- Backgrounds --- */
+  --color-bg: #0F1115;
+  --color-bg-elevated: #151820;
+  --color-surface: #171A21;
+  --color-surface-hover: #1C2028;
+
+  /* --- Borders (barely visible) --- */
+  --color-border: #1E2128;
+  --color-border-muted: #181B22;
+
+  /* --- Text --- */
+  --color-foreground: #F3F5F7;
+  --color-muted: #C7CEDB;
+  --color-subtle: #97A1B3;
+
+  /* --- Accents (editorial, not neon) --- */
+  --color-primary: #6F7EF7;
+  --color-primary-hover: #8390FF;
+  --color-accent: #8B97D8;
+  --color-success: #38B46A;
+  --color-warning: #E7A53A;
+  --color-danger: #E35D6A;
+
+  /* --- Typography --- */
+  --font-sans: 'Inter Variable', Inter, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, 'SF Mono', monospace;
+
+  /* --- Motion (accordion) --- */
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+
+  @keyframes accordion-down {
+    from { height: 0; }
+    to { height: var(--radix-accordion-content-height); }
+  }
+  @keyframes accordion-up {
+    from { height: var(--radix-accordion-content-height); }
+    to { height: 0; }
+  }
+}
+
+/* ============================================================
+   Base
+   ============================================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  overscroll-behavior-y: none;
+}
+
+/* Global subtle transitions */
+*,
+*::before,
+*::after {
+  transition-property: background-color, border-color, color, transform, opacity;
+  transition-duration: 180ms;
+  transition-timing-function: ease;
+}
+
+/* Prevent transition flash on page load */
+html.is-loading *,
+html.is-loading *::before,
+html.is-loading *::after {
+  transition-duration: 0s !important;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: clip;
+  min-height: 100dvh;
+  min-width: 320px;
+  position: relative;
+}
+
+/* Subtle radial tint — editorial warmth */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(111,126,247,0.06), transparent 35%),
+    radial-gradient(circle at 100% 0%, rgba(255,255,255,0.03), transparent 30%);
+}
+
+/* Ensure content sits above the body::before */
+#root {
+  position: relative;
+  z-index: 1;
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+  letter-spacing: -0.02em;
+}
+
+p {
+  text-wrap: pretty;
+  line-height: 1.65;
+}
+
+button,
+a,
+input,
+textarea,
+label,
+select {
+  -webkit-tap-highlight-color: transparent;
+  font-family: inherit;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* ============================================================
+   Typography scale — editorial, less bold
+   H1 35 / 1.05 / 700
+   H2 24 / 1.15 / 650
+   H3 19 / 1.2 / 650
+   Body 15 / 1.65 / 400
+   Caption 12 / 1.5 / 500
+   ============================================================ */
+.h1 {
+  font-size: 35px;
+  line-height: 1.05;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.h2 {
+  font-size: 24px;
+  line-height: 1.15;
+  font-weight: 650;
+  letter-spacing: -0.015em;
+}
+
+.h3 {
+  font-size: 19px;
+  line-height: 1.2;
+  font-weight: 650;
+}
+
+.caption {
+  font-size: 12px;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+@media (max-width: 430px) {
+  body { font-size: 15px; }
+}
+
+/* ============================================================
+   Safe areas & layout spacing
+   ============================================================ */
+.safe-top { padding-top: env(safe-area-inset-top); }
+.safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+.pb-nav { padding-bottom: calc(env(safe-area-inset-bottom) + 96px); }
+
+/* ============================================================
+   Card — Perplexity glass style
+   ============================================================ */
+.card {
+  background: rgba(23, 26, 33, 0.72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 24px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.03),
+    0 8px 24px rgba(0, 0, 0, 0.22);
+}
+
+.card-pad {
+  background: rgba(23, 26, 33, 0.72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 24px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.03),
+    0 8px 24px rgba(0, 0, 0, 0.22);
+  padding: 1.25rem;
+}
+
+.card-hover {
+  transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 255, 255, 0.08);
+  background-color: rgba(28, 32, 40, 0.8);
+}
+
+/* ============================================================
+   Surface gradient — very subtle
+   ============================================================ */
+.surface-gradient {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ============================================================
+   Glass — translucent nav/headers
+   ============================================================ */
+.glass {
+  background: rgba(15, 17, 21, 0.78);
+  backdrop-filter: blur(20px) saturate(1.2);
+  -webkit-backdrop-filter: blur(20px) saturate(1.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* ============================================================
+   Motion helpers — subtle, never neon
+   ============================================================ */
+
+@keyframes flame-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+
+.flame-pulse {
+  animation: flame-pulse 2.5s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.01); }
+}
+
+.breathe {
+  animation: breathe 4s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+.float { animation: float 5s ease-in-out infinite; }
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shimmer {
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.03) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: shimmer 2.5s infinite;
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-up { animation: fade-up 0.5s ease forwards; }
+
+@keyframes check-draw {
+  0% { stroke-dashoffset: 100; }
+  100% { stroke-dashoffset: 0; }
+}
+
+.check-path {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: check-draw 0.5s ease forwards;
+}
+
+@keyframes pill-pop {
+  0% { transform: scale(0.94); }
+  60% { transform: scale(1.04); }
+  100% { transform: scale(1); }
+}
+
+.pill-pop { animation: pill-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+
+@keyframes success-pop {
+  0% { transform: scale(0.6); opacity: 0; }
+  70% { transform: scale(1.06); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.success-pop { animation: success-pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+
+/* Stagger delays */
+.delay-100 { animation-delay: 0.1s; opacity: 0; }
+.delay-200 { animation-delay: 0.2s; opacity: 0; }
+.delay-300 { animation-delay: 0.3s; opacity: 0; }
+.delay-400 { animation-delay: 0.4s; opacity: 0; }
+
+/* ============================================================
+   Progress
+   ============================================================ */
+.progress-bar {
+  background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+  border-radius: 999px;
+  transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================================
+   Inputs
+   ============================================================ */
+.input-field {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 14px;
+  color: var(--color-foreground);
+}
+
+.input-field:focus {
+  border-color: rgba(111, 126, 247, 0.4);
+  box-shadow: 0 0 0 3px rgba(111, 126, 247, 0.10);
+  outline: none;
+}
+
+.input-field::placeholder { color: var(--color-subtle); }
+
+/* ============================================================
+   Focus ring (keyboard a11y)
+   ============================================================ */
+:focus-visible {
+  outline: 2px solid rgba(111, 126, 247, 0.6);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+/* ============================================================
+   Scrollbar & selection
+   ============================================================ */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.08); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.14); }
+
+::selection { background: rgba(111, 126, 247, 0.25); color: var(--color-foreground); }
+
+/* ============================================================
+   Touch targets
+   ============================================================ */
+.touch-target {
+  min-height: 48px;
+  min-width: 48px;
+}
+
+.noise::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.02'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+}
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+
+/* ============================================================
+   Night mode (after 10 PM)
+   ============================================================ */
+.night-mode {
+  --color-primary: #6874E0;
+  --color-primary-hover: #7B87E8;
+  --color-accent: #8090CC;
+}
+
+/* ============================================================
+   Reduced motion
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  html { scroll-behavior: auto; }
+}

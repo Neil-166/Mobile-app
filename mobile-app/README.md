@@ -8,7 +8,9 @@ No backend. No account wall. Realistic mock data only.
 
 ```bash
 npm install
-npm run dev
+npm run dev      # dev server → http://localhost:5173
+npm run build    # type-check + production build (dist/)
+npm run preview  # preview the production build
 ```
 
 ## Routes
@@ -16,20 +18,28 @@ npm run dev
 | Path | Description |
 |------|-------------|
 | `/` | Landing page with social proof, tracks, outcomes, FAQ |
-| `/dashboard` | Habit dashboard with streak, community, midnight rescue |
+| `/dashboard` | Habit dashboard with streak, day progress, midnight rescue |
 | `/day/12` | Day challenge: build checklist, focus timer, submission flow |
+| `/profile` | User profile, stats, achievements, activity |
 
 ## Tech Stack
 
-- **Next.js 16** (App Router, Turbopack) + TypeScript
-- **Tailwind CSS v4** + shadcn-style Radix primitives
-- **Framer Motion** — scroll-linked parallax, staggered reveals, celebration micro-interactions
-- **Lucide React** icons · **Sonner** toasts
-- **html-to-image** — client-side PNG export for the Momentum Card
+- **Vite 7 + React 19 + TypeScript** (strict, zero TS errors at build)
+- **React Router DOM 7** — `/`, `/dashboard`, `/day/:day`, `/profile`
+- **Tailwind CSS v4** + shadcn-style Radix primitives (`button`, `badge`, `checkbox`, `accordion`)
+- **Framer Motion** — scroll-linked parallax, tab transitions, celebration micro-interactions
+- **Lucide React** icons · **Sonner** toasts · **html-to-image** (Momentum Card PNG export)
+- **@fontsource-variable/inter + jetbrains-mono** — self-hosted fonts (no render-blocking CDN)
 
 ## Design System
 
-Midnight palette (`#07070A` base → `#16161D` cards → `#27272F` borders) with purple (`#8B5CF6`) and cyan (`#22D3EE`) accents. Typography: Inter (body) + JetBrains Mono (monospace). All motion respects `prefers-reduced-motion`.
+Calm dark palette — `#0E1116` base → `#171C26` cards → `#262D3D` borders, with a single blue accent family (`#7C8CFF` / `#A7B4FF`) and semantic success / warning / danger colors. No neon glows, no harsh gradients — only a subtle white surface gradient.
+
+**Typography:** H1 34–36px · H2 24px · H3 20px · body 15–16px · caption 12–13px. Soft line-height, balanced headings.
+
+**Mobile (390px):** no horizontal scroll (`overflow-x: clip`), 48px touch targets, safe-area padding, sticky bottom nav with clearance, smooth scrolling.
+
+**Performance:** lazy-loaded sections (`HeroPhone`, `Confetti`, `MomentumCard`), radial gradients instead of `filter: blur`, chunk-split vendor bundles. All motion respects `prefers-reduced-motion`.
 
 ## Key Features
 
@@ -37,32 +47,10 @@ Midnight palette (`#07070A` base → `#16161D` cards → `#27272F` borders) with
 |---------|---------|
 | **Two-row header** | Greeting + live clock, user name, animated streak pill, avatar |
 | **Segmented control** | 4-column icon tabs (Dashboard / Start / Missed / Profile) |
-| **Streak hero** | Animated count-up, progress ring, streak flame pulse, purple glow |
-| **Midnight Rescue** | Time-based: pre-10 PM countdown + progress bar → after 10 PM live midnight countdown + quick actions (GitHub, LinkedIn draft, mark progress) |
+| **Streak hero** | Animated count-up, progress ring, streak flame pulse (above the fold) |
+| **Day card** | Today's task, estimated time, live countdown to midnight, primary CTA |
+| **Midnight Rescue** | Time-based: pre-10 PM countdown + progress bar → after 10 PM live midnight countdown + quick actions |
 | **Focus Sprint** | 25-min Pomodoro with localStorage persistence, session counter, checkmark celebration |
-| **Community feed** | Live relative timestamps ("8m ago"), avatar, day number, action |
+| **Submission flow** | Checklist → focus → submit; persists to localStorage, celebrates on completion |
 | **Momentum Card** | 9:16 story card with PNG export via `html-to-image` |
-| **Energy Check-in** | localStorage persistence, dynamic encouragement per energy level |
-| **Empty states** | Tailwind-drawn illustrations for first-day, missed-day, empty-profile, no-submissions |
-| **Micro-wins** | Spring-animated toasts for challenge opened, focus started, draft copied, reflection added, submission |
-| **Scroll experience** | Parallax gradient blobs, staggered reveals, smooth scrolling |
-| **Bottom nav** | 76px, safe-area, glass blur, top border glow, animated active indicator |
-
-## Persistence
-
-All state is client-side localStorage. A Day 12 submission survives page refresh and updates the dashboard state. Focus sprint sessions and energy check-ins persist per day.
-
-## Accessibility
-
-Semantic HTML, `aria-label` on icon buttons, `aria-live` status regions, visible focus rings, keyboard-navigable, AA contrast on all text.
-
-## Build
-
-```bash
-npm run build   # zero TypeScript errors
-npm run lint    # zero ESLint warnings
-```
-
-## Deployment
-
-Vercel or any Node-compatible Next.js host.
+| **Profile page** | Identity hero, stats, social links, achievement shelf, activity timeline |
