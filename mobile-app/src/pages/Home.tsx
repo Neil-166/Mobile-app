@@ -1,7 +1,7 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Code2, Flame, Trophy } from 'lucide-react';
+import { ArrowRight, Clock, Code2, Flame, Zap, Trophy } from 'lucide-react';
 import { Github, Linkedin } from '@/components/Icons';
 import { Button } from '@/components/ui/button';
 import HeroSection from '@/components/HeroSection';
@@ -49,9 +49,19 @@ function ContributionGraph() {
 }
 
 export default function Home() {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 768px)');
+    setIsMobile(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
+
   return (
     <div className="min-h-dvh bg-bg overflow-x-clip relative">
-      {/* Animated 3D background — compact glowing flame orb */}
+      {/* Animated 3D background — hidden on mobile to prevent scroll flicker */}
+      {!isMobile && (
       <div className="pointer-events-none fixed inset-0 overflow-hidden" aria-hidden="true">
         <motion.div
           className="absolute top-[-10%] left-[-15%] w-[400px] h-[400px] rounded-full"
@@ -119,6 +129,7 @@ export default function Home() {
           />
         ))}
       </div>
+      )}
 
       {/* ═══ HEADER ═══ */}
       <header className="fixed top-0 left-0 right-0 z-40 safe-top glass">
@@ -140,6 +151,40 @@ export default function Home() {
       {/* ═══ HERO — "Build for 60 days. Get noticed by recruiters." ═══ */}
       <HeroSection />
 
+      {/* ═══ TONIGHT'S CHALLENGE — immediate action hook ═══ */}
+      <section className="px-6 pb-6">
+        <div className="mx-auto max-w-[480px]">
+          <FadeIn>
+            <div className="relative overflow-hidden rounded-2xl border border-primary/25 bg-surface p-5 shadow-[0_4px_24px_rgba(0,0,0,0.2)]">
+              <div
+                className="pointer-events-none absolute -right-10 -top-12 h-32 w-32 rounded-full"
+                style={{ background: 'radial-gradient(circle, rgba(255,90,0,0.12) 0%, transparent 70%)' }}
+                aria-hidden="true"
+              />
+              <div className="relative flex items-start gap-3">
+                <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-primary/15">
+                  <Zap className="h-5 w-5 text-primary" aria-hidden="true" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-primary">Tonight&apos;s Challenge</p>
+                  <h3 className="mt-0.5 text-[17px] font-bold text-foreground">Day 12 — Expense Tracker UI</h3>
+                  <div className="mt-1.5 flex items-center gap-2 text-[12px] text-subtle">
+                    <Clock className="h-3.5 w-3.5 text-primary/80" aria-hidden="true" />
+                    <span>60–90 min</span>
+                  </div>
+                  <p className="mt-1.5 text-[13px] text-muted">Start tonight in under an hour.</p>
+                </div>
+              </div>
+              <Link to="/day/12" className="mt-4 block">
+                <Button variant="gradient" size="sm" className="w-full min-h-12 font-bold">
+                  View Day 12 <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </Button>
+              </Link>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
       {/* ═══ COMMITMENT CARD — low-friction entry point ═══ */}
       <section className="px-6 pb-8">
         <div className="mx-auto max-w-[480px]">
@@ -152,6 +197,7 @@ export default function Home() {
               <div className="mt-3 flex flex-wrap items-center justify-center gap-3 text-[13px] text-muted">
                 <span className="flex items-center gap-1.5"><span className="inline-block h-1.5 w-1.5 rounded-full bg-primary" aria-hidden="true" /> 60 minutes a day</span>
                 <span className="flex items-center gap-1.5"><span className="inline-block h-1.5 w-1.5 rounded-full bg-primary" aria-hidden="true" /> Resume anytime if you miss a day</span>
+                <span className="flex items-center gap-1.5"><span className="inline-block h-1.5 w-1.5 rounded-full bg-primary" aria-hidden="true" /> Designed for students after college hours</span>
               </div>
             </div>
           </FadeIn>

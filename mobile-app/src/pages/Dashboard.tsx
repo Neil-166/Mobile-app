@@ -206,6 +206,28 @@ export default function Dashboard() {
           </Reveal>
         )}
 
+        {/* ===== Tonight's Session — detail card ===== */}
+        {selectedState === 'active' && !completed && (
+          <Reveal>
+            <section className="rounded-2xl border border-border bg-surface p-4 shadow-[0_4px_24px_rgba(0,0,0,0.2)]">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="h-3 w-1 rounded-full bg-primary" aria-hidden="true" />
+                <h2 className="text-sm font-semibold text-foreground">Tonight&apos;s session</h2>
+              </div>
+              <div className="rounded-xl border border-border bg-bg-elevated p-3.5">
+                <p className="text-[13px] font-bold text-foreground">{day12Challenge.title}</p>
+                <p className="mt-1 text-[11px] text-subtle">{day12Challenge.estimatedTime} · {day12Challenge.difficulty}</p>
+                <p className="mt-1.5 text-[12px] leading-relaxed text-muted">{day12Challenge.goal}</p>
+              </div>
+              <Link to="/day/12" className="mt-3 block">
+                <Button variant="default" size="sm" className="w-full min-h-12 font-bold">
+                  Start tonight&apos;s challenge <ArrowRight className="h-4 w-4" />
+                </Button>
+              </Link>
+            </section>
+          </Reveal>
+        )}
+
         {/* ===== Progress hierarchy — prominent display ===== */}
         <Reveal>
           <section aria-label="Challenge progress" className="rounded-2xl border border-border bg-surface p-4 shadow-[0_4px_24px_rgba(0,0,0,0.2)]">

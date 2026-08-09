@@ -56,7 +56,7 @@ export default function TrustSection() {
         </div>
 
         <p className="mt-6 text-center text-[13px] leading-relaxed text-subtle">
-          Built for college students preparing for internships and placements.
+          Built for Indian college students preparing for internships and campus placements.
         </p>
       </div>
     </section>

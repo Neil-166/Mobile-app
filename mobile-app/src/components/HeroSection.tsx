@@ -26,9 +26,8 @@ export default function HeroSection() {
         </h1>
 
         <p className="mb-6 max-w-[520px] text-[16px] leading-[1.65] text-muted">
-          One daily coding challenge. Build one real thing, commit it to GitHub,
-          post a short LinkedIn update, and grow a public learning streak —
-          a visible record of your work that recruiters can&apos;t ignore.
+          Spend 60–90 minutes each night building a project, push one GitHub commit,
+          publish one LinkedIn post, and grow a public learning streak that recruiters can see.
         </p>
 
         <div className="mb-5 flex max-w-[360px] flex-col gap-3">

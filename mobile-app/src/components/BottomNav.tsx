@@ -15,7 +15,7 @@ export default function BottomNav() {
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-50 border-t border-[rgba(255,255,255,0.06)] bg-[rgba(9,9,11,0.88)] pb-[max(env(safe-area-inset-bottom),0.5rem)] backdrop-blur-xl"
+      className="fixed bottom-0 left-0 right-0 z-50 border-t border-[rgba(255,255,255,0.06)] bg-[rgba(9,9,11,0.96)] pb-[max(env(safe-area-inset-bottom),0.5rem)] will-change-transform"
       role="navigation"
       aria-label="Main navigation"
     >

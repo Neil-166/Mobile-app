@@ -71,7 +71,7 @@ export default function ResumeChallengeFlow({ open, onOpenChange }: ResumeChalle
       <Dialog.Portal>
         {/* Dimmed, blurred backdrop */}
         <Dialog.Overlay
-          className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm data-[state=open]:animate-[rcf-fade-in_0.22s_ease-out] data-[state=closed]:animate-[rcf-fade-out_0.18s_ease-in]"
+          className="fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-[rcf-fade-in_0.22s_ease-out] data-[state=closed]:animate-[rcf-fade-out_0.18s_ease-in]"
           aria-hidden="true"
         />
 
@@ -204,7 +204,7 @@ export default function ResumeChallengeFlow({ open, onOpenChange }: ResumeChalle
           </div>
 
           {/* ===== Sticky footer CTA ===== */}
-          <footer className="shrink-0 border-t border-border bg-bg-elevated/95 px-5 pb-[max(env(safe-area-inset-bottom),1rem)] pt-3 backdrop-blur">
+          <footer className="shrink-0 border-t border-border bg-bg-elevated px-5 pb-[max(env(safe-area-inset-bottom),1rem)] pt-3">
             <Button onClick={handlePrimary} variant="gradient" size="lg" className="w-full font-bold shadow-[0_8px_30px_rgba(0,0,0,0.45)]">
               {option === 'continue' ? `Continue to Day ${nextDay}` : `Redo Day ${missedDay}`}
               <ChevronRight className="h-4 w-4" aria-hidden="true" />

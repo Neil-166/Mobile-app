@@ -163,6 +163,7 @@ h3, .h3 { font-size: 20px; line-height: 1.2; font-weight: 600; }
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  will-change: transform;
 }
 
 /* ============================================================
@@ -260,6 +261,56 @@ h3, .h3 { font-size: 20px; line-height: 1.2; font-weight: 600; }
 .night-mode .glass {
   background: rgba(10, 10, 15, 0.9);
   border-bottom-color: rgba(255, 255, 255, 0.04);
+}
+
+/* ============================================================
+   Mobile scroll-flicker fixes
+   backdrop-filter is the #1 cause of mobile scroll flicker
+   because it forces the compositor to re-render all content
+   behind the blurred element on every scroll frame.
+   ============================================================ */
+@media (max-width: 768px) {
+  /* 1. Kill all backdrop blur — replace with solid dark background */
+  .glass,
+  .card,
+  .card-pad,
+  .backdrop-blur,
+  .backdrop-blur-sm,
+  .backdrop-blur-md,
+  .backdrop-blur-lg,
+  .backdrop-blur-xl {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  .glass {
+    background: rgba(11, 11, 11, 0.96) !important;
+  }
+  .card,
+  .card-pad {
+    background: rgba(21, 24, 33, 0.96) !important;
+  }
+
+  /* 2. Hide expensive animated decorative backgrounds */
+  .floating-orb,
+  .hero-gradient,
+  .animated-bg,
+  .bg-glow {
+    display: none !important;
+  }
+
+  /* 3. Reduce heavy shadows — less compositor work */
+  [class*="shadow-"] {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+  }
+}
+
+/* ============================================================
+   Safe scrolling
+   ============================================================ */
+html,
+body {
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* ============================================================

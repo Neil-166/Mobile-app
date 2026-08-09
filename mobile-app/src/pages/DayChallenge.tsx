@@ -177,7 +177,7 @@ export default function DayChallengePage() {
               <div>
                 <h2 className="text-base font-bold text-foreground">Day {dayNumber} submitted successfully 🎉</h2>
                 <p className="mt-1 text-xs leading-relaxed text-muted">
-                  Streak updated. Your proof is locked in.
+                  Streak updated to {currentStudent.streak + 1} days. Your proof is locked in.
                 </p>
               </div>
             </div>
@@ -292,6 +292,27 @@ export default function DayChallengePage() {
                 ))}
               </ol>
             </details>
+
+            {/* ===== What counts as submission? ===== */}
+            <section aria-labelledby="submission-req-title" className="rounded-2xl border border-primary/20 bg-primary/[0.06] p-4">
+              <h3 id="submission-req-title" className="text-sm font-bold text-foreground">What counts as submission?</h3>
+              <p className="mt-1 text-[11px] leading-relaxed text-muted">
+                Complete all checklist items, then submit proof so the community can see your work.
+              </p>
+              <div className="mt-3 space-y-1.5">
+                {[
+                  'GitHub repository URL',
+                  'GitHub commit URL (optional)',
+                  'LinkedIn post URL',
+                  'Short reflection on what you learned',
+                ].map((item, i) => (
+                  <div key={i} className="flex items-center gap-2 text-[12px] text-muted">
+                    <span className="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-primary/60" aria-hidden="true" />
+                    {item}
+                  </div>
+                ))}
+              </div>
+            </section>
 
             {/* ===== Submission ===== */}
             <SubmissionForm

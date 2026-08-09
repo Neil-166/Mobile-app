@@ -59,7 +59,7 @@ export default function ReflectionCard() {
           <h3 id="reflection-title" className="text-sm font-semibold text-foreground">
             2-minute nightly reflection
           </h3>
-          <p className="text-[11px] text-subtle">Write one thing you learned today.</p>
+          <p className="text-[11px] text-subtle">Write one thing you learned tonight.</p>
         </div>
         <span className="ml-auto shrink-0 rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-bold text-accent">2 min</span>
       </div>
@@ -70,9 +70,13 @@ export default function ReflectionCard() {
         onChange={(event) => setText(event.target.value.slice(0, MAX_CHARS))}
         rows={3}
         placeholder="e.g. Mobile-first means designing for constraints first — small screens force clarity."
-        aria-label="What did you learn today?"
+        aria-label="What did you learn tonight?"
         className="input-field mt-3 w-full resize-none px-4 py-3 text-sm"
       />
+
+      <p className="mt-2 text-[11px] leading-relaxed text-subtle">
+        Reflecting for two minutes improves learning consistency.
+      </p>
 
       <div className="mt-2 flex items-center justify-between gap-3">
         <p className="text-[11px] text-subtle">
