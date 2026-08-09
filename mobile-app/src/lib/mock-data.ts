@@ -660,3 +660,57 @@ export const weeklyTimeline: { day: string; status: DayStatus }[] = [
 
 /** Mocked percentile rank — used for the "Standing" stat. */
 export const standingPercentile = 18;
+
+// ─── Missed-day resume flow ───
+
+/** Which path the student picks in the resume sheet. */
+export type ResumeOption = 'continue' | 'redo';
+
+export interface MissedDayFlowData {
+  /** The day that was missed. */
+  missedDay: number;
+  /** The next available day the student resumes from. */
+  nextDay: number;
+  previousStreak: number;
+  progress: { current: number; total: number };
+  status: string;
+  preview: { day: number; title: string; estimatedTime: string; description: string };
+  reminder: { label: string; hint: string };
+  encouragement: string;
+  copy: {
+    bannerTitle: string;
+    bannerBody: string;
+    bannerCta: string;
+    modalTitle: string;
+    modalSupport: string;
+  };
+}
+
+/** Mocked data powering the missed-day recovery flow. Swap the preview title to match the real curriculum. */
+export const missedDayFlow: MissedDayFlowData = {
+  missedDay: 11,
+  nextDay: 12,
+  previousStreak: 11,
+  progress: { current: 11, total: 60 },
+  status: 'Paused',
+  preview: {
+    day: 12,
+    title: 'Expense Tracker UI',
+    estimatedTime: '60–90 min',
+    description:
+      'Build a clean expense tracker with add, list, and monthly totals — pure vanilla JS, no frameworks.',
+  },
+  reminder: {
+    label: 'Remind me tomorrow evening',
+    hint: "We'll nudge you before 9 PM so tonight stays free.",
+  },
+  encouragement:
+    'This challenge is designed for students coding after college. A 60-minute session tonight is enough to keep momentum going.',
+  copy: {
+    bannerTitle: 'You missed Day 11',
+    bannerBody: "Don't lose momentum. Resume tonight.",
+    bannerCta: 'Resume Challenge',
+    modalTitle: 'You missed Day 11',
+    modalSupport: "One missed day doesn't end your challenge.",
+  },
+};

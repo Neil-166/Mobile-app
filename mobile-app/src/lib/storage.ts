@@ -14,6 +14,8 @@ export const STORAGE_KEYS = {
   energyCheckin: `${PREFIX}-energy-checkin`,
   focusSprint: `${PREFIX}-focus-sprint`,
   splashShown: `${PREFIX}-splash-shown`,
+  resumeReminder: `${PREFIX}-resume-reminder`,
+  resumeChoice: `${PREFIX}-resume-choice`,
 } as const;
 
 export function storageGet<T>(key: string): T | null {

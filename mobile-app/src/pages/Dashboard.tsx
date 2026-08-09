@@ -14,6 +14,8 @@ import EmptyState from '@/components/EmptyState';
 import EnergyCheckin from '@/components/EnergyCheckin';
 import FocusSprint from '@/components/FocusSprint';
 import MidnightRescue from '@/components/MidnightRescue';
+import MissedDayBanner from '@/components/resume/MissedDayBanner';
+import ResumeChallengeFlow from '@/components/resume/ResumeChallengeFlow';
 import StateTabs from '@/components/StateTabs';
 import StreakBadge from '@/components/StreakBadge';
 
@@ -44,8 +46,13 @@ function Reveal({ children, delay = 0, className = '' }: { children: React.React
   );
 }
 
-function StateNotice({ state, onProfile }: { state: StudentState; onProfile: () => void }) {
+function StateNotice({ state, onProfile, onResume }: { state: StudentState; onProfile: () => void; onResume: () => void }) {
   if (state === 'active') return null;
+
+  // The missed-day edge case gets its own recovery banner + resume flow.
+  if (state === 'missed-day') {
+    return <MissedDayBanner onResume={onResume} />;
+  }
 
   const map = {
     'first-day': {
@@ -53,13 +60,6 @@ function StateNotice({ state, onProfile }: { state: StudentState; onProfile: () 
       title: 'Welcome to day one',
       body: 'Your first commit can be tiny. The point is giving tomorrow’s version of you a starting line.',
       action: 'Explore a sample day',
-      href: '/day/12',
-    },
-    'missed-day': {
-      variant: 'missed-day' as const,
-      title: 'One missed day does not erase the work.',
-      body: 'Your progress is still here. Pick one manageable task and begin again — the streak rebuilds faster than you think.',
-      action: 'Resume the challenge',
       href: '/day/12',
     },
     'empty-profile': {
@@ -94,6 +94,7 @@ export default function Dashboard() {
   const [submittedToday, setSubmittedToday] = useState(false);
   const [showAllCommunity, setShowAllCommunity] = useState(false);
   const [showLeaderboard, setShowLeaderboard] = useState(false);
+  const [resumeOpen, setResumeOpen] = useState(false);
 
   useEffect(() => {
     const tick = window.setInterval(() => setNow(new Date()), 30_000);
@@ -132,7 +133,7 @@ export default function Dashboard() {
   const stickyCta = {
     active: { label: completed ? 'Day 12 complete' : 'Continue Day 12', href: '/day/12' },
     'first-day': { label: 'Start Day 1', href: '/day/12' },
-    'missed-day': { label: 'Resume the challenge', href: '/day/12' },
+    'missed-day': { label: 'Resume the challenge', href: null, onClick: () => setResumeOpen(true) },
     'empty-profile': { label: 'Complete your profile', href: null },
   }[selectedState];
 
@@ -174,7 +175,7 @@ export default function Dashboard() {
         <StateTabs value={selectedState} onChange={setSelectedState} />
 
         {/* ===== Edge-state notice ===== */}
-        <StateNotice state={selectedState} onProfile={scrollToProfile} />
+        <StateNotice state={selectedState} onProfile={scrollToProfile} onResume={() => setResumeOpen(true)} />
 
         {/* ===== Five cards above the fold ===== */}
         <Reveal delay={0.05}>
@@ -421,12 +422,15 @@ export default function Dashboard() {
               </Button>
             </Link>
           ) : (
-            <Button onClick={scrollToProfile} size="lg" className="w-full font-bold shadow-[0_8px_30px_rgba(0,0,0,0.45)]">
+            <Button onClick={stickyCta.onClick ?? scrollToProfile} size="lg" className="w-full font-bold shadow-[0_8px_30px_rgba(0,0,0,0.45)]">
               <UserRound className="h-5 w-5" /> {stickyCta.label} <ArrowRight className="ml-1 h-4 w-4" />
             </Button>
           )}
         </div>
       </div>
+
+      {/* ===== Missed-day resume flow (full-screen sheet) ===== */}
+      <ResumeChallengeFlow open={resumeOpen} onOpenChange={setResumeOpen} />
     </div>
   );
 }
