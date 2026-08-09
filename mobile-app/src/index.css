@@ -58,15 +58,8 @@ html {
   transition-timing-function: ease;
 }
 
-html,
-body,
-#root {
-  background: #0b0b0b !important;
-  min-height: 100%;
-}
-
 body {
-  background: #0b0b0b;
+  background: #09090B;
   color: #F8FAFC;
   font-family: var(--font-sans);
   font-size: 16px;
@@ -271,93 +264,38 @@ h3, .h3 { font-size: 20px; line-height: 1.2; font-weight: 600; }
 }
 
 /* ============================================================
-   EMERGENCY MOBILE FLICKER FIX — nuclear approach
-   Priority: stable scrolling > visual effects
+   Mobile performance — disable blur on sticky/fixed elements
+   that cause scroll flicker.
    ============================================================ */
 @media (max-width: 768px) {
-  /* 1. Kill ALL backdrop blur — solid backgrounds only */
-  * {
-    -webkit-backdrop-filter: none !important;
-    backdrop-filter: none !important;
-  }
+  /* Kill all backdrop blur — replace with solid dark background */
   .glass,
-  .glass-card {
-    background: rgba(17, 17, 17, 0.96) !important;
-  }
+  .glass-card,
   .backdrop-blur,
   .backdrop-blur-sm,
   .backdrop-blur-md,
   .backdrop-blur-lg,
   .backdrop-blur-xl {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
     background: rgba(17, 17, 17, 0.96) !important;
   }
 
-  /* 2. Hide ALL animated/decorative backgrounds */
+  /* Hide expensive animated/decorative backgrounds on mobile */
   .floating-orb,
   .hero-gradient,
   .animated-bg,
-  .bg-glow,
-  .pulse,
-  .animate-pulse,
-  .animate-spin,
-  .animate-bounce {
+  .bg-glow {
     display: none !important;
-    animation: none !important;
   }
 
-  /* 3. Force fixed elements to absolute — no compositor layers */
-  [style*="position: fixed"],
-  .fixed {
-    position: absolute !important;
+  /* Reduce heavy shadows — less compositor work */
+  [class*="shadow-[0_4px_24px"],
+  [class*="shadow-[0_8px"],
+  .shadow-2xl {
+    --tw-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+    box-shadow: var(--tw-shadow) !important;
   }
-
-  /* 4. Solid opaque backgrounds everywhere */
-  .glass {
-    background: #111111 !important;
-    border-bottom-color: rgba(255, 255, 255, 0.06) !important;
-  }
-
-  /* 5. Reduce ALL heavy shadows */
-  [class*="shadow-"] {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
-  }
-
-  /* 6. Disable ALL CSS animations and transitions */
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-
-  /* 7. Flatten all transform-based animations */
-  [style*="transform"] {
-    transform: none !important;
-  }
-
-  /* 8. Force-stabilize Framer Motion elements — kill inline style updates */
-  [style*="opacity"],
-  [style*="transform"] {
-    opacity: 1 !important;
-    transform: none !important;
-  }
-
-  /* 9. Flatten all motion.div elements */
-  div[style*="will-change"] {
-    will-change: auto !important;
-  }
-}
-
-/* ============================================================
-   Mobile performance mode — restrict transitions
-   ============================================================ */
-.mobile-performance *,
-.mobile-performance *::before,
-.mobile-performance *::after {
-  transition-property: opacity, transform !important;
-  transition-duration: 0.15s !important;
 }
 
 /* ============================================================
@@ -367,26 +305,6 @@ html,
 body {
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
-}
-
-/* ============================================================
-   GPU layer for scroll container — forces compositing
-   ============================================================ */
-.main-scroll {
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  perspective: 1000px;
-}
-
-/* ============================================================
-   Layout jitter prevention
-   ============================================================ */
-img,
-video,
-canvas,
-svg {
-  display: block;
-  max-width: 100%;
 }
 
 /* ============================================================
