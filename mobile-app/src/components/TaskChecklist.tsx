@@ -20,7 +20,7 @@ export default function TaskChecklist({ tasks, completedCount, onToggle, disable
     <section aria-labelledby="checklist-title" className="overflow-hidden rounded-2xl border border-border bg-surface shadow-[0_4px_24px_rgba(0,0,0,0.2)]">
       <div className="flex items-center justify-between border-b border-border bg-white/[0.035] p-4">
         <h3 id="checklist-title" className="flex items-center gap-2 text-sm font-semibold text-foreground">
-          <ListChecks className="h-4 w-4 text-primary" /> Build checklist
+          <ListChecks className="h-4 w-4 text-primary" /> Required to complete today
         </h3>
         <span className={cn('text-xs font-bold', done ? 'text-success' : 'text-subtle')}>
           {completedCount}/{total}

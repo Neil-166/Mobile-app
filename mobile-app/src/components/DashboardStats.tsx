@@ -48,7 +48,7 @@ export default function DashboardStats({
       value: `${streak} days`,
       sub: streak >= 7 ? 'On fire — keep it alive' : 'Momentum builds daily',
       icon: Flame,
-      color: '#F59E0B',
+      color: '#ff5a00',
       delay: 0,
     },
     {
@@ -129,7 +129,7 @@ export default function DashboardStats({
         >
           <div
             className="pointer-events-none absolute -right-10 -top-12 h-28 w-28 rounded-full"
-            style={{ background: 'radial-gradient(circle, rgba(245,158,11,0.12) 0%, transparent 70%)' }}
+            style={{ background: 'radial-gradient(circle, rgba(255,90,0,0.12) 0%, transparent 70%)' }}
             aria-hidden="true"
           />
           <div className="relative flex items-start gap-3">

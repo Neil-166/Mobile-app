@@ -17,11 +17,11 @@
   --color-muted: #CBD5E1;
   --color-subtle: #94A3B8;
 
-  --color-primary: #F59E0B;
-  --color-primary-hover: #FBBF24;
-  --color-accent: #F97316;
+  --color-primary: #ff5a00;
+  --color-primary-hover: #ff7a33;
+  --color-accent: #ff6a1a;
   --color-success: #22C55E;
-  --color-warning: #F59E0B;
+  --color-warning: #ff5a00;
   --color-danger: #EF4444;
 
   --font-sans: 'Inter Variable', Inter, system-ui, -apple-system, sans-serif;
@@ -79,7 +79,7 @@ body::before {
   pointer-events: none;
   z-index: 0;
   background:
-    radial-gradient(circle at 20% 0%, rgba(245,158,11,0.05), transparent 35%),
+    radial-gradient(circle at 20% 0%, rgba(255,90,0,0.05), transparent 35%),
     radial-gradient(circle at 100% 0%, rgba(255,255,255,0.02), transparent 30%);
 }
 
@@ -193,7 +193,7 @@ h3, .h3 { font-size: 20px; line-height: 1.2; font-weight: 600; }
    Progress bar — orange
    ============================================================ */
 .progress-bar {
-  background: linear-gradient(90deg, #F59E0B, #FBBF24);
+  background: linear-gradient(90deg, #ff5a00, #ff7a33);
   border-radius: 999px;
   transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
 }

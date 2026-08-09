@@ -113,7 +113,7 @@ export default function FocusSprint({ compact = false }: FocusSprintProps) {
               cy="22"
               r="18"
               fill="none"
-              stroke={state === 'completed' ? '#38B46A' : state === 'running' ? '#F59E0B' : 'rgba(255,255,255,0.18)'}
+              stroke={state === 'completed' ? '#38B46A' : state === 'running' ? '#ff5a00' : 'rgba(255,255,255,0.18)'}
               strokeWidth="3"
               strokeLinecap="round"
               strokeDasharray={2 * Math.PI * 18}
@@ -234,7 +234,7 @@ export default function FocusSprint({ compact = false }: FocusSprintProps) {
             <svg className="h-40 w-40 -rotate-90" viewBox="0 0 100 100" aria-hidden="true">
               <defs>
                 <linearGradient id="sprint-grad" x1="0" y1="0" x2="1" y2="1">
-                  <stop stopColor="#F59E0B" />
+                  <stop stopColor="#ff5a00" />
                   <stop offset="1" stopColor="#F97316" />
                 </linearGradient>
               </defs>

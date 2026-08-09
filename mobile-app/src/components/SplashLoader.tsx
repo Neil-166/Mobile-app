@@ -61,9 +61,9 @@ export default function SplashLoader({ onComplete }: { onComplete: () => void })
           >
             <div
               className="absolute inset-0 rounded-full blur-2xl"
-              style={{ background: 'rgba(245,158,11,0.22)', transform: 'scale(2)' }}
+              style={{ background: 'rgba(255,90,0,0.22)', transform: 'scale(2)' }}
             />
-            <div className="relative flex h-16 w-16 items-center justify-center rounded-2xl bg-[#F59E0B]">
+            <div className="relative flex h-16 w-16 items-center justify-center rounded-2xl bg-[#ff5a00]">
               <Flame className="h-8 w-8 text-[#111]" />
             </div>
           </motion.div>
@@ -91,7 +91,7 @@ export default function SplashLoader({ onComplete }: { onComplete: () => void })
               className="h-full rounded-full"
               style={{
                 width: `${progress * 100}%`,
-                background: '#F59E0B',
+                background: '#ff5a00',
               }}
             />
           </motion.div>

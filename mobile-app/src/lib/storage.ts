@@ -16,6 +16,7 @@ export const STORAGE_KEYS = {
   splashShown: `${PREFIX}-splash-shown`,
   resumeReminder: `${PREFIX}-resume-reminder`,
   resumeChoice: `${PREFIX}-resume-choice`,
+  dashboardTab: `${PREFIX}-dashboard-tab`,
 } as const;
 
 export function storageGet<T>(key: string): T | null {

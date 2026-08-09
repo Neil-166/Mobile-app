@@ -95,7 +95,7 @@ export function getRescuePhase(date: Date): RescuePhase {
 /** Muted, palette-harmonious avatar colors (AA-safe on dark surfaces). */
 export function getAvatarColor(initials: string): string {
   const colors = [
-    '#F59E0B', '#F97316', '#38B46A', '#E7A53A', '#E35D6A',
+    '#ff5a00', '#F97316', '#38B46A', '#E7A53A', '#E35D6A',
     '#F97316', '#3DA86A', '#F0B05A', '#D04F5D', '#4BA898',
   ];
   const index = initials.charCodeAt(0) % colors.length;

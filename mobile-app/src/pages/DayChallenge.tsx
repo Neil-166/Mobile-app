@@ -29,10 +29,10 @@ interface Day12Submission {
   submittedAt?: string;
 }
 
-const XP_EARNED = 50;
+const XP_EARNED = 25;
 
 const resourceMeta: Record<'starter' | 'inspiration' | 'guide', { label: string; icon: React.ElementType; color: string; hint: string }> = {
-  starter: { label: 'Starter idea', icon: Lightbulb, color: '#F59E0B', hint: 'Boilerplate to clone' },
+  starter: { label: 'Starter idea', icon: Lightbulb, color: '#ff5a00', hint: 'Boilerplate to clone' },
   inspiration: { label: 'UI inspiration', icon: Palette, color: '#8B5CF6', hint: 'Patterns to borrow' },
   guide: { label: 'Submission guide', icon: BookOpen, color: '#22C55E', hint: 'How to commit + post' },
 };
@@ -75,7 +75,8 @@ export default function DayChallengePage() {
   const allRequirementsMet = completedCount === requirements.length;
   const githubOk = Boolean(githubRepo.trim() || githubCommit.trim());
   const linkedinOk = Boolean(linkedin.trim());
-  const canSubmit = allRequirementsMet && githubOk && linkedinOk && !isSubmitting && !isSuccess;
+  const buildNotesOk = Boolean(buildNotes.trim());
+  const canSubmit = allRequirementsMet && githubOk && linkedinOk && buildNotesOk && !isSubmitting && !isSuccess;
 
   // One quiet celebration when the challenge opens — never again this session.
   useEffect(() => {
@@ -117,7 +118,7 @@ export default function DayChallengePage() {
       setIsSuccess(true);
       window.scrollTo({ top: 0, behavior: 'smooth' });
       toast.success(`Day ${dayNumber} submitted successfully 🎉`, {
-        description: `+${XP_EARNED} XP · Streak ${currentStudent.streak} → ${currentStudent.streak + 1}`,
+        description: `+${XP_EARNED} XP earned · Streak updated`,
       });
     }, 900);
   };
@@ -174,9 +175,9 @@ export default function DayChallengePage() {
                 <CheckCircle2 className="h-5 w-5 text-success" />
               </span>
               <div>
-                <h2 className="text-base font-bold text-foreground">Day {dayNumber} submitted successfully</h2>
+                <h2 className="text-base font-bold text-foreground">Day {dayNumber} submitted successfully 🎉</h2>
                 <p className="mt-1 text-xs leading-relaxed text-muted">
-                  Your proof is locked in and your streak is protected for today.
+                  Streak updated. Your proof is locked in.
                 </p>
               </div>
             </div>
@@ -317,7 +318,7 @@ export default function DayChallengePage() {
           <div className="mx-auto max-w-lg">
             <p className="mb-2 text-center text-[11px] text-subtle">
               {allRequirementsMet
-                ? 'Add a GitHub link + LinkedIn post to unlock submit.'
+                ? 'Add GitHub + LinkedIn + build notes to unlock submit.'
                 : `Tick every checklist task (${completedCount}/${requirements.length}) to unlock submit.`}
             </p>
             <Button

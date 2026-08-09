@@ -59,7 +59,7 @@ export default function Profile() {
           >
             <div
               className="pointer-events-none absolute -right-16 -top-16 h-52 w-52 rounded-full"
-              style={{ background: 'radial-gradient(circle, rgba(245,158,11,0.12) 0%, transparent 70%)' }}
+              style={{ background: 'radial-gradient(circle, rgba(255,90,0,0.12) 0%, transparent 70%)' }}
               aria-hidden="true"
             />
             <div className="relative flex items-center gap-4">

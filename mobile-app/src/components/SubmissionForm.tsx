@@ -17,6 +17,11 @@ interface SubmissionFormProps {
   onGoToChecklist: () => void;
 }
 
+function isValidUrl(value: string): boolean {
+  if (!value.trim()) return false;
+  try { new URL(value); return true; } catch { return false; }
+}
+
 const inputClasses =
   'input-field min-h-12 w-full px-4 text-sm';
 
@@ -37,6 +42,10 @@ export default function SubmissionForm({
 }: SubmissionFormProps) {
   const githubOk = Boolean(githubRepo.trim() || githubCommit.trim());
   const linkedinOk = Boolean(linkedin.trim());
+  const buildNotesOk = Boolean(buildNotes.trim());
+  const githubRepoValid = !githubRepo.trim() || isValidUrl(githubRepo);
+  const githubCommitValid = !githubCommit.trim() || isValidUrl(githubCommit);
+  const linkedinValid = !linkedin.trim() || isValidUrl(linkedin);
 
   return (
     <section aria-labelledby="submission-title" className="space-y-4">
@@ -79,45 +88,57 @@ export default function SubmissionForm({
             {linkedinOk ? <CheckCircle2 className="h-3.5 w-3.5 shrink-0" /> : <span className="ml-0.5 h-1.5 w-1.5 shrink-0 rounded-full bg-subtle/50" />}
             A LinkedIn post link
           </p>
+          <p className={cn('flex items-center gap-2 text-[12px]', buildNotesOk ? 'text-success' : 'text-muted')}>
+            {buildNotesOk ? <CheckCircle2 className="h-3.5 w-3.5 shrink-0" /> : <span className="ml-0.5 h-1.5 w-1.5 shrink-0 rounded-full bg-subtle/50" />}
+            What you built today
+          </p>
         </div>
       </div>
 
       <div className="space-y-4">
         <div>
           <label htmlFor="github-repo" className="mb-2 flex items-center text-sm font-semibold text-foreground">
-            <Github className="mr-2 h-4 w-4 text-muted" /> GitHub repository <span className="ml-1 text-danger">*</span>
+            <Github className="mr-2 h-4 w-4 text-muted" /> GitHub repository URL <span className="ml-1 text-danger">*</span>
           </label>
           <input
             id="github-repo"
             type="url"
             disabled={isSuccess}
-            placeholder="https://github.com/you/portfolio-card"
+            placeholder="https://github.com/you/expense-tracker"
             value={githubRepo}
             onChange={(event) => onGithubRepoChange(event.target.value)}
-            className={inputClasses}
+            className={cn(inputClasses, githubRepo && !githubRepoValid && 'border-danger/50')}
+            aria-invalid={githubRepo ? !githubRepoValid : undefined}
           />
+          {githubRepo && !githubRepoValid && (
+            <p className="mt-1.5 text-[11px] text-danger">Enter a valid URL (e.g. https://github.com/...)</p>
+          )}
         </div>
 
         <div>
           <label htmlFor="github-commit" className="mb-2 flex items-center text-sm font-semibold text-foreground">
-            <Github className="mr-2 h-4 w-4 text-muted" /> GitHub commit <span className="ml-1 text-danger">*</span>
-            <span className="ml-auto text-[11px] font-normal text-subtle">repo or commit — either works</span>
+            <Github className="mr-2 h-4 w-4 text-muted" /> GitHub commit URL
+            <span className="ml-auto text-[11px] font-normal text-subtle">optional — repo or commit works</span>
           </label>
           <input
             id="github-commit"
             type="url"
             disabled={isSuccess}
-            placeholder="https://github.com/you/portfolio-card/commit/abc123"
+            placeholder="https://github.com/you/expense-tracker/commit/abc123"
             value={githubCommit}
             onChange={(event) => onGithubCommitChange(event.target.value)}
-            className={inputClasses}
+            className={cn(inputClasses, githubCommit && !githubCommitValid && 'border-danger/50')}
+            aria-invalid={githubCommit ? !githubCommitValid : undefined}
           />
+          {githubCommit && !githubCommitValid && (
+            <p className="mt-1.5 text-[11px] text-danger">Enter a valid URL</p>
+          )}
         </div>
 
         <div>
           <div className="mb-2 flex items-center justify-between gap-3">
             <label htmlFor="linkedin-post" className="flex items-center text-sm font-semibold text-foreground">
-              <Linkedin className="mr-2 h-4 w-4 text-[#0077B5]" /> LinkedIn post <span className="ml-1 text-danger">*</span>
+              <Linkedin className="mr-2 h-4 w-4 text-[#0077B5]" /> LinkedIn post URL <span className="ml-1 text-danger">*</span>
             </label>
             <button
               type="button"
@@ -135,14 +156,18 @@ export default function SubmissionForm({
             placeholder="https://linkedin.com/posts/..."
             value={linkedin}
             onChange={(event) => onLinkedinChange(event.target.value)}
-            className={inputClasses}
+            className={cn(inputClasses, linkedin && !linkedinValid && 'border-danger/50')}
+            aria-invalid={linkedin ? !linkedinValid : undefined}
           />
+          {linkedin && !linkedinValid && (
+            <p className="mt-1.5 text-[11px] text-danger">Enter a valid LinkedIn post URL</p>
+          )}
         </div>
 
         <div>
           <label htmlFor="build-notes" className="mb-2 flex items-center text-sm font-semibold text-foreground">
             What did you build today?
-            <span className="ml-auto text-[11px] font-normal text-subtle">optional</span>
+            <span className="ml-auto text-[11px] font-normal text-danger">required</span>
           </label>
           <textarea
             id="build-notes"
@@ -151,7 +176,8 @@ export default function SubmissionForm({
             placeholder="A quick note for your future self and the community..."
             value={buildNotes}
             onChange={(event) => onBuildNotesChange(event.target.value)}
-            className="input-field w-full resize-none px-4 py-3 text-sm"
+            className={cn('input-field w-full resize-none px-4 py-3 text-sm', buildNotes && !buildNotesOk && 'border-danger/50')}
+            aria-invalid={buildNotes ? !buildNotesOk : undefined}
           />
         </div>
       </div>

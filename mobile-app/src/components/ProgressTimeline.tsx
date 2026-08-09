@@ -50,7 +50,7 @@ export default function ProgressTimeline({ streak }: ProgressTimelineProps) {
                   className={cn(
                     'grid h-8 w-8 place-items-center rounded-full',
                     day.status === 'completed'
-                      ? 'bg-gradient-to-br from-primary to-accent text-white shadow-[0_0_12px_rgba(245,158,11,0.18)]'
+                      ? 'bg-gradient-to-br from-primary to-accent text-white shadow-[0_0_12px_rgba(255,90,0,0.18)]'
                       : meta.dot
                   )}
                   aria-hidden="true"

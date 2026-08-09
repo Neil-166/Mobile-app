@@ -18,7 +18,7 @@ export default function MissedDayBanner({ onResume }: MissedDayBannerProps) {
     >
       <div
         className="pointer-events-none absolute -right-12 -top-12 h-32 w-32 rounded-full"
-        style={{ background: 'radial-gradient(circle, rgba(245,158,11,0.10) 0%, transparent 70%)' }}
+        style={{ background: 'radial-gradient(circle, rgba(255,90,0,0.10) 0%, transparent 70%)' }}
         aria-hidden="true"
       />
 

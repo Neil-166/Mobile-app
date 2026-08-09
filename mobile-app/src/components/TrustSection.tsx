@@ -4,7 +4,7 @@ import { Github } from '@/components/Icons';
 import { trustStats, type TrustStat } from '@/lib/mock-data';
 
 const accents: Record<TrustStat['id'], { icon: React.ElementType; color: string }> = {
-  students: { icon: Users, color: '#F59E0B' },
+  students: { icon: Users, color: '#ff5a00' },
   commits: { icon: Github, color: '#22C55E' },
   certificate: { icon: Award, color: '#F97316' },
   portfolio: { icon: Briefcase, color: '#8B5CF6' },
@@ -54,6 +54,10 @@ export default function TrustSection() {
             );
           })}
         </div>
+
+        <p className="mt-6 text-center text-[13px] leading-relaxed text-subtle">
+          Built for college students preparing for internships and placements.
+        </p>
       </div>
     </section>
   );

@@ -18,7 +18,7 @@ export default function ProgressRing({
   strokeWidth = 8,
   label,
   sublabel,
-  color = '#F59E0B',
+  color = '#ff5a00',
 }: ProgressRingProps) {
   const [animated, setAnimated] = useState(false);
 

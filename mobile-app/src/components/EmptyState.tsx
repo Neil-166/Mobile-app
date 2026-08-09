@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 export type EmptyStateVariant = 'first-day' | 'missed-day' | 'empty-profile' | 'no-submissions';
 
 const content: Record<EmptyStateVariant, { emoji: string; accent: string; soft: string }> = {
-  'first-day': { emoji: '🌱', accent: '#F59E0B', soft: 'rgba(245,158,11,0.14)' },
+  'first-day': { emoji: '🌱', accent: '#ff5a00', soft: 'rgba(255,90,0,0.14)' },
   'missed-day': { emoji: '🌤️', accent: '#E7A53A', soft: 'rgba(231,165,58,0.12)' },
   'empty-profile': { emoji: '🧩', accent: '#F97316', soft: 'rgba(90,167,255,0.12)' },
   'no-submissions': { emoji: '📦', accent: '#F97316', soft: 'rgba(217,119,6,0.12)' },

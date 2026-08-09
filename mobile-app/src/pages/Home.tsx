@@ -55,7 +55,7 @@ export default function Home() {
       <div className="pointer-events-none fixed inset-0 overflow-hidden" aria-hidden="true">
         <motion.div
           className="absolute top-[-10%] left-[-15%] w-[400px] h-[400px] rounded-full"
-          style={{ background: 'radial-gradient(circle, rgba(245,158,11,0.07) 0%, transparent 65%)' }}
+          style={{ background: 'radial-gradient(circle, rgba(255,90,0,0.07) 0%, transparent 65%)' }}
           animate={{ x: [0, 25, 0], y: [0, -15, 0] }}
           transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
         />
@@ -67,12 +67,12 @@ export default function Home() {
         >
           <div
             className="absolute inset-[-25%] rounded-full"
-            style={{ background: 'radial-gradient(circle, rgba(245,158,11,0.16) 0%, rgba(245,158,11,0.05) 40%, transparent 70%)', filter: 'blur(14px)' }}
+            style={{ background: 'radial-gradient(circle, rgba(255,90,0,0.16) 0%, rgba(255,90,0,0.05) 40%, transparent 70%)', filter: 'blur(14px)' }}
           />
           <motion.div
             className="absolute inset-[14%] rounded-full"
             style={{
-              background: 'radial-gradient(circle at 40% 35%, rgba(251,191,36,0.4), rgba(245,158,11,0.16) 45%, transparent 72%)',
+              background: 'radial-gradient(circle at 40% 35%, rgba(255,122,51,0.4), rgba(255,90,0,0.16) 45%, transparent 72%)',
               filter: 'blur(3px)',
             }}
             animate={{ scale: [1, 1.1, 1], rotateX: [0, 12, 0] }}
@@ -80,23 +80,23 @@ export default function Home() {
           />
           <div
             className="absolute inset-[30%] rounded-full"
-            style={{ background: 'radial-gradient(circle, rgba(255,220,80,0.55) 0%, rgba(245,158,11,0.2) 50%, transparent 75%)', filter: 'blur(2px)' }}
+            style={{ background: 'radial-gradient(circle, rgba(255,220,80,0.55) 0%, rgba(255,90,0,0.2) 50%, transparent 75%)', filter: 'blur(2px)' }}
           />
           <motion.div
             className="absolute inset-0 rounded-full"
-            style={{ border: '1.5px solid rgba(245,158,11,0.25)', transform: 'rotateX(55deg)' }}
+            style={{ border: '1.5px solid rgba(255,90,0,0.25)', transform: 'rotateX(55deg)' }}
             animate={{ rotateZ: [0, -360] }}
             transition={{ duration: 24, repeat: Infinity, ease: 'linear' }}
           />
           <motion.div
             className="absolute inset-[8%] rounded-full"
-            style={{ border: '1px solid rgba(245,158,11,0.16)', transform: 'rotateX(55deg) rotateY(30deg)' }}
+            style={{ border: '1px solid rgba(255,90,0,0.16)', transform: 'rotateX(55deg) rotateY(30deg)' }}
             animate={{ rotateZ: [0, 360] }}
             transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
           />
           <motion.div
             className="absolute inset-[-5%] rounded-full"
-            style={{ border: '0.5px solid rgba(245,158,11,0.1)' }}
+            style={{ border: '0.5px solid rgba(255,90,0,0.1)' }}
             animate={{ rotateZ: [0, -360] }}
             transition={{ duration: 36, repeat: Infinity, ease: 'linear' }}
           />
@@ -111,8 +111,8 @@ export default function Home() {
               height: `${3 + i}px`,
               top: `${14 + i * 10}%`,
               right: `${8 + i * 7}%`,
-              background: 'rgba(245,158,11,0.5)',
-              boxShadow: '0 0 6px rgba(245,158,11,0.35)',
+              background: 'rgba(255,90,0,0.5)',
+              boxShadow: '0 0 6px rgba(255,90,0,0.35)',
             }}
             animate={{ y: [0, -16 - i * 6, 0], opacity: [0.3, 0.7, 0.3], scale: [0.8, 1.2, 0.8] }}
             transition={{ duration: 3.5 + i * 1.2, repeat: Infinity, ease: 'easeInOut', delay: i * 0.7 }}
@@ -139,6 +139,24 @@ export default function Home() {
 
       {/* ═══ HERO — "Build for 60 days. Get noticed by recruiters." ═══ */}
       <HeroSection />
+
+      {/* ═══ COMMITMENT CARD — low-friction entry point ═══ */}
+      <section className="px-6 pb-8">
+        <div className="mx-auto max-w-[480px]">
+          <FadeIn>
+            <div className="rounded-2xl border border-primary/20 bg-primary/[0.06] p-5 text-center">
+              <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-primary/15">
+                <Flame className="h-5 w-5 text-primary flame-pulse" />
+              </div>
+              <h3 className="text-[17px] font-bold text-foreground">Start tonight</h3>
+              <div className="mt-3 flex flex-wrap items-center justify-center gap-3 text-[13px] text-muted">
+                <span className="flex items-center gap-1.5"><span className="inline-block h-1.5 w-1.5 rounded-full bg-primary" aria-hidden="true" /> 60 minutes a day</span>
+                <span className="flex items-center gap-1.5"><span className="inline-block h-1.5 w-1.5 rounded-full bg-primary" aria-hidden="true" /> Resume anytime if you miss a day</span>
+              </div>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
 
       {/* ═══ TRUST — mocked community stats ═══ */}
       <TrustSection />
@@ -175,13 +193,13 @@ export default function Home() {
               {[
                 { icon: Github, color: '#22C55E', title: 'GitHub activity', desc: 'A contribution graph with 60 straight days.', highlight: false },
                 { icon: Linkedin, color: '#0077B5', title: 'LinkedIn presence', desc: '60 posts documenting real, shipped work.', highlight: false },
-                { icon: Code2, color: '#F59E0B', title: 'A portfolio that builds itself', desc: '60 projects. One undeniable public record.', highlight: true },
+                { icon: Code2, color: '#ff5a00', title: 'A portfolio that builds itself', desc: '60 projects. One undeniable public record.', highlight: true },
                 { icon: Trophy, color: '#8B5CF6', title: 'A public proof profile', desc: 'One shareable link that proves you showed up.', highlight: false },
               ].map((item, i) => (
                 <div key={item.title} className={`flex items-center gap-4 py-3.5 border-b border-border ${i === 0 ? 'border-t' : ''}`}>
                   <div
                     className="grid h-9 w-9 shrink-0 place-items-center rounded-xl"
-                    style={{ background: item.highlight ? '#F59E0B' : `${item.color}15` }}
+                    style={{ background: item.highlight ? '#ff5a00' : `${item.color}15` }}
                   >
                     <item.icon className="h-4.5 w-4.5" style={{ color: item.highlight ? '#111' : item.color }} />
                   </div>

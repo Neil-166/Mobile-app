@@ -44,7 +44,7 @@ const ExportCard = forwardRef<HTMLDivElement, MomentumCardProps>(function Export
       }}
     >
       {/* Ambient glows */}
-      <div style={{ position: 'absolute', top: -180, right: -180, width: 620, height: 620, borderRadius: 999, background: 'radial-gradient(circle, rgba(245,158,11,0.4) 0%, transparent 70%)' }} />
+      <div style={{ position: 'absolute', top: -180, right: -180, width: 620, height: 620, borderRadius: 999, background: 'radial-gradient(circle, rgba(255,90,0,0.4) 0%, transparent 70%)' }} />
       <div style={{ position: 'absolute', bottom: -220, left: -160, width: 560, height: 560, borderRadius: 999, background: 'radial-gradient(circle, rgba(217,119,6,0.2) 0%, transparent 70%)' }} />
       {/* Grid dots */}
       <div
@@ -58,7 +58,7 @@ const ExportCard = forwardRef<HTMLDivElement, MomentumCardProps>(function Export
 
       {/* Branding */}
       <div style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: 24 }}>
-        <div style={{ width: 88, height: 88, borderRadius: 26, background: 'linear-gradient(135deg,#F59E0B,#F97316)', display: 'grid', placeItems: 'center', fontSize: 34, fontWeight: 900 }}>AB</div>
+        <div style={{ width: 88, height: 88, borderRadius: 26, background: 'linear-gradient(135deg,#ff5a00,#F97316)', display: 'grid', placeItems: 'center', fontSize: 34, fontWeight: 900 }}>AB</div>
         <div>
           <div style={{ fontSize: 40, fontWeight: 800, letterSpacing: '-0.01em' }}>ABTalks</div>
           <div style={{ fontSize: 26, color: '#F97316', fontWeight: 600 }}>60-Day Challenge</div>
@@ -145,7 +145,7 @@ export default function MomentumCard(props: MomentumCardProps) {
         className="relative mx-auto aspect-[9/16] w-full max-w-[300px] overflow-hidden rounded-[2rem] border border-primary/25 p-5 shadow-[0_4px_24px_rgba(0,0,0,0.2)]"
         style={{ background: 'linear-gradient(165deg, #0F1115 0%, #151821 48%, #151821 100%)' }}
       >
-        <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full" style={{ background: 'radial-gradient(circle, rgba(245,158,11,0.35) 0%, transparent 70%)' }} aria-hidden="true" />
+        <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full" style={{ background: 'radial-gradient(circle, rgba(255,90,0,0.35) 0%, transparent 70%)' }} aria-hidden="true" />
         <div className="pointer-events-none absolute -bottom-20 -left-14 h-44 w-44 rounded-full" style={{ background: 'radial-gradient(circle, rgba(217,119,6,0.18) 0%, transparent 70%)' }} aria-hidden="true" />
         <div
           className="pointer-events-none absolute inset-0"

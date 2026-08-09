@@ -19,16 +19,15 @@ import ResumeChallengeFlow from '@/components/resume/ResumeChallengeFlow';
 import StateTabs from '@/components/StateTabs';
 import StreakBadge from '@/components/StreakBadge';
 
-import DashboardStats from '@/components/DashboardStats';
 import ProgressTimeline from '@/components/ProgressTimeline';
 import AchievementGrid from '@/components/AchievementGrid';
 import ReflectionCard from '@/components/ReflectionCard';
 import {
   achievements, communityFeed, currentStudent, day12Challenge, leaderboard,
-  standingPercentile, students, type Student,
+  students, type Student,
 } from '@/lib/mock-data';
 import { formatTime, getAvatarColor, getGreeting, getRelativeTime, isAfterTenPM } from '@/lib/utils';
-import { STORAGE_KEYS, storageGet } from '@/lib/storage';
+import { STORAGE_KEYS, storageGet, storageSet } from '@/lib/storage';
 
 type StudentState = Student['state'];
 
@@ -90,7 +89,10 @@ function StateNotice({ state, onProfile, onResume }: { state: StudentState; onPr
 
 export default function Dashboard() {
   const [now, setNow] = useState(() => new Date());
-  const [selectedState, setSelectedState] = useState<StudentState>('active');
+  const [selectedState, setSelectedState] = useState<StudentState>(() => {
+    const saved = storageGet<StudentState>(STORAGE_KEYS.dashboardTab);
+    return saved && ['active', 'first-day', 'missed-day', 'empty-profile'].includes(saved) ? saved : 'active';
+  });
   const [submittedToday, setSubmittedToday] = useState(false);
   const [showAllCommunity, setShowAllCommunity] = useState(false);
   const [showLeaderboard, setShowLeaderboard] = useState(false);
@@ -172,23 +174,63 @@ export default function Dashboard() {
 
       <main className="relative mx-auto max-w-lg space-y-6 px-5 pt-6">
         {/* ===== Segmented control (demo edge states) ===== */}
-        <StateTabs value={selectedState} onChange={setSelectedState} />
+        <StateTabs value={selectedState} onChange={(tab) => { setSelectedState(tab); storageSet(STORAGE_KEYS.dashboardTab, tab); }} />
 
         {/* ===== Edge-state notice ===== */}
         <StateNotice state={selectedState} onProfile={scrollToProfile} onResume={() => setResumeOpen(true)} />
 
-        {/* ===== Five cards above the fold ===== */}
-        <Reveal delay={0.05}>
-          <DashboardStats
-            streak={streak}
-            currentDay={dayDone}
-            percent={percent}
-            standing={selectedState === 'active' ? standingPercentile : undefined}
-            todayTitle={day12Challenge.title}
-            todayTime={day12Challenge.estimatedTime}
-            todayHref="/day/12"
-            todayDone={completed}
-          />
+        {/* ===== Today's Task — dominant card ===== */}
+        {selectedState === 'active' && (
+          <Reveal delay={0.05}>
+            <Link to="/day/12" className="block">
+              <div className="relative overflow-hidden rounded-2xl border border-primary/25 bg-surface p-5 shadow-[0_4px_24px_rgba(0,0,0,0.2)] transition-colors hover:border-primary/45">
+                <div className="pointer-events-none absolute -right-10 -top-12 h-32 w-32 rounded-full" style={{ background: 'radial-gradient(circle, rgba(255,90,0,0.12) 0%, transparent 70%)' }} aria-hidden="true" />
+                <div className="relative">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-primary">
+                    {completed ? 'Day complete ✓' : "Today's task"}
+                  </p>
+                  <h2 className="mt-1.5 text-[20px] font-extrabold leading-snug text-foreground">
+                    {completed ? `Day ${dayDone} submitted` : day12Challenge.title}
+                  </h2>
+                  <p className="mt-1 text-[12px] text-subtle">
+                    {completed ? `+${student.streak + 1} streak · ${percent}% done` : `${day12Challenge.estimatedTime} · Day ${dayDone} of 60`}
+                  </p>
+                </div>
+                <div className="mt-4">
+                  <Button variant={completed ? 'success' : 'gradient'} size="lg" className="w-full font-bold shadow-[0_4px_24px_rgba(0,0,0,0.25)]">
+                    {completed ? <><CheckCircle2 className="h-5 w-5" /> Day {dayDone} complete</> : <><Flame className="h-5 w-5 flame-pulse" /> Continue Day 12 <ArrowRight className="h-4 w-4" /></>}
+                  </Button>
+                </div>
+              </div>
+            </Link>
+          </Reveal>
+        )}
+
+        {/* ===== Progress hierarchy — prominent display ===== */}
+        <Reveal>
+          <section aria-label="Challenge progress" className="rounded-2xl border border-border bg-surface p-4 shadow-[0_4px_24px_rgba(0,0,0,0.2)]">
+            <div className="flex items-center justify-between px-1">
+              <h2 className="text-sm font-semibold text-foreground">Your progress</h2>
+              <span className="text-xs font-semibold text-primary">{percent}% done</span>
+            </div>
+            <div className="mt-3 grid grid-cols-3 gap-2">
+              <div className="rounded-xl border border-border bg-bg-elevated p-3 text-center">
+                <p className="text-[18px] font-extrabold text-foreground">{dayDone}<span className="text-subtle"> / 60</span></p>
+                <p className="mt-0.5 text-[10px] font-medium uppercase tracking-[0.1em] text-subtle">Days</p>
+              </div>
+              <div className="rounded-xl border border-border bg-bg-elevated p-3 text-center">
+                <p className="text-[18px] font-extrabold text-foreground">{60 - dayDone}</p>
+                <p className="mt-0.5 text-[10px] font-medium uppercase tracking-[0.1em] text-subtle">Left</p>
+              </div>
+              <div className="rounded-xl border border-border bg-bg-elevated p-3 text-center">
+                <p className="text-[18px] font-extrabold text-warning">{streak}</p>
+                <p className="mt-0.5 text-[10px] font-medium uppercase tracking-[0.1em] text-subtle">Streak 🔥</p>
+              </div>
+            </div>
+            <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-white/8" role="progressbar" aria-valuenow={percent} aria-valuemin={0} aria-valuemax={100} aria-label="Challenge progress">
+              <div className="progress-bar h-full" style={{ width: `${percent}%` }} />
+            </div>
+          </section>
         </Reveal>
 
         {/* ===== Last 7 days ===== */}
@@ -206,6 +248,11 @@ export default function Dashboard() {
               <span className="text-xs text-subtle">{earnedCount} unlocked</span>
             </div>
             <AchievementGrid />
+            {selectedState === 'active' && (
+              <p className="mt-2 px-1 text-[11px] leading-relaxed text-subtle">
+                Top 18% this week based on consecutive submissions. Complete Day 12 to maintain your standing.
+              </p>
+            )}
           </section>
         </Reveal>
 

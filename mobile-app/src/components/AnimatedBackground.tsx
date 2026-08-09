@@ -31,7 +31,7 @@ export default function AnimatedBackground() {
         className="absolute -right-40 -top-40 h-[26rem] w-[26rem] rounded-full"
         style={{
           y: yTop,
-          background: 'radial-gradient(circle, rgba(245,158,11,0.10) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(255,90,0,0.10) 0%, transparent 70%)',
         }}
         animate={{ opacity: [0.6, 1, 0.6] }}
         transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut' }}
@@ -51,7 +51,7 @@ export default function AnimatedBackground() {
         className="absolute left-1/2 top-1/2 h-[30rem] w-[30rem] -translate-x-1/2 -translate-y-1/2 rounded-full"
         style={{
           y: yMid,
-          background: 'radial-gradient(circle, rgba(245,158,11,0.04) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(255,90,0,0.04) 0%, transparent 70%)',
         }}
         animate={{ scale: [1, 1.15, 1] }}
         transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }}

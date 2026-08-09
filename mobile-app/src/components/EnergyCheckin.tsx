@@ -6,7 +6,7 @@ type EnergyLevel = 'tired' | 'okay' | 'energized';
 
 const energyOptions = [
   { id: 'tired', emoji: '😴', label: 'Tired', color: '#94A3B8' },
-  { id: 'okay', emoji: '🙂', label: 'Okay', color: '#F59E0B' },
+  { id: 'okay', emoji: '🙂', label: 'Okay', color: '#ff5a00' },
   { id: 'energized', emoji: '⚡', label: 'Energized', color: '#38B46A' },
 ] as const;
 

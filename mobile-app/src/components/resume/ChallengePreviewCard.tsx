@@ -13,7 +13,7 @@ export default function ChallengePreviewCard({ day, title, estimatedTime, descri
     <div className="relative overflow-hidden rounded-2xl border border-primary/25 bg-primary/[0.06] p-4 shadow-[0_4px_24px_rgba(0,0,0,0.2)]">
       <div
         className="pointer-events-none absolute -right-10 -top-12 h-28 w-28 rounded-full"
-        style={{ background: 'radial-gradient(circle, rgba(245,158,11,0.12) 0%, transparent 70%)' }}
+        style={{ background: 'radial-gradient(circle, rgba(255,90,0,0.12) 0%, transparent 70%)' }}
         aria-hidden="true"
       />
 

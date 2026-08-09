@@ -181,11 +181,10 @@ export const day12Challenge: DayChallenge = {
     'Write a concise LinkedIn post about what you learned',
   ],
   requirements: [
-    { id: 'r1', label: 'Build the portfolio card HTML structure', completed: false },
-    { id: 'r2', label: 'Style with mobile-first CSS (no frameworks)', completed: false },
-    { id: 'r3', label: 'Add hover and focus interactions', completed: false },
-    { id: 'r4', label: 'Make it responsive across 320px–1440px', completed: false },
-    { id: 'r5', label: 'Push code to GitHub with a clear commit message', completed: false },
+    { id: 'r1', label: 'Create add-expense form', completed: false },
+    { id: 'r2', label: 'Display expense list', completed: false },
+    { id: 'r3', label: 'Show total amount', completed: false },
+    { id: 'r4', label: 'Make the UI mobile responsive', completed: false },
   ],
   workflow: [
     {
@@ -393,7 +392,7 @@ export const tracks = [
     name: 'Full Stack',
     description: 'Build complete web apps from scratch — React, Node, databases, and deployment.',
     icon: '🌐',
-    color: '#F59E0B',
+    color: '#ff5a00',
     projects: ['Portfolio site', 'Task manager', 'Real-time chat', 'REST API'],
     level: 'Intermediate',
   },
@@ -474,7 +473,7 @@ export const homeFocusTask = {
 };
 
 export const homeQuickActions = [
-  { id: 'plan', label: 'Generate Study Plan', icon: '📋', color: '#F59E0B' },
+  { id: 'plan', label: 'Generate Study Plan', icon: '📋', color: '#ff5a00' },
   { id: 'ai', label: 'Ask AI Assistant', icon: '🤖', color: '#7C8CFF' },
   { id: 'task', label: 'Add Task', icon: '✅', color: '#22C55E' },
   { id: 'focus', label: 'Start Focus', icon: '⏱️', color: '#F97316' },
@@ -536,10 +535,10 @@ export interface TrustStat {
 }
 
 export const trustStats: TrustStat[] = [
-  { id: 'students', icon: '👩‍🎓', value: 5200, suffix: '+', label: 'students joined' },
-  { id: 'commits', icon: '💾', value: 180000, suffix: '+', label: 'commits submitted' },
-  { id: 'certificate', icon: '🏆', value: 60, suffix: '-day', label: 'completion certificate' },
-  { id: 'portfolio', icon: '💼', value: null, display: 'Recruiter-ready', label: 'portfolio building' },
+  { id: 'students', icon: '👩‍🎓', value: 5284, suffix: '+', label: 'students joined' },
+  { id: 'commits', icon: '💾', value: 182430, suffix: '+', label: 'commits submitted' },
+  { id: 'certificate', icon: '🏆', value: 74, suffix: ' min', label: 'avg. daily build time' },
+  { id: 'portfolio', icon: '💼', value: 60, suffix: '-day', label: 'completion certificate' },
 ];
 
 export const howItWorksSteps = [
