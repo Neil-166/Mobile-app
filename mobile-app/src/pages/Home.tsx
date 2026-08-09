@@ -59,7 +59,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-dvh bg-bg overflow-x-clip relative">
+    <div className="min-h-dvh bg-bg overflow-x-clip relative main-scroll">
       {/* Animated 3D background — hidden on mobile to prevent scroll flicker */}
       {!isMobile && (
       <div className="pointer-events-none fixed inset-0 overflow-hidden" aria-hidden="true">

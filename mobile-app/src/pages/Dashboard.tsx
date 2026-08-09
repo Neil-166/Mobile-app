@@ -32,6 +32,10 @@ import { STORAGE_KEYS, storageGet, storageSet } from '@/lib/storage';
 type StudentState = Student['state'];
 
 function Reveal({ children, delay = 0, className = '' }: { children: React.ReactNode; delay?: number; className?: string }) {
+  // On mobile, skip scroll-triggered animations entirely — no motion, no flicker
+  if (typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches) {
+    return <div className={className}>{children}</div>;
+  }
   return (
     <motion.div
       initial={{ opacity: 0, y: 18 }}
@@ -140,7 +144,7 @@ export default function Dashboard() {
   }[selectedState];
 
   return (
-    <div className={`min-h-screen bg-bg pb-dashboard ${nightMode ? 'night-mode' : ''}`}>
+    <div className={`min-h-screen bg-bg pb-dashboard main-scroll ${nightMode ? 'night-mode' : ''}`}>
       <AnimatedBackground />
 
       {/* ===== Two-row header ===== */}

@@ -7,6 +7,11 @@ import '@fontsource-variable/jetbrains-mono';
 import App from './App';
 import './index.css';
 
+// Step 10: Add mobile performance mode class
+if (typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches) {
+  document.body.classList.add('mobile-performance');
+}
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
