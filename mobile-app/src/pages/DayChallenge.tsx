@@ -117,8 +117,9 @@ export default function DayChallengePage() {
       setIsSubmitting(false);
       setIsSuccess(true);
       window.scrollTo({ top: 0, behavior: 'smooth' });
-      toast.success(`Day ${dayNumber} submitted successfully 🎉`, {
-        description: `+${XP_EARNED} XP earned · Streak updated`,
+      toast.success(`🔥 Streak updated to ${currentStudent.streak + 1} days`, {
+        description: `See you tomorrow for Day ${dayNumber + 1}`,
+        duration: 3000,
       });
     }, 900);
   };
@@ -178,6 +179,9 @@ export default function DayChallengePage() {
                 <h2 className="text-base font-bold text-foreground">Day {dayNumber} submitted successfully 🎉</h2>
                 <p className="mt-1 text-xs leading-relaxed text-muted">
                   Streak updated to {currentStudent.streak + 1} days. Your proof is locked in.
+                </p>
+                <p className="mt-1.5 text-[11px] text-subtle">
+                  Next challenge unlocks tomorrow at 8:00 PM.
                 </p>
               </div>
             </div>
@@ -240,6 +244,10 @@ export default function DayChallengePage() {
               onToggle={toggleRequirement}
               disabled={isSuccess}
             />
+
+            <p className="px-1 text-[11px] text-subtle">
+              Submit once all four checklist items are complete.
+            </p>
 
             {/* ===== Resources ===== */}
             <section aria-labelledby="resources-title">

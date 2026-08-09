@@ -265,20 +265,27 @@ h3, .h3 { font-size: 20px; line-height: 1.2; font-weight: 600; }
 
 /* ============================================================
    Mobile performance — disable blur on sticky/fixed elements
-   that cause scroll flicker. Cards keep their blur (not sticky).
+   that cause scroll flicker.
    ============================================================ */
 @media (max-width: 768px) {
+  /* Kill all backdrop blur — replace with solid dark background */
   .glass,
+  .glass-card,
+  .backdrop-blur,
+  .backdrop-blur-sm,
+  .backdrop-blur-md,
+  .backdrop-blur-lg,
   .backdrop-blur-xl {
     -webkit-backdrop-filter: none !important;
     backdrop-filter: none !important;
-  }
-  .glass {
-    background: rgba(11, 11, 11, 0.96) !important;
+    background: rgba(17, 17, 17, 0.96) !important;
   }
 
-  /* Hide expensive animated backgrounds on mobile */
-  .animated-bg {
+  /* Hide expensive animated/decorative backgrounds on mobile */
+  .floating-orb,
+  .hero-gradient,
+  .animated-bg,
+  .bg-glow {
     display: none !important;
   }
 
@@ -298,6 +305,18 @@ html,
 body {
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
+}
+
+/* ============================================================
+   Mobile readability — enforce minimum sizes at 390px
+   ============================================================ */
+@media (max-width: 430px) {
+  body {
+    font-size: 16px;
+  }
+  p, span, li, label, input, textarea, select, button {
+    font-size: max(14px, inherit);
+  }
 }
 
 /* ============================================================

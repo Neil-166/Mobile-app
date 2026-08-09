@@ -172,7 +172,7 @@ export default function Dashboard() {
         </div>
       </header>
 
-      <main className="relative mx-auto max-w-lg space-y-6 px-5 pt-6">
+      <main className="relative mx-auto max-w-lg space-y-7 px-5 pt-6">
         {/* ===== Segmented control (demo edge states) ===== */}
         <StateTabs value={selectedState} onChange={(tab) => { setSelectedState(tab); storageSet(STORAGE_KEYS.dashboardTab, tab); }} />
 
@@ -272,7 +272,9 @@ export default function Dashboard() {
             <AchievementGrid />
             {selectedState === 'active' && (
               <p className="mt-2 px-1 text-[11px] leading-relaxed text-subtle">
-                Top 18% this week based on consecutive submissions. Complete Day 12 to maintain your standing.
+                Top 18% this week. Complete Day 12 to maintain your standing.
+                <br />
+                <span className="text-subtle">Based on consecutive submissions this week.</span>
               </p>
             )}
           </section>
