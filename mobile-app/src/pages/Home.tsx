@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Clock, Code2, Flame, Zap, Trophy } from 'lucide-react';
@@ -49,9 +49,19 @@ function ContributionGraph() {
 }
 
 export default function Home() {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 768px)');
+    setIsMobile(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
+
   return (
     <div className="min-h-dvh bg-bg overflow-x-clip relative">
-      {/* Animated 3D background — compact glowing flame orb */}
+      {/* Animated 3D background — hidden on mobile to prevent scroll flicker */}
+      {!isMobile && (
       <div className="pointer-events-none fixed inset-0 overflow-hidden" aria-hidden="true">
         <motion.div
           className="absolute top-[-10%] left-[-15%] w-[400px] h-[400px] rounded-full"
@@ -119,6 +129,7 @@ export default function Home() {
           />
         ))}
       </div>
+      )}
 
       {/* ═══ HEADER ═══ */}
       <header className="fixed top-0 left-0 right-0 z-40 safe-top glass">

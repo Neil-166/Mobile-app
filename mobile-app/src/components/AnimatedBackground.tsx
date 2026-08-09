@@ -1,19 +1,32 @@
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 
 /**
  * Subtle floating gradient orbs that drift slowly as the page scrolls (parallax).
  * Kept light for performance (radial gradients, no filter blur) and disabled
- * under prefers-reduced-motion.
+ * under prefers-reduced-motion or on mobile (scroll-linked transforms cause flicker).
  */
 export default function AnimatedBackground() {
   const reduced = useReducedMotion();
+  const [isMobile, setIsMobile] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const { scrollY } = useScroll();
 
+  // All hooks must be called unconditionally (Rules of Hooks)
   const yTop = useTransform(scrollY, [0, 900], [0, 140]);
   const yBottom = useTransform(scrollY, [0, 900], [0, -100]);
   const yMid = useTransform(scrollY, [0, 900], [0, -60]);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 768px)');
+    setIsMobile(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
+
+  // Hide on mobile — fixed parallax orbs cause scroll flicker
+  if (isMobile) return null;
 
   if (reduced) {
     return (

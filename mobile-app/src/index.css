@@ -264,11 +264,40 @@ h3, .h3 { font-size: 20px; line-height: 1.2; font-weight: 600; }
 }
 
 /* ============================================================
+   Mobile performance — disable blur on sticky/fixed elements
+   that cause scroll flicker. Cards keep their blur (not sticky).
+   ============================================================ */
+@media (max-width: 768px) {
+  .glass,
+  .backdrop-blur-xl {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+  .glass {
+    background: rgba(11, 11, 11, 0.96) !important;
+  }
+
+  /* Hide expensive animated backgrounds on mobile */
+  .animated-bg {
+    display: none !important;
+  }
+
+  /* Reduce heavy shadows — less compositor work */
+  [class*="shadow-[0_4px_24px"],
+  [class*="shadow-[0_8px"],
+  .shadow-2xl {
+    --tw-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+    box-shadow: var(--tw-shadow) !important;
+  }
+}
+
+/* ============================================================
    Safe scrolling
    ============================================================ */
 html,
 body {
   overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* ============================================================
