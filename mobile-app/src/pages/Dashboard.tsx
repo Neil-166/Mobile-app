@@ -2,30 +2,33 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
-  Award, Calendar, CheckCircle2, ChevronDown, Clock, ExternalLink, Flame,
-  Medal, Shield, Sparkles, Trophy, UserRound, Users,
+  ArrowRight, Award, CheckCircle2, ChevronDown, Flame, Medal, Shield,
+  Sparkles, Trophy, UserRound, Users,
 } from 'lucide-react';
 import { Github } from '@/components/Icons';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import AnimatedBackground from '@/components/AnimatedBackground';
 
-import CountUp from '@/components/CountUp';
 import EmptyState from '@/components/EmptyState';
 import EnergyCheckin from '@/components/EnergyCheckin';
 import FocusSprint from '@/components/FocusSprint';
 import MidnightRescue from '@/components/MidnightRescue';
-import ProgressRing from '@/components/ProgressRing';
 import StateTabs from '@/components/StateTabs';
 import StreakBadge from '@/components/StreakBadge';
+
+import DashboardStats from '@/components/DashboardStats';
+import ProgressTimeline from '@/components/ProgressTimeline';
+import AchievementGrid from '@/components/AchievementGrid';
+import ReflectionCard from '@/components/ReflectionCard';
 import {
   achievements, communityFeed, currentStudent, day12Challenge, leaderboard,
-  students, type Student, weeklyHeatmap,
+  standingPercentile, students, type Student,
 } from '@/lib/mock-data';
-import { formatTime, getAvatarColor, getGreeting, getMidnightCountdown, getRelativeTime, isAfterTenPM } from '@/lib/utils';
+import { formatTime, getAvatarColor, getGreeting, getRelativeTime, isAfterTenPM } from '@/lib/utils';
+import { STORAGE_KEYS, storageGet } from '@/lib/storage';
 
 type StudentState = Student['state'];
-const storageKey = 'abtalks-day-12-submission';
 
 function Reveal({ children, delay = 0, className = '' }: { children: React.ReactNode; delay?: number; className?: string }) {
   return (
@@ -55,14 +58,14 @@ function StateNotice({ state, onProfile }: { state: StudentState; onProfile: () 
     'missed-day': {
       variant: 'missed-day' as const,
       title: 'One missed day does not erase the work.',
-      body: 'Your progress is still here. Pick one manageable task, use your next Streak Shield when it is available, and begin again.',
-      action: 'Re-enter today',
+      body: 'Your progress is still here. Pick one manageable task and begin again — the streak rebuilds faster than you think.',
+      action: 'Resume the challenge',
       href: '/day/12',
     },
     'empty-profile': {
       variant: 'empty-profile' as const,
       title: 'Add the places where you build.',
-      body: 'Connect GitHub and LinkedIn when you are ready. A complete profile helps turn quiet effort into a visible learning record.',
+      body: 'Connect GitHub and LinkedIn when you are ready. A complete profile turns quiet effort into a visible learning record.',
       action: 'Complete profile',
       href: '#profile',
     },
@@ -77,7 +80,7 @@ function StateNotice({ state, onProfile }: { state: StudentState; onProfile: () 
       ) : (
         <Link to={map.href} className="block w-full">
           <Button variant="secondary" size="sm" className="w-full min-h-12">
-            {map.action} <ExternalLink className="h-4 w-4" />
+            {map.action} <ArrowRight className="h-4 w-4" />
           </Button>
         </Link>
       )}
@@ -95,7 +98,7 @@ export default function Dashboard() {
   useEffect(() => {
     const tick = window.setInterval(() => setNow(new Date()), 30_000);
     const submissionRead = window.setTimeout(() => {
-      setSubmittedToday(Boolean(window.localStorage.getItem(storageKey)));
+      setSubmittedToday(Boolean(storageGet(STORAGE_KEYS.day12Submission)));
     }, 0);
     return () => {
       window.clearInterval(tick);
@@ -116,6 +119,7 @@ export default function Dashboard() {
   const dayDone = completed ? student.currentDay + 1 : student.currentDay;
   const streak = completed ? student.streak + 1 : student.streak;
   const percent = Math.round((dayDone / 60) * 100);
+  const earnedCount = achievements.filter((a) => a.earned).length;
 
   const visibleCommunity = showAllCommunity ? communityFeed : communityFeed.slice(0, 3);
   const visibleLeaderboard = showLeaderboard ? leaderboard : leaderboard.slice(0, 3);
@@ -125,12 +129,15 @@ export default function Dashboard() {
     document.getElementById('profile')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   };
 
-  const openChallenge = () => {
-    if (!completed) toast('Day 12 is waiting for you.');
-  };
+  const stickyCta = {
+    active: { label: completed ? 'Day 12 complete' : 'Continue Day 12', href: '/day/12' },
+    'first-day': { label: 'Start Day 1', href: '/day/12' },
+    'missed-day': { label: 'Resume the challenge', href: '/day/12' },
+    'empty-profile': { label: 'Complete your profile', href: null },
+  }[selectedState];
 
   return (
-    <div className={`min-h-screen bg-bg pb-nav ${nightMode ? 'night-mode' : ''}`}>
+    <div className={`min-h-screen bg-bg pb-dashboard ${nightMode ? 'night-mode' : ''}`}>
       <AnimatedBackground />
 
       {/* ===== Two-row header ===== */}
@@ -163,111 +170,56 @@ export default function Dashboard() {
       </header>
 
       <main className="relative mx-auto max-w-lg space-y-6 px-5 pt-6">
-        {/* ===== Segmented control ===== */}
+        {/* ===== Segmented control (demo edge states) ===== */}
         <StateTabs value={selectedState} onChange={setSelectedState} />
 
-        {/* ===== State notice / empty states ===== */}
+        {/* ===== Edge-state notice ===== */}
         <StateNotice state={selectedState} onProfile={scrollToProfile} />
 
-        {/* ===== 1+2. Streak hero (streak + day progress) ===== */}
-        <Reveal>
-          <section
-            aria-label="Your progress"
-            className="relative overflow-hidden rounded-2xl border border-border bg-surface p-6 surface-gradient shadow-[0_4px_24px_rgba(0,0,0,0.2)]"
-          >
-            <div
-              className="pointer-events-none absolute -right-14 -top-16 h-52 w-52 rounded-full"
-              style={{ background: 'radial-gradient(circle, rgba(245,158,11,0.10) 0%, transparent 70%)' }}
-              aria-hidden="true"
-            />
+        {/* ===== Five cards above the fold ===== */}
+        <Reveal delay={0.05}>
+          <DashboardStats
+            streak={streak}
+            currentDay={dayDone}
+            percent={percent}
+            standing={selectedState === 'active' ? standingPercentile : undefined}
+            todayTitle={day12Challenge.title}
+            todayTime={day12Challenge.estimatedTime}
+            todayHref="/day/12"
+            todayDone={completed}
+          />
+        </Reveal>
 
-            <div className="relative flex items-center justify-between gap-4">
-              <div className="min-w-0">
-                <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-accent">60-day challenge</p>
-                <div className="mt-2 flex items-baseline gap-1.5">
-                  <CountUp end={dayDone} className="text-[44px] font-extrabold leading-none tracking-tight text-foreground" />
-                  <span className="pb-1 text-sm font-semibold text-subtle">/ 60</span>
-                </div>
-                <p className="mt-1.5 text-sm text-muted">
-                  {completed ? 'Day done. Streak protected.' : 'One meaningful build, then close your laptop guilt-free.'}
-                </p>
-                <div className="mt-3 inline-flex items-center gap-1.5 rounded-full border border-warning/25 bg-warning/10 px-3 py-1">
-                  <Flame className="h-3.5 w-3.5 text-warning flame-pulse" />
-                  <span className="text-xs font-bold text-warning">{streak} day streak</span>
-                </div>
-              </div>
-              <div className="shrink-0">
-                <ProgressRing
-                  value={dayDone}
-                  max={60}
-                  size={96}
-                  strokeWidth={8}
-                  label={<CountUp end={percent} suffix="%" />}
-                  sublabel="complete"
-                />
-              </div>
+        {/* ===== Last 7 days ===== */}
+        <Reveal>
+          <ProgressTimeline streak={streak} />
+        </Reveal>
+
+        {/* ===== Achievements ===== */}
+        <Reveal>
+          <section>
+            <div className="mb-3 flex items-center justify-between px-1">
+              <h2 className="flex items-center gap-1.5 text-sm font-semibold text-foreground">
+                <Trophy className="h-4 w-4 text-warning" /> Achievements
+              </h2>
+              <span className="text-xs text-subtle">{earnedCount} unlocked</span>
             </div>
+            <AchievementGrid />
           </section>
         </Reveal>
 
-        {/* ===== 3+4+5. Today's build — task, remaining time, primary CTA (above the fold) ===== */}
-        <Reveal delay={0.05}>
-          <section
-            aria-labelledby="today-build-title"
-            className="relative overflow-hidden rounded-2xl border border-border bg-surface p-5 shadow-[0_4px_24px_rgba(0,0,0,0.2)]"
-          >
-            <div className="flex items-start justify-between gap-3">
-              <div className="min-w-0">
-                <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-accent">Today&apos;s build</p>
-                <h2 id="today-build-title" className="mt-1 text-lg font-bold leading-snug text-foreground">
-                  {day12Challenge.title}
-                </h2>
-              </div>
-              <span className="shrink-0 rounded-md bg-primary/10 px-2 py-1 text-[10px] font-semibold text-accent">
-                {day12Challenge.estimatedTime}
-              </span>
-            </div>
-
-            <div className="mt-2 flex items-center justify-between gap-3 text-xs text-subtle">
-              <span className="inline-flex items-center gap-1.5">
-                <Clock className="h-3.5 w-3.5" /> {day12Challenge.difficulty} · {day12Challenge.track}
-              </span>
-              <span className="inline-flex items-center gap-1.5 tabular-nums">
-                <Clock className="h-3.5 w-3.5 text-warning" /> {getMidnightCountdown()} to midnight
-              </span>
-            </div>
-
-            <Link to="/day/12" className="mt-4 block">
-              <Button
-                id="open-today-challenge"
-                onClick={openChallenge}
-                variant={completed ? 'success' : 'gradient'}
-                size="lg"
-                className="w-full font-bold"
-              >
-                {completed ? (
-                  <><CheckCircle2 className="h-5 w-5" /> View submitted challenge</>
-                ) : (
-                  <>Open today&apos;s challenge <ExternalLink className="h-4 w-4" /></>
-                )}
-              </Button>
-            </Link>
-
-            {completed && (
-              <p className="mt-2 text-center text-xs text-subtle">
-                Submitted and saved to your public record.
-              </p>
-            )}
-          </section>
+        {/* ===== 2-minute nightly reflection ===== */}
+        <Reveal>
+          <ReflectionCard />
         </Reveal>
 
         {/* ===== Midnight Rescue (time-based) ===== */}
-        <Reveal delay={0.08}>
+        <Reveal>
           <MidnightRescue />
         </Reveal>
 
         {/* ===== Focus Sprint ===== */}
-        <Reveal delay={0.08}>
+        <Reveal>
           <section aria-labelledby="focus-sprint-heading" className="space-y-2">
             <div className="flex items-center gap-2 px-1">
               <span className="h-3 w-1 rounded-full bg-primary" aria-hidden="true" />
@@ -278,28 +230,6 @@ export default function Dashboard() {
         </Reveal>
 
         <Reveal><EnergyCheckin /></Reveal>
-
-        {/* ===== This week ===== */}
-        <Reveal>
-          <section>
-            <div className="mb-3 flex items-center justify-between px-1">
-              <h2 className="flex items-center gap-1.5 text-sm font-semibold text-foreground">
-                <Calendar className="h-4 w-4 text-primary" /> This week
-              </h2>
-              <span className="text-xs text-subtle">{streak} day streak</span>
-            </div>
-            <div className="flex justify-between rounded-2xl border border-border bg-surface p-3.5 shadow-[0_4px_24px_rgba(0,0,0,0.2)]">
-              {weeklyHeatmap.map((day) => (
-                <div key={day.day} className="flex flex-col items-center gap-1.5">
-                  <div className={`grid h-8 w-8 place-items-center rounded-lg ${day.completed ? 'bg-gradient-to-br from-primary to-accent shadow-[0_0_12px_rgba(245,158,11,0.15)]' : 'bg-border-muted'}`}>
-                    {day.completed ? <CheckCircle2 className="h-4 w-4 text-white" /> : <span className="h-1.5 w-1.5 rounded-full bg-subtle/40" />}
-                  </div>
-                  <span className={`text-[10px] ${day.completed ? 'text-muted' : 'text-subtle/60'}`}>{day.day}</span>
-                </div>
-              ))}
-            </div>
-          </section>
-        </Reveal>
 
         {/* ===== GitHub Contribution Graph ===== */}
         <Reveal>
@@ -319,7 +249,7 @@ export default function Dashboard() {
                   return <div key={i} className="aspect-square rounded-[2px]" style={{ background: colors[level] }} />;
                 })}
               </div>
-              <div className="flex items-center justify-between mt-2 text-[10px] text-subtle">
+              <div className="mt-2 flex items-center justify-between text-[10px] text-subtle">
                 <span>Less</span>
                 <div className="flex items-center gap-0.5">
                   {[0, 1, 2, 3, 4].map((l) => (
@@ -346,36 +276,10 @@ export default function Dashboard() {
             <div className="rounded-2xl border border-border bg-surface p-4 shadow-[0_4px_24px_rgba(0,0,0,0.2)]">
               <div className="mb-4 flex items-center justify-between">
                 <Award className="h-5 w-5 text-warning" />
-                <span className="text-xs font-bold text-muted">#{selectedState === 'active' ? '7' : '—'}</span>
+                <span className="text-xs font-bold text-muted">{student.totalXP.toLocaleString()} XP</span>
               </div>
-              <p className="text-sm font-bold text-foreground">{student.totalXP.toLocaleString()} XP</p>
+              <p className="text-sm font-bold text-foreground">Total XP</p>
               <p className="mt-1 text-[11px] leading-relaxed text-subtle">Earned by showing your work.</p>
-            </div>
-          </section>
-        </Reveal>
-
-        {/* ===== Achievements ===== */}
-        <Reveal>
-          <section>
-            <div className="mb-3 flex items-center justify-between px-1">
-              <h2 className="flex items-center gap-1.5 text-sm font-semibold text-foreground">
-                <Trophy className="h-4 w-4 text-warning" /> Achievement shelf
-              </h2>
-              <span className="text-xs text-subtle">4 unlocked</span>
-            </div>
-            <div className="grid grid-cols-4 gap-2">
-              {achievements.slice(0, 4).map((achievement) => (
-                <button
-                  key={achievement.id}
-                  type="button"
-                  onClick={() => toast(achievement.description)}
-                  className="min-h-24 rounded-2xl border border-border bg-surface p-2 text-center transition-colors hover:border-primary/40 shadow-[0_4px_24px_rgba(0,0,0,0.2)]"
-                  aria-label={`${achievement.title}: ${achievement.description}`}
-                >
-                  <span className="block text-xl">{achievement.icon}</span>
-                  <span className="mt-1 block text-[9px] font-semibold leading-tight text-muted">{achievement.title}</span>
-                </button>
-              ))}
             </div>
           </section>
         </Reveal>
@@ -501,6 +405,28 @@ export default function Dashboard() {
           </section>
         </Reveal>
       </main>
+
+      {/* ===== Sticky primary CTA above the bottom nav ===== */}
+      <div className="fixed bottom-[calc(env(safe-area-inset-bottom)+64px)] left-0 right-0 z-40 px-5">
+        <div className="mx-auto max-w-lg">
+          {stickyCta.href ? (
+            <Link to={stickyCta.href} className="block">
+              <Button
+                variant={completed ? 'success' : 'gradient'}
+                size="lg"
+                className="w-full font-bold shadow-[0_8px_30px_rgba(0,0,0,0.45)]"
+              >
+                {completed ? <CheckCircle2 className="h-5 w-5" /> : <Flame className="h-5 w-5 flame-pulse" />}
+                {stickyCta.label} <ArrowRight className="ml-1 h-4 w-4" />
+              </Button>
+            </Link>
+          ) : (
+            <Button onClick={scrollToProfile} size="lg" className="w-full font-bold shadow-[0_8px_30px_rgba(0,0,0,0.45)]">
+              <UserRound className="h-5 w-5" /> {stickyCta.label} <ArrowRight className="ml-1 h-4 w-4" />
+            </Button>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

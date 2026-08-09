@@ -120,6 +120,8 @@ h3, .h3 { font-size: 20px; line-height: 1.2; font-weight: 600; }
 .safe-top { padding-top: env(safe-area-inset-top); }
 .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
 .pb-nav { padding-bottom: calc(env(safe-area-inset-bottom) + 80px); }
+/* Dashboard: clears both the sticky bottom CTA and the bottom nav. */
+.pb-dashboard { padding-bottom: calc(env(safe-area-inset-bottom) + 152px); }
 
 /* ============================================================
    Card — glass

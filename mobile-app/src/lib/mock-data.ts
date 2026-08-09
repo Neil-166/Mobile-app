@@ -24,6 +24,8 @@ export interface DayChallenge {
   day: number;
   title: string;
   description: string;
+  /** One-sentence outcome — shown as the Goal card at the top of the day. */
+  goal: string;
   difficulty: 'Beginner' | 'Intermediate' | 'Advanced';
   estimatedTime: string;
   track: Track;
@@ -52,6 +54,8 @@ export interface Resource {
   title: string;
   url: string;
   type: 'docs' | 'video' | 'article' | 'github';
+  /** Groups resources into the three shortcut buttons on the day page. */
+  kind?: 'starter' | 'inspiration' | 'guide';
 }
 
 export interface LeaderboardEntry {
@@ -163,8 +167,10 @@ export const day12Challenge: DayChallenge = {
   title: 'Build a Responsive Portfolio Card',
   description:
     'Create a polished, mobile-first developer portfolio card that showcases your skills, projects, and social links. Focus on clean typography, consistent spacing, and smooth hover interactions.',
+  goal:
+    'By the end of today, you’ll have a responsive portfolio card you can reuse in your own site and share on LinkedIn.',
   difficulty: 'Intermediate',
-  estimatedTime: '2–3 hours',
+  estimatedTime: '60–90 min',
   track: 'Full Stack',
   buildPreview: '/preview-day12.png',
   objectives: [
@@ -178,9 +184,8 @@ export const day12Challenge: DayChallenge = {
     { id: 'r1', label: 'Build the portfolio card HTML structure', completed: false },
     { id: 'r2', label: 'Style with mobile-first CSS (no frameworks)', completed: false },
     { id: 'r3', label: 'Add hover and focus interactions', completed: false },
-    { id: 'r4', label: 'Make it fully responsive (320px–1440px)', completed: false },
-    { id: 'r5', label: 'Push code to GitHub with a descriptive commit', completed: false },
-    { id: 'r6', label: 'Post a 3-sentence LinkedIn update about today', completed: false },
+    { id: 'r4', label: 'Make it responsive across 320px–1440px', completed: false },
+    { id: 'r5', label: 'Push code to GitHub with a clear commit message', completed: false },
   ],
   workflow: [
     {
@@ -224,24 +229,22 @@ export const day12Challenge: DayChallenge = {
   ],
   resources: [
     {
-      title: 'CSS Grid Complete Guide',
-      url: 'https://css-tricks.com/snippets/css/complete-guide-grid/',
-      type: 'article',
-    },
-    {
-      title: 'Clamp() for fluid typography',
-      url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/clamp',
-      type: 'docs',
-    },
-    {
-      title: 'Kevin Powell: Mobile-first CSS',
-      url: 'https://youtube.com/watch?v=0ohtVzCSHqs',
-      type: 'video',
-    },
-    {
       title: 'Portfolio card starter template',
       url: 'https://github.com/abtalks/day12-starter',
       type: 'github',
+      kind: 'starter',
+    },
+    {
+      title: 'CSS Grid Complete Guide',
+      url: 'https://css-tricks.com/snippets/css/complete-guide-grid/',
+      type: 'article',
+      kind: 'inspiration',
+    },
+    {
+      title: 'How to submit: commit + LinkedIn post',
+      url: 'https://github.com/abtalks/submission-guide',
+      type: 'article',
+      kind: 'guide',
     },
   ],
 };
@@ -262,13 +265,13 @@ export const leaderboard: LeaderboardEntry[] = [
 
 // Achievements
 export const achievements: Achievement[] = [
-  { id: 'a1', title: 'First Step', description: 'Completed Day 1', icon: '🌱', earned: true, earnedAt: 'Day 1' },
-  { id: 'a2', title: 'Week One', description: '7-day streak', icon: '🔥', earned: true, earnedAt: 'Day 7' },
-  { id: 'a3', title: 'Code Committer', description: '10 GitHub commits', icon: '💻', earned: true, earnedAt: 'Day 9' },
-  { id: 'a4', title: 'Night Owl', description: 'Submitted after 11 PM', icon: '🦉', earned: true, earnedAt: 'Day 5' },
-  { id: 'a5', title: 'Two Weeks Strong', description: '14-day streak', icon: '⚡', earned: false },
-  { id: 'a6', title: 'LinkedIn Pro', description: '10 LinkedIn posts', icon: '📢', earned: false },
-  { id: 'a7', title: 'Halfway Hero', description: 'Day 30 completed', icon: '🏆', earned: false },
+  { id: 'a1', title: '7-Day Streak', description: 'Seven days in a row', icon: '🔥', earned: true, earnedAt: 'Day 7' },
+  { id: 'a2', title: 'First GitHub Commit', description: 'Pushed your first proof', icon: '💻', earned: true, earnedAt: 'Day 1' },
+  { id: 'a3', title: 'First LinkedIn Post', description: 'Documented a build publicly', icon: '📢', earned: true, earnedAt: 'Day 1' },
+  { id: 'a4', title: '10-Day Consistency', description: 'Ten days of showing up', icon: '⚡', earned: true, earnedAt: 'Day 10' },
+  { id: 'a5', title: 'Two Weeks Strong', description: '14-day streak', icon: '🔥', earned: false },
+  { id: 'a6', title: 'Halfway Hero', description: 'Day 30 completed', icon: '🏆', earned: false },
+  { id: 'a7', title: 'LinkedIn Pro', description: '10 LinkedIn posts', icon: '📢', earned: false },
   { id: 'a8', title: 'Full Circle', description: '60 days complete', icon: '🎖️', earned: false },
 ];
 
@@ -519,3 +522,141 @@ export const homeRecentActivity = [
   { action: '25-min focus sprint done', time: 'Yesterday', icon: '⏱️' },
   { action: 'LinkedIn post shared', time: '2 days ago', icon: '📢' },
 ];
+
+// ─── Landing Page Sections ───
+
+export interface TrustStat {
+  id: string;
+  icon: string;
+  value: number | null;
+  /** Static display text used instead of a counted number (e.g. phrase cards). */
+  display?: string;
+  suffix?: string;
+  label: string;
+}
+
+export const trustStats: TrustStat[] = [
+  { id: 'students', icon: '👩‍🎓', value: 5200, suffix: '+', label: 'students joined' },
+  { id: 'commits', icon: '💾', value: 180000, suffix: '+', label: 'commits submitted' },
+  { id: 'certificate', icon: '🏆', value: 60, suffix: '-day', label: 'completion certificate' },
+  { id: 'portfolio', icon: '💼', value: null, display: 'Recruiter-ready', label: 'portfolio building' },
+];
+
+export const howItWorksSteps = [
+  {
+    step: 1,
+    icon: '🎯',
+    title: 'Pick a track',
+    desc: 'Choose Full Stack, AI/ML, DSA, Cybersecurity, or UI/UX — a 60-day path matched to your level.',
+  },
+  {
+    step: 2,
+    icon: '🔨',
+    title: 'Build every day',
+    desc: 'Spend 60–90 minutes shipping one real thing. Commit it to GitHub and post a short LinkedIn update.',
+  },
+  {
+    step: 3,
+    icon: '✅',
+    title: 'Submit proof of work',
+    desc: 'Paste your links into the day page, lock in your streak, and watch your public record grow.',
+  },
+];
+
+export const motivationStudents = [
+  {
+    name: 'Aditya Kumar',
+    college: 'IIT Bombay',
+    track: 'AI/ML',
+    avatar: 'AK',
+    streak: 30,
+    day: 30,
+    quote: 'ABTalks gave me the structure I was missing. Now I have 30 commits with real projects, not just tutorials.',
+  },
+  {
+    name: 'Sneha Iyer',
+    college: 'NIT Trichy',
+    track: 'Full Stack',
+    avatar: 'SI',
+    streak: 28,
+    day: 28,
+    quote: 'I used to start projects and never finish them. The daily proof changed everything.',
+  },
+  {
+    name: 'Meera Krishnan',
+    college: 'IIIT Bangalore',
+    track: 'UI/UX',
+    avatar: 'MK',
+    streak: 20,
+    day: 20,
+    quote: 'My LinkedIn got 3 recruiter DMs after week 2. Not because of one post — because of consistent ones.',
+  },
+  {
+    name: 'Dhruv Patel',
+    college: 'BITS Pilani',
+    track: 'Cybersecurity',
+    avatar: 'DP',
+    streak: 25,
+    day: 25,
+    quote: '25 straight days of shipping. My GitHub graph finally looks like a real developer’s.',
+  },
+  {
+    name: 'Priya Nair',
+    college: 'NITK Surathkal',
+    track: 'AI/ML',
+    avatar: 'PN',
+    streak: 14,
+    day: 14,
+    quote: 'Two weeks in and the habit finally feels automatic. The streak keeps me honest.',
+  },
+  {
+    name: 'Riya Joshi',
+    college: 'Jadavpur University',
+    track: 'DSA',
+    avatar: 'RJ',
+    streak: 18,
+    day: 18,
+    quote: 'I stopped doomscrolling. Now I solve and I ship — and I actually look forward to it.',
+  },
+];
+
+export const faqItems = [
+  {
+    question: 'Do I need prior experience?',
+    answer:
+      'No. Tracks range from beginner to advanced — UI/UX and DSA start from zero. We’re honest about prerequisites so you pick a path you can actually finish.',
+  },
+  {
+    question: 'How much time per day?',
+    answer:
+      'About 60–90 minutes a day. Some days are shorter, some run longer when you’re in the flow. It’s designed around a college schedule, usually evenings.',
+  },
+  {
+    question: 'What happens if I miss a day?',
+    answer:
+      'Your streak resets but your progress never does — you can resume from your current day anytime. You also earn a Streak Shield every 14 days to protect one miss.',
+  },
+  {
+    question: 'Is this free?',
+    answer:
+      'Yes. All challenges, resources, and the community are completely free for students. Your only investment is time and consistency.',
+  },
+];
+
+// ─── Dashboard timeline ───
+
+export type DayStatus = 'completed' | 'today' | 'missed';
+
+/** Last 7 days of the challenge — "today" is the live end of the array. */
+export const weeklyTimeline: { day: string; status: DayStatus }[] = [
+  { day: 'Mon', status: 'completed' },
+  { day: 'Tue', status: 'completed' },
+  { day: 'Wed', status: 'completed' },
+  { day: 'Thu', status: 'completed' },
+  { day: 'Fri', status: 'completed' },
+  { day: 'Sat', status: 'missed' },
+  { day: 'Sun', status: 'today' },
+];
+
+/** Mocked percentile rank — used for the "Standing" stat. */
+export const standingPercentile = 18;

@@ -17,12 +17,13 @@ export default function App() {
       {!splashDone && <SplashLoader onComplete={handleSplashComplete} />}
       <Routes location={location}>
         <Route element={<MobileLayout />}>
-          <Route path="/" element={<Navigate to="/home" replace />} />
-          <Route path="/home" element={<Home />} />
+          {/* `/` is the landing page — judged first at 390px */}
+          <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Navigate to="/" replace />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/day/:day" element={<DayChallenge />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="*" element={<Navigate to="/home" replace />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>
     </>

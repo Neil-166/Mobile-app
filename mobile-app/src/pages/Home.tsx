@@ -1,12 +1,15 @@
 import { lazy, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import {
-  ArrowRight, Code2, Flame, Trophy, Upload,
-} from 'lucide-react';
+import { ArrowRight, Code2, Flame, Trophy } from 'lucide-react';
 import { Github, Linkedin } from '@/components/Icons';
 import { Button } from '@/components/ui/button';
-import { socialProofStudents } from '@/lib/mock-data';
+import HeroSection from '@/components/HeroSection';
+import TrustSection from '@/components/TrustSection';
+import HowItWorks from '@/components/HowItWorks';
+import MotivationCarousel from '@/components/MotivationCarousel';
+import FaqSection from '@/components/FaqSection';
+import Skeleton from '@/components/Skeleton';
 
 const HeroPhone = lazy(() => import('@/components/HeroPhone'));
 
@@ -16,10 +19,13 @@ function scrollTo(id: string) {
 
 function FadeIn({ children, delay = 0, className = '' }: { children: React.ReactNode; delay?: number; className?: string }) {
   return (
-    <motion.div initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }}
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-40px' }}
       transition={{ duration: 0.7, delay, ease: [0.25, 0.1, 0.25, 1] as const }}
-      className={className}>
+      className={className}
+    >
       {children}
     </motion.div>
   );
@@ -47,27 +53,22 @@ export default function Home() {
     <div className="min-h-dvh bg-bg overflow-x-clip relative">
       {/* Animated 3D background — compact glowing flame orb */}
       <div className="pointer-events-none fixed inset-0 overflow-hidden" aria-hidden="true">
-        {/* Wide ambient glow */}
         <motion.div
           className="absolute top-[-10%] left-[-15%] w-[400px] h-[400px] rounded-full"
           style={{ background: 'radial-gradient(circle, rgba(245,158,11,0.07) 0%, transparent 65%)' }}
           animate={{ x: [0, 25, 0], y: [0, -15, 0] }}
           transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
         />
-
-        {/* ── 3D rotating flame orb ── */}
         <motion.div
           className="absolute top-[8%] right-[5%] w-[180px] h-[180px]"
           style={{ perspective: 400 }}
           animate={{ rotateY: [0, 360] }}
           transition={{ duration: 22, repeat: Infinity, ease: 'linear' }}
         >
-          {/* Soft outer halo */}
           <div
             className="absolute inset-[-25%] rounded-full"
             style={{ background: 'radial-gradient(circle, rgba(245,158,11,0.16) 0%, rgba(245,158,11,0.05) 40%, transparent 70%)', filter: 'blur(14px)' }}
           />
-          {/* Inner bright core */}
           <motion.div
             className="absolute inset-[14%] rounded-full"
             style={{
@@ -77,26 +78,22 @@ export default function Home() {
             animate={{ scale: [1, 1.1, 1], rotateX: [0, 12, 0] }}
             transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
           />
-          {/* Hot center dot */}
           <div
             className="absolute inset-[30%] rounded-full"
             style={{ background: 'radial-gradient(circle, rgba(255,220,80,0.55) 0%, rgba(245,158,11,0.2) 50%, transparent 75%)', filter: 'blur(2px)' }}
           />
-          {/* Ring 1 — tilted orbit */}
           <motion.div
             className="absolute inset-0 rounded-full"
             style={{ border: '1.5px solid rgba(245,158,11,0.25)', transform: 'rotateX(55deg)' }}
             animate={{ rotateZ: [0, -360] }}
             transition={{ duration: 24, repeat: Infinity, ease: 'linear' }}
           />
-          {/* Ring 2 — offset tilt */}
           <motion.div
             className="absolute inset-[8%] rounded-full"
             style={{ border: '1px solid rgba(245,158,11,0.16)', transform: 'rotateX(55deg) rotateY(30deg)' }}
             animate={{ rotateZ: [0, 360] }}
             transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
           />
-          {/* Ring 3 — thin outer ring */}
           <motion.div
             className="absolute inset-[-5%] rounded-full"
             style={{ border: '0.5px solid rgba(245,158,11,0.1)' }}
@@ -105,7 +102,6 @@ export default function Home() {
           />
         </motion.div>
 
-        {/* Floating ember particles */}
         {[0, 1, 2].map((i) => (
           <motion.div
             key={i}
@@ -118,17 +114,8 @@ export default function Home() {
               background: 'rgba(245,158,11,0.5)',
               boxShadow: '0 0 6px rgba(245,158,11,0.35)',
             }}
-            animate={{
-              y: [0, -16 - i * 6, 0],
-              opacity: [0.3, 0.7, 0.3],
-              scale: [0.8, 1.2, 0.8],
-            }}
-            transition={{
-              duration: 3.5 + i * 1.2,
-              repeat: Infinity,
-              ease: 'easeInOut',
-              delay: i * 0.7,
-            }}
+            animate={{ y: [0, -16 - i * 6, 0], opacity: [0.3, 0.7, 0.3], scale: [0.8, 1.2, 0.8] }}
+            transition={{ duration: 3.5 + i * 1.2, repeat: Infinity, ease: 'easeInOut', delay: i * 0.7 }}
           />
         ))}
       </div>
@@ -150,88 +137,34 @@ export default function Home() {
         </div>
       </header>
 
-      {/* ═══ HERO ═══ */}
-      <section className="relative flex min-h-[92svh] flex-col justify-center px-6 pt-20 pb-10 max-w-[560px] mx-auto">
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] as const }}>
-          <p className="mb-4 text-[12px] font-semibold uppercase tracking-[0.2em] text-primary">60 Days. One Commitment.</p>
-          <h1 className="text-[36px] sm:text-[42px] leading-[1.05] font-bold tracking-[-0.03em] text-foreground mb-4">
-            Build every day. <span className="text-primary">Become undeniable.</span>
-          </h1>
-          <p className="text-[16px] leading-[1.65] text-muted mb-6 max-w-[520px]">
-            Build something every day for 60 days, document your progress,
-            and turn your consistency into a public portfolio recruiters can&apos;t ignore.
-          </p>
-          <div className="flex flex-col gap-3 mb-5 max-w-[360px]">
-            <Link to="/dashboard">
-              <Button variant="default" size="lg" className="w-full text-[15px]">Start the 60-Day Challenge <ArrowRight className="h-4 w-4 ml-1" /></Button>
-            </Link>
-            <button onClick={() => scrollTo('how-it-works')}
-              className="flex items-center justify-center min-h-14 rounded-2xl border border-border bg-surface text-foreground text-[15px] font-medium hover:bg-white/5 transition-colors">
-              See how it works
-            </button>
-          </div>
-          <div className="card-pad flex items-center gap-4 max-w-[420px]">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary">
-              <Flame className="h-6 w-6 text-[#111] flame-pulse" />
-            </div>
-            <div>
-              <p className="text-[14px] font-semibold text-foreground">The streak is alive.</p>
-              <p className="text-[13px] text-muted">This could be you — starting today.</p>
-            </div>
-          </div>
-        </motion.div>
-      </section>
+      {/* ═══ HERO — "Build for 60 days. Get noticed by recruiters." ═══ */}
+      <HeroSection />
 
-      {/* ═══ "EVERY DAY" ═══ */}
-      <section className="px-6 py-10">
-        <div className="max-w-[560px] mx-auto">
+      {/* ═══ TRUST — mocked community stats ═══ */}
+      <TrustSection />
+
+      {/* ═══ HOW IT WORKS — 3 steps ═══ */}
+      <HowItWorks />
+
+      {/* ═══ SEE IT IN ACTION — live mini-dashboard in a phone frame ═══ */}
+      <section className="px-6 py-12 bg-bg-elevated">
+        <div className="mx-auto max-w-[560px] text-center">
           <FadeIn>
-            <h2 className="text-[28px] sm:text-[32px] font-bold text-foreground leading-[1.1] tracking-[-0.02em]">
-              Every day, you build.<br />Every day, you commit.<br /><span className="text-primary">Every day, you prove it.</span>
-            </h2>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.15em] text-primary mb-1">See It In Action</p>
+            <h2 className="text-[24px] font-bold text-foreground mb-2">Your streak, progress ring, and proof — one place.</h2>
+            <p className="text-[14px] text-muted mb-8">Open the app at night, do your build, submit your links, close the laptop.</p>
+          </FadeIn>
+          <FadeIn delay={0.1}>
+            <Suspense fallback={<Skeleton className="mx-auto h-[380px] w-[200px] rounded-[2.2rem]" />}>
+              <HeroPhone />
+            </Suspense>
           </FadeIn>
         </div>
       </section>
 
-      {/* ═══ HOW IT WORKS ═══ */}
-      <section id="how-it-works" className="px-6 py-12 bg-bg-elevated">
-        <div className="max-w-[560px] mx-auto">
-          <FadeIn>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.15em] text-primary mb-1">How It Works</p>
-            <h2 className="text-[24px] font-bold text-foreground mb-1">The proof-of-work loop</h2>
-            <p className="text-[14px] text-muted mb-8">Five steps. One chain. Each one a notch in your public proof.</p>
-          </FadeIn>
-          <div className="relative">
-            <div className="absolute left-5 top-5 bottom-5 w-px bg-gradient-to-b from-primary/40 to-transparent" aria-hidden="true" />
-            <div className="space-y-6 pl-12">
-              {[
-                { icon: Code2, title: 'Build', desc: 'Ship something real, every single day.' },
-                { icon: Github, title: 'Commit to GitHub', desc: 'Your contribution graph becomes your proof.' },
-                { icon: Linkedin, title: 'Post on LinkedIn', desc: 'Document the build in public, like a developer.' },
-                { icon: Upload, title: 'Submit proof', desc: 'Upload both proofs to lock the day in.' },
-                { icon: Flame, title: 'Keep your streak', desc: "Don't break the chain. Repeat for 60 days." },
-              ].map((item, i) => (
-                <FadeIn key={item.title} delay={i * 0.06}>
-                  <div className="relative">
-                    <div className="absolute -left-[2.4rem] flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-surface" aria-hidden="true">
-                      <item.icon className="h-5 w-5 text-subtle" />
-                    </div>
-                    <div className="border-b border-border pb-5">
-                      <h3 className="text-[15px] font-semibold text-foreground mb-0.5">{item.title}</h3>
-                      <p className="text-[13px] text-muted">{item.desc}</p>
-                    </div>
-                  </div>
-                </FadeIn>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ═══ WHY 60 DAYS ═══ */}
+      {/* ═══ WHY 60 DAYS — evidence ═══ */}
       <section className="px-6 py-12">
-        <div className="max-w-[560px] mx-auto">
+        <div className="mx-auto max-w-[560px]">
           <FadeIn>
             <p className="text-[11px] font-semibold uppercase tracking-[0.15em] text-primary mb-1">Why 60 Days</p>
             <h2 className="text-[24px] font-bold text-foreground mb-1">Consistency creates evidence</h2>
@@ -246,8 +179,10 @@ export default function Home() {
                 { icon: Trophy, color: '#8B5CF6', title: 'A public proof profile', desc: 'One shareable link that proves you showed up.', highlight: false },
               ].map((item, i) => (
                 <div key={item.title} className={`flex items-center gap-4 py-3.5 border-b border-border ${i === 0 ? 'border-t' : ''}`}>
-                  <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl"
-                    style={{ background: item.highlight ? '#F59E0B' : `${item.color}15` }}>
+                  <div
+                    className="grid h-9 w-9 shrink-0 place-items-center rounded-xl"
+                    style={{ background: item.highlight ? '#F59E0B' : `${item.color}15` }}
+                  >
                     <item.icon className="h-4.5 w-4.5" style={{ color: item.highlight ? '#111' : item.color }} />
                   </div>
                   <div className="flex-1 min-w-0">
@@ -262,58 +197,12 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══ SEE IT IN ACTION ═══ */}
-      <section className="px-6 py-12 bg-bg-elevated">
-        <div className="max-w-[560px] mx-auto text-center">
-          <FadeIn>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.15em] text-primary mb-1">See It In Action</p>
-            <h2 className="text-[24px] font-bold text-foreground mb-2">Build one meaningful thing every day for 60 days.</h2>
-            <p className="text-[14px] text-muted mb-8">Your streak, your progress ring, and your public proof — all in one place.</p>
-          </FadeIn>
-          <FadeIn delay={0.1}>
-            <Suspense fallback={<div className="mx-auto h-[380px] w-[200px] shimmer rounded-[2.2rem]" />}>
-              <HeroPhone />
-            </Suspense>
-          </FadeIn>
-        </div>
-      </section>
+      {/* ═══ MOTIVATION — swipeable streak carousel ═══ */}
+      <MotivationCarousel />
 
-      {/* ═══ SOCIAL PROOF ═══ */}
-      <section className="px-6 py-12">
-        <div className="max-w-[560px] mx-auto">
-          <FadeIn>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.15em] text-primary mb-1">Community</p>
-            <h2 className="text-[24px] font-bold text-foreground mb-1">People who showed up</h2>
-            <p className="text-[14px] text-muted mb-6">Real students. Real streaks. No fake screenshots.</p>
-          </FadeIn>
-          <div className="space-y-3">
-            {socialProofStudents.map((student, i) => (
-              <FadeIn key={student.name} delay={0.08 + i * 0.06}>
-                <div className="card p-4">
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-primary text-sm font-bold text-[#111] flex-shrink-0">{student.avatar}</div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between">
-                        <p className="text-[14px] font-semibold text-foreground truncate">{student.name}</p>
-                        <div className="flex items-center gap-1 ml-2">
-                          <Flame className="w-3.5 h-3.5 text-primary" />
-                          <span className="text-[12px] font-semibold text-primary">{student.streak}</span>
-                        </div>
-                      </div>
-                      <p className="text-[11px] text-subtle">{student.college} · {student.track}</p>
-                    </div>
-                  </div>
-                  <p className="text-[13px] text-muted leading-relaxed">&ldquo;{student.quote}&rdquo;</p>
-                </div>
-              </FadeIn>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ═══ GITHUB ACTIVITY ═══ */}
+      {/* ═══ YOUR PROOF — contribution graph ═══ */}
       <section className="px-6 py-10 bg-bg-elevated">
-        <div className="max-w-[560px] mx-auto">
+        <div className="mx-auto max-w-[560px]">
           <FadeIn>
             <p className="text-[11px] font-semibold uppercase tracking-[0.15em] text-primary mb-1">Your Proof</p>
             <h2 className="text-[24px] font-bold text-foreground mb-1">60 days of green squares</h2>
@@ -326,8 +215,7 @@ export default function Home() {
                 <span>Less</span>
                 <div className="flex items-center gap-1">
                   {[0, 1, 2, 3, 4].map((l) => (
-                    <div key={l} className="h-2.5 w-2.5 rounded-sm"
-                      style={{ background: ['#151821', '#0e4429', '#006d32', '#26a641', '#39d353'][l] }} />
+                    <div key={l} className="h-2.5 w-2.5 rounded-sm" style={{ background: ['#151821', '#0e4429', '#006d32', '#26a641', '#39d353'][l] }} />
                   ))}
                 </div>
                 <span>More</span>
@@ -337,9 +225,9 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══ ACHIEVEMENTS ═══ */}
+      {/* ═══ MILESTONES ═══ */}
       <section className="px-6 py-10">
-        <div className="max-w-[560px] mx-auto">
+        <div className="mx-auto max-w-[560px]">
           <FadeIn>
             <p className="text-[11px] font-semibold uppercase tracking-[0.15em] text-primary mb-1">Milestones</p>
             <h2 className="text-[24px] font-bold text-foreground mb-5">Your 60-day journey</h2>
@@ -362,9 +250,12 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ═══ FAQ ═══ */}
+      <FaqSection />
+
       {/* ═══ FINAL CTA ═══ */}
       <section id="cta" className="px-6 py-14">
-        <div className="max-w-[480px] mx-auto">
+        <div className="mx-auto max-w-[480px]">
           <FadeIn>
             <div className="card p-7 text-center border-primary/20">
               <div className="text-4xl mb-3">🔥</div>
@@ -375,7 +266,7 @@ export default function Home() {
               </p>
               <Link to="/dashboard">
                 <Button variant="default" size="lg" className="w-full max-w-[340px] text-[15px]">
-                  Start the 60-Day Challenge <ArrowRight className="h-4 w-4 ml-1" />
+                  Start Day 1 <ArrowRight className="h-4 w-4 ml-1" />
                 </Button>
               </Link>
               <p className="text-[11px] text-subtle mt-3 uppercase tracking-wider">Free for students · No experience needed</p>
