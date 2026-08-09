@@ -104,7 +104,7 @@ export default function FocusSprint({ compact = false }: FocusSprintProps) {
 
   if (compact) {
     return (
-      <div className="flex items-center gap-3 rounded-xl border border-border bg-surface p-3 shadow-[0_8px_24px_rgba(0,0,0,0.18)]">
+      <div className="flex items-center gap-3 rounded-xl border border-border bg-surface p-3 shadow-[0_4px_24px_rgba(0,0,0,0.2)]">
         <div className="relative h-11 w-11 shrink-0">
           <svg className="h-11 w-11 -rotate-90" viewBox="0 0 44 44" aria-hidden="true">
             <circle cx="22" cy="22" r="18" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="3" />
@@ -113,7 +113,7 @@ export default function FocusSprint({ compact = false }: FocusSprintProps) {
               cy="22"
               r="18"
               fill="none"
-              stroke={state === 'completed' ? '#38B46A' : state === 'running' ? '#6F7EF7' : 'rgba(255,255,255,0.18)'}
+              stroke={state === 'completed' ? '#38B46A' : state === 'running' ? '#F59E0B' : 'rgba(255,255,255,0.18)'}
               strokeWidth="3"
               strokeLinecap="round"
               strokeDasharray={2 * Math.PI * 18}
@@ -234,8 +234,8 @@ export default function FocusSprint({ compact = false }: FocusSprintProps) {
             <svg className="h-40 w-40 -rotate-90" viewBox="0 0 100 100" aria-hidden="true">
               <defs>
                 <linearGradient id="sprint-grad" x1="0" y1="0" x2="1" y2="1">
-                  <stop stopColor="#6F7EF7" />
-                  <stop offset="1" stopColor="#8B97D8" />
+                  <stop stopColor="#F59E0B" />
+                  <stop offset="1" stopColor="#F97316" />
                 </linearGradient>
               </defs>
               <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="7" />

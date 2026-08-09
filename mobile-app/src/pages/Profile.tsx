@@ -4,8 +4,8 @@ import {
   ArrowLeft, Award, CalendarDays, CheckCircle2, Flame, Medal, Shield, Sparkles, Trophy,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import BottomNav from '@/components/BottomNav';
 import StreakBadge from '@/components/StreakBadge';
+import MomentumCard from '@/components/MomentumCard';
 import { Github, Linkedin } from '@/components/Icons';
 import { achievements, currentStudent, recentActivity } from '@/lib/mock-data';
 import { formatDate, getAvatarColor } from '@/lib/utils';
@@ -16,7 +16,7 @@ function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
       initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-30px' }}
-      transition={{ duration: 0.45, delay, ease: [0.25, 0.46, 0.45, 0.94] }}
+      transition={{ duration: 0.45, delay, ease: [0.25, 0.46, 0.45, 0.94] as const }}
     >
       {children}
     </motion.div>
@@ -55,16 +55,16 @@ export default function Profile() {
         <Reveal>
           <section
             aria-label="Profile summary"
-            className="relative overflow-hidden rounded-2xl border border-border bg-surface p-6 surface-gradient shadow-[0_8px_24px_rgba(0,0,0,0.18)]"
+            className="relative overflow-hidden rounded-2xl border border-border bg-surface p-6 surface-gradient shadow-[0_4px_24px_rgba(0,0,0,0.2)]"
           >
             <div
               className="pointer-events-none absolute -right-16 -top-16 h-52 w-52 rounded-full"
-              style={{ background: 'radial-gradient(circle, rgba(111,126,247,0.12) 0%, transparent 70%)' }}
+              style={{ background: 'radial-gradient(circle, rgba(245,158,11,0.12) 0%, transparent 70%)' }}
               aria-hidden="true"
             />
             <div className="relative flex items-center gap-4">
               <div
-                className="grid h-20 w-20 shrink-0 place-items-center rounded-2xl text-xl font-black text-white shadow-[0_8px_24px_rgba(0,0,0,0.18)]"
+                className="grid h-20 w-20 shrink-0 place-items-center rounded-2xl text-xl font-black text-white shadow-[0_4px_24px_rgba(0,0,0,0.2)]"
                 style={{ background: getAvatarColor(student.avatar) }}
               >
                 {student.avatar}
@@ -96,7 +96,7 @@ export default function Profile() {
               { label: 'Total XP', value: student.totalXP, icon: Medal },
               { label: 'Shields', value: student.shieldsRemaining, icon: Shield },
             ].map(({ label, value, icon: Icon }) => (
-              <div key={label} className="rounded-2xl border border-border bg-surface p-3 text-center shadow-[0_8px_24px_rgba(0,0,0,0.18)]">
+              <div key={label} className="rounded-2xl border border-border bg-surface p-3 text-center shadow-[0_4px_24px_rgba(0,0,0,0.2)]">
                 <Icon className="mx-auto mb-1.5 h-4 w-4 text-primary" />
                 <p className="text-base font-extrabold leading-none text-foreground">{value}</p>
                 <p className="mt-1 text-[9px] leading-tight text-subtle">{label}</p>
@@ -142,7 +142,7 @@ export default function Profile() {
               {achievements.map((achievement) => (
                 <div
                   key={achievement.id}
-                  className={`min-h-24 rounded-2xl border p-2 text-center shadow-[0_8px_24px_rgba(0,0,0,0.18)] ${
+                  className={`min-h-24 rounded-2xl border p-2 text-center shadow-[0_4px_24px_rgba(0,0,0,0.2)] ${
                     achievement.earned
                       ? 'border-primary/30 bg-primary/10'
                       : 'border-border bg-surface opacity-50'
@@ -167,7 +167,7 @@ export default function Profile() {
               </h2>
               <span className="text-xs text-subtle">12 days of showing up</span>
             </div>
-            <div className="overflow-hidden rounded-2xl border border-border bg-surface shadow-[0_8px_24px_rgba(0,0,0,0.18)]">
+            <div className="overflow-hidden rounded-2xl border border-border bg-surface shadow-[0_4px_24px_rgba(0,0,0,0.2)]">
               {recentActivity.map((item) => (
                 <div key={item.id} className="flex items-center gap-3 border-b border-border px-4 py-3 last:border-b-0">
                   <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-white/[0.04] text-base" aria-hidden="true">
@@ -184,9 +184,17 @@ export default function Profile() {
           </section>
         </Reveal>
 
+        {/* ===== Momentum Card ===== */}
+        <Reveal delay={0.12}>
+          <section>
+            <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-subtle mb-3 px-1">Momentum Card</p>
+            <MomentumCard day={student.currentDay} streak={student.streak} projectName="Build a Responsive Portfolio Card" />
+          </section>
+        </Reveal>
+
         {/* ===== CTA ===== */}
         <Reveal delay={0.14}>
-          <section className="rounded-2xl border border-primary/20 surface-gradient p-5 text-center shadow-[0_8px_24px_rgba(0,0,0,0.18)]">
+          <section className="rounded-2xl border border-primary/20 surface-gradient p-5 text-center shadow-[0_4px_24px_rgba(0,0,0,0.2)]">
             <Award className="mx-auto mb-2 h-6 w-6 text-warning" />
             <h2 className="text-base font-bold text-foreground">Keep the streak alive</h2>
             <p className="mt-1 text-xs leading-relaxed text-muted">
@@ -202,7 +210,6 @@ export default function Profile() {
           <CheckCircle2 className="h-3.5 w-3.5 text-success" /> Your progress is saved on this device
         </p>
       </main>
-      <BottomNav />
     </div>
   );
 }

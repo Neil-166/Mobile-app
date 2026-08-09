@@ -5,10 +5,11 @@ import {
   Award, Calendar, CheckCircle2, ChevronDown, Clock, ExternalLink, Flame,
   Medal, Shield, Sparkles, Trophy, UserRound, Users,
 } from 'lucide-react';
+import { Github } from '@/components/Icons';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import AnimatedBackground from '@/components/AnimatedBackground';
-import BottomNav from '@/components/BottomNav';
+
 import CountUp from '@/components/CountUp';
 import EmptyState from '@/components/EmptyState';
 import EnergyCheckin from '@/components/EnergyCheckin';
@@ -32,7 +33,7 @@ function Reveal({ children, delay = 0, className = '' }: { children: React.React
       initial={{ opacity: 0, y: 18 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-40px' }}
-      transition={{ duration: 0.5, delay, ease: [0.25, 0.46, 0.45, 0.94] }}
+      transition={{ duration: 0.5, delay, ease: [0.25, 0.46, 0.45, 0.94] as const }}
       className={className}
     >
       {children}
@@ -172,11 +173,11 @@ export default function Dashboard() {
         <Reveal>
           <section
             aria-label="Your progress"
-            className="relative overflow-hidden rounded-2xl border border-border bg-surface p-6 surface-gradient shadow-[0_8px_24px_rgba(0,0,0,0.18)]"
+            className="relative overflow-hidden rounded-2xl border border-border bg-surface p-6 surface-gradient shadow-[0_4px_24px_rgba(0,0,0,0.2)]"
           >
             <div
               className="pointer-events-none absolute -right-14 -top-16 h-52 w-52 rounded-full"
-              style={{ background: 'radial-gradient(circle, rgba(111,126,247,0.10) 0%, transparent 70%)' }}
+              style={{ background: 'radial-gradient(circle, rgba(245,158,11,0.10) 0%, transparent 70%)' }}
               aria-hidden="true"
             />
 
@@ -213,7 +214,7 @@ export default function Dashboard() {
         <Reveal delay={0.05}>
           <section
             aria-labelledby="today-build-title"
-            className="relative overflow-hidden rounded-2xl border border-border bg-surface p-5 shadow-[0_8px_24px_rgba(0,0,0,0.18)]"
+            className="relative overflow-hidden rounded-2xl border border-border bg-surface p-5 shadow-[0_4px_24px_rgba(0,0,0,0.2)]"
           >
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0">
@@ -287,10 +288,10 @@ export default function Dashboard() {
               </h2>
               <span className="text-xs text-subtle">{streak} day streak</span>
             </div>
-            <div className="flex justify-between rounded-2xl border border-border bg-surface p-3.5 shadow-[0_8px_24px_rgba(0,0,0,0.18)]">
+            <div className="flex justify-between rounded-2xl border border-border bg-surface p-3.5 shadow-[0_4px_24px_rgba(0,0,0,0.2)]">
               {weeklyHeatmap.map((day) => (
                 <div key={day.day} className="flex flex-col items-center gap-1.5">
-                  <div className={`grid h-8 w-8 place-items-center rounded-lg ${day.completed ? 'bg-gradient-to-br from-primary to-accent shadow-[0_0_12px_rgba(111,126,247,0.15)]' : 'bg-border-muted'}`}>
+                  <div className={`grid h-8 w-8 place-items-center rounded-lg ${day.completed ? 'bg-gradient-to-br from-primary to-accent shadow-[0_0_12px_rgba(245,158,11,0.15)]' : 'bg-border-muted'}`}>
                     {day.completed ? <CheckCircle2 className="h-4 w-4 text-white" /> : <span className="h-1.5 w-1.5 rounded-full bg-subtle/40" />}
                   </div>
                   <span className={`text-[10px] ${day.completed ? 'text-muted' : 'text-subtle/60'}`}>{day.day}</span>
@@ -300,10 +301,41 @@ export default function Dashboard() {
           </section>
         </Reveal>
 
+        {/* ===== GitHub Contribution Graph ===== */}
+        <Reveal>
+          <section>
+            <div className="mb-3 flex items-center justify-between px-1">
+              <h2 className="flex items-center gap-1.5 text-sm font-semibold text-foreground">
+                <Github className="h-4 w-4 text-success" /> GitHub Activity
+              </h2>
+              <span className="text-xs text-subtle">Last 12 weeks</span>
+            </div>
+            <div className="rounded-2xl border border-border bg-surface p-4 shadow-[0_4px_24px_rgba(0,0,0,0.2)]">
+              <div className="grid gap-[2px]" style={{ gridTemplateColumns: 'repeat(18, 1fr)' }}>
+                {Array.from({ length: 126 }, (_, i) => {
+                  const r = Math.sin(i * 127 + 311) * 0.5 + 0.5;
+                  const level = r > 0.35 ? Math.min(4, Math.floor(r * 5)) : 0;
+                  const colors = ['#151821', '#0e4429', '#006d32', '#26a641', '#39d353'];
+                  return <div key={i} className="aspect-square rounded-[2px]" style={{ background: colors[level] }} />;
+                })}
+              </div>
+              <div className="flex items-center justify-between mt-2 text-[10px] text-subtle">
+                <span>Less</span>
+                <div className="flex items-center gap-0.5">
+                  {[0, 1, 2, 3, 4].map((l) => (
+                    <div key={l} className="h-2 w-2 rounded-sm" style={{ background: ['#151821', '#0e4429', '#006d32', '#26a641', '#39d353'][l] }} />
+                  ))}
+                </div>
+                <span>More</span>
+              </div>
+            </div>
+          </section>
+        </Reveal>
+
         {/* ===== Stats ===== */}
         <Reveal>
           <section className="grid grid-cols-2 gap-3">
-            <div className="rounded-2xl border border-border bg-surface p-4 shadow-[0_8px_24px_rgba(0,0,0,0.18)]">
+            <div className="rounded-2xl border border-border bg-surface p-4 shadow-[0_4px_24px_rgba(0,0,0,0.2)]">
               <div className="mb-4 flex items-center justify-between">
                 <Shield className="h-5 w-5 text-success" />
                 <span className="text-xs font-bold text-muted">{student.shieldsRemaining}/1</span>
@@ -311,7 +343,7 @@ export default function Dashboard() {
               <p className="text-sm font-bold text-foreground">Streak Shield</p>
               <p className="mt-1 text-[11px] leading-relaxed text-subtle">One protected miss every 14 days.</p>
             </div>
-            <div className="rounded-2xl border border-border bg-surface p-4 shadow-[0_8px_24px_rgba(0,0,0,0.18)]">
+            <div className="rounded-2xl border border-border bg-surface p-4 shadow-[0_4px_24px_rgba(0,0,0,0.2)]">
               <div className="mb-4 flex items-center justify-between">
                 <Award className="h-5 w-5 text-warning" />
                 <span className="text-xs font-bold text-muted">#{selectedState === 'active' ? '7' : '—'}</span>
@@ -337,7 +369,7 @@ export default function Dashboard() {
                   key={achievement.id}
                   type="button"
                   onClick={() => toast(achievement.description)}
-                  className="min-h-24 rounded-2xl border border-border bg-surface p-2 text-center transition-colors hover:border-primary/40 shadow-[0_8px_24px_rgba(0,0,0,0.18)]"
+                  className="min-h-24 rounded-2xl border border-border bg-surface p-2 text-center transition-colors hover:border-primary/40 shadow-[0_4px_24px_rgba(0,0,0,0.2)]"
                   aria-label={`${achievement.title}: ${achievement.description}`}
                 >
                   <span className="block text-xl">{achievement.icon}</span>
@@ -357,7 +389,7 @@ export default function Dashboard() {
               </h2>
               <span className="text-xs text-subtle">Full Stack</span>
             </div>
-            <div className="overflow-hidden rounded-2xl border border-border bg-surface shadow-[0_8px_24px_rgba(0,0,0,0.18)]">
+            <div className="overflow-hidden rounded-2xl border border-border bg-surface shadow-[0_4px_24px_rgba(0,0,0,0.2)]">
               {visibleLeaderboard.map((entry) => (
                 <div key={entry.rank} className={`flex items-center gap-3 border-b border-border px-4 py-3 last:border-b-0 ${entry.isCurrentUser ? 'bg-primary/10' : ''}`}>
                   <span className="w-4 text-xs font-bold text-subtle">{entry.rank}</span>
@@ -396,7 +428,7 @@ export default function Dashboard() {
                   {visibleCommunity.map((post) => (
                     <div
                       key={post.id}
-                      className="flex items-center gap-3 rounded-2xl border border-border bg-surface p-3 transition-colors hover:border-accent/30 shadow-[0_8px_24px_rgba(0,0,0,0.18)]"
+                      className="flex items-center gap-3 rounded-2xl border border-border bg-surface p-3 transition-colors hover:border-accent/30 shadow-[0_4px_24px_rgba(0,0,0,0.2)]"
                     >
                       <div
                         className="grid h-10 w-10 shrink-0 place-items-center rounded-full text-xs font-bold text-white"
@@ -449,7 +481,7 @@ export default function Dashboard() {
 
         {/* ===== Profile ===== */}
         <Reveal>
-          <section id="profile" className="scroll-mt-28 rounded-2xl border border-border bg-surface p-4 shadow-[0_8px_24px_rgba(0,0,0,0.18)]">
+          <section id="profile" className="scroll-mt-28 rounded-2xl border border-border bg-surface p-4 shadow-[0_4px_24px_rgba(0,0,0,0.2)]">
             <div className="flex items-start gap-3">
               <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl text-sm font-bold text-white" style={{ background: getAvatarColor(student.avatar) }}>
                 {student.avatar}
@@ -469,7 +501,6 @@ export default function Dashboard() {
           </section>
         </Reveal>
       </main>
-      <BottomNav />
     </div>
   );
 }

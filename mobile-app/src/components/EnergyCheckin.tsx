@@ -5,8 +5,8 @@ import { Zap } from 'lucide-react';
 type EnergyLevel = 'tired' | 'okay' | 'energized';
 
 const energyOptions = [
-  { id: 'tired', emoji: '😴', label: 'Tired', color: '#97A1B3' },
-  { id: 'okay', emoji: '🙂', label: 'Okay', color: '#6F7EF7' },
+  { id: 'tired', emoji: '😴', label: 'Tired', color: '#94A3B8' },
+  { id: 'okay', emoji: '🙂', label: 'Okay', color: '#F59E0B' },
   { id: 'energized', emoji: '⚡', label: 'Energized', color: '#38B46A' },
 ] as const;
 

@@ -390,7 +390,7 @@ export const tracks = [
     name: 'Full Stack',
     description: 'Build complete web apps from scratch — React, Node, databases, and deployment.',
     icon: '🌐',
-    color: '#6F7EF7',
+    color: '#F59E0B',
     projects: ['Portfolio site', 'Task manager', 'Real-time chat', 'REST API'],
     level: 'Intermediate',
   },
@@ -399,7 +399,7 @@ export const tracks = [
     name: 'AI/ML',
     description: 'Work with Python, data science, and machine learning fundamentals through real datasets.',
     icon: '🤖',
-    color: '#6A82D0',
+    color: '#F97316',
     projects: ['Sentiment analyzer', 'Image classifier', 'Price predictor', 'Chatbot'],
     level: 'Intermediate',
   },
@@ -426,7 +426,7 @@ export const tracks = [
     name: 'UI/UX',
     description: 'Design real product interfaces and build them with code. Figma to browser.',
     icon: '🎨',
-    color: '#8B97D8',
+    color: '#F97316',
     projects: ['Design system', 'App redesign', 'Prototype flows', 'Component library'],
     level: 'Beginner',
   },
@@ -457,4 +457,65 @@ export const faqs = [
     question: "Is there a community?",
     answer: "Yes — we have a Discord where participants share progress, ask questions, and review each other's work. It's where most of the learning happens.",
   },
+];
+
+// ─── Home Screen Mock Data ───
+
+export const homeFocusTask = {
+  title: 'Build a Responsive Portfolio Card',
+  description: 'Create a polished, mobile-first developer portfolio card with CSS Grid.',
+  progress: 35,
+  estimatedMinutes: 45,
+  track: 'Full Stack',
+  day: 12,
+};
+
+export const homeQuickActions = [
+  { id: 'plan', label: 'Generate Study Plan', icon: '📋', color: '#F59E0B' },
+  { id: 'ai', label: 'Ask AI Assistant', icon: '🤖', color: '#7C8CFF' },
+  { id: 'task', label: 'Add Task', icon: '✅', color: '#22C55E' },
+  { id: 'focus', label: 'Start Focus', icon: '⏱️', color: '#F97316' },
+  { id: 'analytics', label: 'View Analytics', icon: '📊', color: '#8B5CF6' },
+  { id: 'voice', label: 'Voice Note', icon: '🎙️', color: '#EC4899' },
+];
+
+export const homeSchedule = [
+  { time: '9:00 AM', title: 'CSS Grid Fundamentals', priority: 'high' as const, done: true },
+  { time: '2:00 PM', title: 'Portfolio Card Build', priority: 'high' as const, done: false },
+  { time: '5:00 PM', title: 'GitHub Commit + LinkedIn Post', priority: 'medium' as const, done: false },
+];
+
+export const homeAiInsights = [
+  'You study best between 7–9 PM. Schedule complex tasks then.',
+  'You missed your OS revision yesterday. Pick it up today.',
+  'Complete 2 DSA problems today to maintain your streak.',
+  'Your focus score has improved 15% this week. Keep it up.',
+  'You tend to skip weekends. Even 30 minutes counts.',
+];
+
+export const homeStats = {
+  weeklyHours: 18.5,
+  tasksToday: 3,
+  focusScore: 87,
+  productivityTrend: '+12%',
+};
+
+export const homeAchievements = [
+  { id: 'streak7', title: '7-Day Streak', icon: '🔥', earned: true },
+  { id: 'early', title: 'Early Starter', icon: '🌅', earned: true },
+  { id: 'consistent', title: 'Consistency', icon: '⚡', earned: false },
+  { id: 'deep', title: 'Deep Work', icon: '🧠', earned: false },
+];
+
+export const homeNotifications = [
+  { id: 'n1', title: 'Day 12 challenge is waiting', time: '2h ago', type: 'reminder' as const },
+  { id: 'n2', title: 'Sneha completed Day 28', time: '4h ago', type: 'social' as const },
+  { id: 'n3', title: 'Focus session goal reached!', time: 'Yesterday', type: 'achievement' as const },
+];
+
+export const homeRecentActivity = [
+  { action: 'Completed CSS Grid lesson', time: '9:15 AM', icon: '✅' },
+  { action: 'Pushed commit to GitHub', time: 'Yesterday', icon: '📦' },
+  { action: '25-min focus sprint done', time: 'Yesterday', icon: '⏱️' },
+  { action: 'LinkedIn post shared', time: '2 days ago', icon: '📢' },
 ];

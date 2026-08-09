@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Flame, MoonStar, CheckCircle2 } from 'lucide-react';
 import { formatTime, getMidnightCountdown } from '@/lib/utils';
 
-const HEAT = ['#181B22', 'rgba(111,126,247,0.25)', 'rgba(111,126,247,0.5)', 'rgba(111,126,247,0.8)', '#6F7EF7'];
+const HEAT = ['rgba(255,255,255,0.05)', 'rgba(245,158,11,0.25)', 'rgba(245,158,11,0.5)', 'rgba(245,158,11,0.8)', '#F59E0B'];
 
 function MiniContributionGraph() {
   const cells = Array.from({ length: 28 }, (_, i) => {
@@ -32,7 +32,7 @@ export default function HeroPhone() {
       {/* Soft glow behind the phone */}
       <div
         className="absolute -inset-12 rounded-full"
-        style={{ background: 'radial-gradient(circle, rgba(111,126,247,0.12) 0%, transparent 70%)' }}
+        style={{ background: 'radial-gradient(circle, rgba(245,158,11,0.12) 0%, transparent 70%)' }}
         aria-hidden="true"
       />
 
@@ -46,7 +46,7 @@ export default function HeroPhone() {
           {/* Ambient blob */}
           <div
             className="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full"
-            style={{ background: 'radial-gradient(circle, rgba(111,126,247,0.12) 0%, transparent 70%)' }}
+            style={{ background: 'radial-gradient(circle, rgba(245,158,11,0.12) 0%, transparent 70%)' }}
             aria-hidden="true"
           />
 
@@ -74,8 +74,8 @@ export default function HeroPhone() {
               />
               <defs>
                 <linearGradient id="hp-grad" x1="0" y1="0" x2="1" y2="1">
-                  <stop stopColor="#6F7EF7" />
-                  <stop offset="1" stopColor="#8B97D8" />
+                  <stop stopColor="#F59E0B" />
+                  <stop offset="1" stopColor="#F97316" />
                 </linearGradient>
               </defs>
             </svg>

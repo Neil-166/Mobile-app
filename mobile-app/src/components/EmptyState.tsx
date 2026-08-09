@@ -4,10 +4,10 @@ import { cn } from '@/lib/utils';
 export type EmptyStateVariant = 'first-day' | 'missed-day' | 'empty-profile' | 'no-submissions';
 
 const content: Record<EmptyStateVariant, { emoji: string; accent: string; soft: string }> = {
-  'first-day': { emoji: '🌱', accent: '#6F7EF7', soft: 'rgba(111,126,247,0.14)' },
+  'first-day': { emoji: '🌱', accent: '#F59E0B', soft: 'rgba(245,158,11,0.14)' },
   'missed-day': { emoji: '🌤️', accent: '#E7A53A', soft: 'rgba(231,165,58,0.12)' },
-  'empty-profile': { emoji: '🧩', accent: '#6A82D0', soft: 'rgba(90,167,255,0.12)' },
-  'no-submissions': { emoji: '📦', accent: '#8B97D8', soft: 'rgba(139,151,216,0.12)' },
+  'empty-profile': { emoji: '🧩', accent: '#F97316', soft: 'rgba(90,167,255,0.12)' },
+  'no-submissions': { emoji: '📦', accent: '#F97316', soft: 'rgba(217,119,6,0.12)' },
 };
 
 interface EmptyStateProps {
@@ -25,7 +25,7 @@ export default function EmptyState({ variant, title, body, className, children }
   return (
     <div
       className={cn(
-        'relative overflow-hidden rounded-2xl border border-border bg-surface p-6 text-center shadow-[0_8px_24px_rgba(0,0,0,0.18)]',
+        'relative overflow-hidden rounded-2xl border border-border bg-surface p-6 text-center shadow-[0_4px_24px_rgba(0,0,0,0.2)]',
         className
       )}
     >

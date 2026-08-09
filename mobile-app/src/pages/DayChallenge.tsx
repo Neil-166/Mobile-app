@@ -27,7 +27,7 @@ type Tab = 'brief' | 'workflow' | 'submit';
 
 function BuildPreview() {
   return (
-    <section aria-labelledby="build-preview-title" className="overflow-hidden rounded-2xl border border-border bg-surface shadow-[0_8px_24px_rgba(0,0,0,0.18)]">
+    <section aria-labelledby="build-preview-title" className="overflow-hidden rounded-2xl border border-border bg-surface shadow-[0_4px_24px_rgba(0,0,0,0.2)]">
       <div className="flex items-center justify-between border-b border-border bg-white/[0.035] px-4 py-3">
         <div className="flex items-center gap-2">
           <span className="flex gap-1" aria-hidden="true">
@@ -42,10 +42,10 @@ function BuildPreview() {
       <div className="relative min-h-48 overflow-hidden bg-bg-elevated p-5">
         <div
           className="pointer-events-none absolute -right-12 -top-14 h-36 w-36 rounded-full"
-          style={{ background: 'radial-gradient(circle, rgba(111,126,247,0.12) 0%, transparent 70%)' }}
+          style={{ background: 'radial-gradient(circle, rgba(245,158,11,0.12) 0%, transparent 70%)' }}
           aria-hidden="true"
         />
-        <div className="relative mx-auto max-w-60 rounded-2xl border border-white/10 bg-surface p-4 shadow-[0_8px_24px_rgba(0,0,0,0.16)]">
+        <div className="relative mx-auto max-w-60 rounded-2xl border border-white/10 bg-surface p-4 shadow-[0_4px_24px_rgba(0,0,0,0.2)]">
           <div className="flex items-center gap-3">
             <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-primary to-accent text-xs font-bold text-white">AS</div>
             <div>
@@ -193,7 +193,7 @@ export default function DayChallengePage() {
             </div>
             <div className="space-y-2">
               {challenge.objectives.map((objective, index) => (
-                <div key={objective} className="flex gap-3 rounded-xl border border-border bg-surface p-3 shadow-[0_8px_24px_rgba(0,0,0,0.18)]">
+                <div key={objective} className="flex gap-3 rounded-xl border border-border bg-surface p-3 shadow-[0_4px_24px_rgba(0,0,0,0.2)]">
                   <span className="grid h-5 w-5 shrink-0 place-items-center rounded-md bg-primary/15 text-[10px] font-bold text-accent">{index + 1}</span>
                   <p className="text-xs leading-relaxed text-muted">{objective}</p>
                 </div>
@@ -201,7 +201,7 @@ export default function DayChallengePage() {
             </div>
           </section>
 
-          <section className="overflow-hidden rounded-2xl border border-border bg-surface shadow-[0_8px_24px_rgba(0,0,0,0.18)]">
+          <section className="overflow-hidden rounded-2xl border border-border bg-surface shadow-[0_4px_24px_rgba(0,0,0,0.2)]">
             <div className="flex items-center justify-between border-b border-border bg-white/[0.035] p-4">
               <h3 className="flex items-center gap-2 text-sm font-semibold text-foreground">
                 <CheckCircle2 className="h-4 w-4 text-primary" />Build checklist
@@ -233,7 +233,7 @@ export default function DayChallengePage() {
                   href={resource.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex min-h-14 items-center justify-between gap-3 rounded-xl border border-border bg-surface p-3 transition-colors hover:border-primary/40 shadow-[0_8px_24px_rgba(0,0,0,0.18)]"
+                  className="flex min-h-14 items-center justify-between gap-3 rounded-xl border border-border bg-surface p-3 transition-colors hover:border-primary/40 shadow-[0_4px_24px_rgba(0,0,0,0.2)]"
                 >
                   <div className="flex min-w-0 items-center gap-3">
                     {resource.type === 'video' ? <Play className="h-4 w-4 shrink-0 text-danger" /> : resource.type === 'github' ? <Github className="h-4 w-4 shrink-0 text-foreground" /> : <FileText className="h-4 w-4 shrink-0 text-primary" />}
@@ -260,7 +260,7 @@ export default function DayChallengePage() {
                 <div key={step.step} className="relative pl-8">
                   {index < challenge.workflow.length - 1 && <div className="absolute bottom-[-17px] left-[7px] top-5 w-px bg-border" aria-hidden="true" />}
                   <span className="absolute left-0 top-1 grid h-4 w-4 place-items-center rounded-full bg-primary text-[8px] font-bold text-white">{step.step}</span>
-                  <div className="rounded-2xl border border-border bg-surface p-4 shadow-[0_8px_24px_rgba(0,0,0,0.18)]">
+                  <div className="rounded-2xl border border-border bg-surface p-4 shadow-[0_4px_24px_rgba(0,0,0,0.2)]">
                     <h3 className="text-sm font-semibold text-foreground">{step.title}</h3>
                     <p className="mt-1.5 text-xs leading-relaxed text-muted">{step.description}</p>
                     {step.tip && <p className="mt-3 rounded-lg border border-primary/15 bg-primary/[0.06] p-2.5 text-[11px] leading-relaxed text-accent">Tip · {step.tip}</p>}
@@ -357,7 +357,7 @@ export default function DayChallengePage() {
           </div>
         </div>
 
-        <section className="rounded-2xl border border-border bg-surface p-4 shadow-[0_8px_24px_rgba(0,0,0,0.18)]">
+        <section className="rounded-2xl border border-border bg-surface p-4 shadow-[0_4px_24px_rgba(0,0,0,0.2)]">
           <div className="flex items-center gap-2">
             <Users className="h-4 w-4 text-accent" />
             <h3 className="text-sm font-semibold text-foreground">Small wins from the community</h3>
@@ -453,7 +453,7 @@ export default function DayChallengePage() {
               onClick={() => activeTab === 'submit' ? submit() : setActiveTab('submit')}
               disabled={activeTab === 'submit' && !submissionReady}
               size="lg"
-              className="w-full font-bold shadow-[0_8px_24px_rgba(0,0,0,0.18)]"
+              className="w-full font-bold shadow-[0_4px_24px_rgba(0,0,0,0.2)]"
             >
               {isSubmitting ? (
                 <><Loader2 className="h-5 w-5 animate-spin" />Submitting…</>

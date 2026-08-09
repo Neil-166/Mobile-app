@@ -34,8 +34,8 @@ const ExportCard = forwardRef<HTMLDivElement, MomentumCardProps>(function Export
         height: CARD_H,
         borderRadius: 72,
         overflow: 'hidden',
-        background: 'linear-gradient(165deg, #0F1115 0%, #171A21 48%, #151820 100%)',
-        color: '#F3F5F7',
+        background: 'linear-gradient(165deg, #0F1115 0%, #151821 48%, #151821 100%)',
+        color: '#F8FAFC',
         fontFamily: 'Inter, -apple-system, "Segoe UI", sans-serif',
         display: 'flex',
         flexDirection: 'column',
@@ -44,8 +44,8 @@ const ExportCard = forwardRef<HTMLDivElement, MomentumCardProps>(function Export
       }}
     >
       {/* Ambient glows */}
-      <div style={{ position: 'absolute', top: -180, right: -180, width: 620, height: 620, borderRadius: 999, background: 'radial-gradient(circle, rgba(111,126,247,0.4) 0%, transparent 70%)' }} />
-      <div style={{ position: 'absolute', bottom: -220, left: -160, width: 560, height: 560, borderRadius: 999, background: 'radial-gradient(circle, rgba(139,151,216,0.2) 0%, transparent 70%)' }} />
+      <div style={{ position: 'absolute', top: -180, right: -180, width: 620, height: 620, borderRadius: 999, background: 'radial-gradient(circle, rgba(245,158,11,0.4) 0%, transparent 70%)' }} />
+      <div style={{ position: 'absolute', bottom: -220, left: -160, width: 560, height: 560, borderRadius: 999, background: 'radial-gradient(circle, rgba(217,119,6,0.2) 0%, transparent 70%)' }} />
       {/* Grid dots */}
       <div
         style={{
@@ -58,30 +58,30 @@ const ExportCard = forwardRef<HTMLDivElement, MomentumCardProps>(function Export
 
       {/* Branding */}
       <div style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: 24 }}>
-        <div style={{ width: 88, height: 88, borderRadius: 26, background: 'linear-gradient(135deg,#6F7EF7,#6A82D0)', display: 'grid', placeItems: 'center', fontSize: 34, fontWeight: 900 }}>AB</div>
+        <div style={{ width: 88, height: 88, borderRadius: 26, background: 'linear-gradient(135deg,#F59E0B,#F97316)', display: 'grid', placeItems: 'center', fontSize: 34, fontWeight: 900 }}>AB</div>
         <div>
           <div style={{ fontSize: 40, fontWeight: 800, letterSpacing: '-0.01em' }}>ABTalks</div>
-          <div style={{ fontSize: 26, color: '#8B97D8', fontWeight: 600 }}>60-Day Challenge</div>
+          <div style={{ fontSize: 26, color: '#F97316', fontWeight: 600 }}>60-Day Challenge</div>
         </div>
       </div>
 
       {/* Day number */}
       <div style={{ position: 'relative', marginTop: 96 }}>
-        <div style={{ fontSize: 26, fontWeight: 700, letterSpacing: '0.18em', color: '#8B97D8', textTransform: 'uppercase' }}>Day</div>
+        <div style={{ fontSize: 26, fontWeight: 700, letterSpacing: '0.18em', color: '#F97316', textTransform: 'uppercase' }}>Day</div>
         <div style={{ fontSize: 330, fontWeight: 900, lineHeight: 0.95, letterSpacing: '-0.03em', marginTop: 8 }}>{day}</div>
-        <div style={{ fontSize: 34, color: '#97A1B3', fontWeight: 500, marginTop: 12 }}>of 60</div>
+        <div style={{ fontSize: 34, color: '#94A3B8', fontWeight: 500, marginTop: 12 }}>of 60</div>
       </div>
 
       {/* Streak flame */}
       <div style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: 16, marginTop: 56, alignSelf: 'flex-start', padding: '18px 30px', borderRadius: 999, background: 'rgba(231,165,58,0.12)', border: '1px solid rgba(231,165,58,0.3)' }}>
         <Flame style={{ color: '#E7A53A' }} size={44} fill="#E7A53A" />
         <div style={{ fontSize: 44, fontWeight: 800, color: '#D4952F' }}>{streak}</div>
-        <div style={{ fontSize: 24, color: '#C7CEDB', fontWeight: 500 }}>day streak</div>
+        <div style={{ fontSize: 24, color: '#CBD5E1', fontWeight: 500 }}>day streak</div>
       </div>
 
       {/* Project card */}
       <div style={{ position: 'relative', marginTop: 48, padding: '36px 40px', borderRadius: 40, background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.12)' }}>
-        <div style={{ fontSize: 22, color: '#97A1B3', fontWeight: 600, letterSpacing: '0.14em', textTransform: 'uppercase' }}>Today&apos;s build</div>
+        <div style={{ fontSize: 22, color: '#94A3B8', fontWeight: 600, letterSpacing: '0.14em', textTransform: 'uppercase' }}>Today&apos;s build</div>
         <div style={{ fontSize: 46, fontWeight: 700, marginTop: 10, lineHeight: 1.15, letterSpacing: '-0.01em' }}>{projectName}</div>
       </div>
 
@@ -94,7 +94,7 @@ const ExportCard = forwardRef<HTMLDivElement, MomentumCardProps>(function Export
       {/* Footer */}
       <div style={{ position: 'relative', marginTop: 'auto' }}>
         <div style={{ fontSize: 30, fontWeight: 600 }}>{currentStudent.name} · {currentStudent.college}</div>
-        <div style={{ fontSize: 24, color: '#8B97D8', fontWeight: 600, marginTop: 8 }}>#ABTalks60 · Built in public</div>
+        <div style={{ fontSize: 24, color: '#F97316', fontWeight: 600, marginTop: 8 }}>#ABTalks60 · Built in public</div>
       </div>
     </div>
   );
@@ -142,11 +142,11 @@ export default function MomentumCard(props: MomentumCardProps) {
       {/* Visible 9:16 preview */}
       <div
         id="momentum-card-preview"
-        className="relative mx-auto aspect-[9/16] w-full max-w-[300px] overflow-hidden rounded-[2rem] border border-primary/25 p-5 shadow-[0_8px_24px_rgba(0,0,0,0.18)]"
-        style={{ background: 'linear-gradient(165deg, #0F1115 0%, #171A21 48%, #151820 100%)' }}
+        className="relative mx-auto aspect-[9/16] w-full max-w-[300px] overflow-hidden rounded-[2rem] border border-primary/25 p-5 shadow-[0_4px_24px_rgba(0,0,0,0.2)]"
+        style={{ background: 'linear-gradient(165deg, #0F1115 0%, #151821 48%, #151821 100%)' }}
       >
-        <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full" style={{ background: 'radial-gradient(circle, rgba(111,126,247,0.35) 0%, transparent 70%)' }} aria-hidden="true" />
-        <div className="pointer-events-none absolute -bottom-20 -left-14 h-44 w-44 rounded-full" style={{ background: 'radial-gradient(circle, rgba(139,151,216,0.18) 0%, transparent 70%)' }} aria-hidden="true" />
+        <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full" style={{ background: 'radial-gradient(circle, rgba(245,158,11,0.35) 0%, transparent 70%)' }} aria-hidden="true" />
+        <div className="pointer-events-none absolute -bottom-20 -left-14 h-44 w-44 rounded-full" style={{ background: 'radial-gradient(circle, rgba(217,119,6,0.18) 0%, transparent 70%)' }} aria-hidden="true" />
         <div
           className="pointer-events-none absolute inset-0"
           style={{ backgroundImage: 'radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px)', backgroundSize: '26px 26px' }}
@@ -155,7 +155,7 @@ export default function MomentumCard(props: MomentumCardProps) {
 
         {/* Branding */}
         <div className="relative flex items-center gap-3">
-          <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-primary to-[#6A82D0] text-xs font-black text-white">AB</div>
+          <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-primary to-[#F97316] text-xs font-black text-white">AB</div>
           <div>
             <p className="text-sm font-extrabold tracking-tight text-foreground">ABTalks</p>
             <p className="text-[10px] font-semibold text-accent">60-Day Challenge</p>
