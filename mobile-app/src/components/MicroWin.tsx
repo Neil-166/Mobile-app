@@ -14,7 +14,7 @@ export function microWin(message: string, emoji = '✨') {
         transition={{ type: 'spring', stiffness: 420, damping: 24 }}
         role="status"
         aria-live="polite"
-        className="pointer-events-auto flex items-center gap-3 rounded-2xl border border-border bg-surface px-4 py-3 shadow-[0_2px_8px_rgba(0,0,0,0.15)]"
+        className="pointer-events-auto flex items-center gap-3 rounded-2xl border border-border bg-surface/95 px-4 py-3 shadow-[0_4px_24px_rgba(0,0,0,0.2)] backdrop-blur-md"
       >
         <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-primary/15 text-base">
           {emoji}
